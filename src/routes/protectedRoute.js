@@ -21,13 +21,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(
-    process.env.NODE_ENV === 'production'
-      ? process.env.VUE_APP_SUB_ROUTE
-        ? process.env.VUE_APP_SUB_ROUTE
-        : process.env.BASE_URL
-      : process.env.BASE_URL,
-  ),
+  history: createWebHistory(process.env.BASE_URL),
   linkExactActiveClass: 'active',
   routes,
 });
