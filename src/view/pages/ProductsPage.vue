@@ -4,19 +4,14 @@
 
     </sdPageHeader>
     <Main>
-      <a-row :gutter="25">
-        <a-col :sm="24" :xs="24">
-          <sdCards headless>
-            <h3>Skeleton Page</h3>
-          </sdCards>
-        </a-col>
-      </a-row>
+      <Products />
     </Main>
   </div>
 </template>
 
 <script setup>
 import { Main } from "../styled";
+import Products from "components/pageComponents/products/overview/ProductsTable";
 
 const breadcrumbs = [
   {
