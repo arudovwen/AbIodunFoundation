@@ -89,28 +89,18 @@
                             </figure>
                             <ul class="user-dropdown__links">
                                 <li>
-                                    <a to="#">
+                                    <a to="/profile-settings/profile">
                                         <unicon name="user"></unicon> Profile
                                     </a>
                                 </li>
                                 <li>
-                                    <a to="#">
+                                    <a to="/profile-settings">
                                         <unicon name="setting"></unicon>
                                         Settings
                                     </a>
                                 </li>
-                                <li>
-                                    <a to="#">
-                                        <unicon name="dollar-sign"></unicon>
-                                        Billing
-                                    </a>
-                                </li>
-                                <li>
-                                    <a to="#">
-                                        <unicon name="users-alt"></unicon>
-                                        Activity
-                                    </a>
-                                </li>
+                               
+                              
                                 <li>
                                     <a to="#">
                                         <unicon name="bell"></unicon> Help

@@ -70,7 +70,7 @@
           Password
         </router-link>
       </a-menu-item>
-      <a-menu-item @click="toggleCollapsed" key="banner-settings">
+      <a-menu-item @click="toggleCollapsed" key="set-banners">
         <router-link to="/page/profile-settings/banners"> Banners </router-link>
       </a-menu-item>
 
