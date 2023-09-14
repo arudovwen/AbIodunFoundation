@@ -165,9 +165,9 @@
                 </a-col>
                 <a-col :md="12" :xs="24">
                   <div class="admin-footer__links">
-                    <router-link to="#">Profile</router-link>
+                    <!-- <router-link to="#">Profile</router-link>
                     <router-link to="#">Team</router-link>
-                    <router-link to="#">Contacts</router-link>
+                    <router-link to="#">Contacts</router-link> -->
                   </div>
                 </a-col>
               </a-row>

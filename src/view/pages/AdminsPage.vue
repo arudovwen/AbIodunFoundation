@@ -9,7 +9,7 @@
     <Main>
       <a-row :gutter="15">
         <a-col :md="24">
-          <Users />
+          <Admins />
         </a-col>
       </a-row>
     </Main>
@@ -18,7 +18,7 @@
 
 <script setup>
 import { Main } from "../styled";
-import Users from "components/pageComponents/users/overview/UserTable";
+import Admins from "components/pageComponents/admins/overview/UserTable";
 
 const breadcrumbs = [
   {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sdPageHeader title="Products Page " class="ninjadash-page-header-main" :routes="breadcrumbs">
+    <sdPageHeader title="Products " class="ninjadash-page-header-main" :routes="breadcrumbs">
 
     </sdPageHeader>
     <Main>

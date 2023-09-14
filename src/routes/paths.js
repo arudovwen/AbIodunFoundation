@@ -8,14 +8,7 @@ export const paths = [
       ),
   },
 
-  {
-    name: "products",
-    path: "/products",
-    component: () =>
-      import(
-        /* webpackChunkName: "products" */ "@/view/pages/ProductsPage.vue"
-      ),
-  },
+
   {
     name: "transactions",
     path: "/transactions",
@@ -24,11 +17,30 @@ export const paths = [
         /* webpackChunkName: "transactions" */ "@/view/pages/TransactionsPage.vue"
       ),
   },
+ 
   {
-    name: "product",
-    path: "/product/:id",
+    name: "airtime & data",
+    path: "/airtime-and-data",
     component: () =>
-      import(/* webpackChunkName: "product" */ "@/view/pages/ProductPage.vue"),
+      import(/* webpackChunkName: "airtime-and-data" */ "@/view/pages/AirtimeAndData.vue"),
+  },
+  {
+    name: "apply for grant",
+    path: "/apply-for-grant",
+    component: () =>
+      import(/* webpackChunkName: "apply-for-grant" */ "@/view/pages/ApplyGrant.vue"),
+  },
+  {
+    name: "transfers",
+    path: "/transfers",
+    component: () =>
+      import(/* webpackChunkName: "transfers" */ "@/view/pages/Transfers.vue"),
+  },
+  {
+    name: "request-product",
+    path: "/product-management/products/request-product",
+    component: () =>
+      import(/* webpackChunkName: "transfers" */ "@/view/pages/RequestProduct.vue"),
   },
   {
     path: "/page",
@@ -99,7 +111,7 @@ export const paths = [
 
   {
     path: "/user-management",
-    name: "user management",
+    name: "user-management",
     component: () =>
       import(
         /* webpackChunkName: "Settings" */ "@/view/pages/UserManagement.vue"
@@ -117,6 +129,38 @@ export const paths = [
         component: () =>
           import(
             /* webpackChunkName: "admins" */ "@/view/pages/AdminsPage.vue"
+          ),
+      },
+    ],
+  },
+  {
+    path: "/product-management",
+    name: "product-management",
+    component: () =>
+      import(
+        /* webpackChunkName: "Settings" */ "@/view/pages/ProductManagement.vue"
+      ),
+    children: [
+      {
+        name: "products",
+        path: "products",
+        component: () =>
+        import(
+          /* webpackChunkName: "products" */ "@/view/pages/ProductsPage.vue"
+        ),
+      },
+      {
+        name: "product",
+        path: "/product/:id",
+        component: () =>
+          import(/* webpackChunkName: "product" */ "@/view/pages/ProductPage.vue"),
+      },
+      {
+        name: "requests",
+        path: "requests",
+        component: () =>
+          import(
+            /* webpackChunkName: "admins" */ "@/view/pages/RequestPage.vue"
           ),
       },
     ],

@@ -4,7 +4,7 @@
       <Cards>
         <template #title>
           <div class="ninjadash-card-title-wrap">
-            <span class="ninjadash-card-title-text"> Best Sellers </span>
+            <span class="ninjadash-card-title-text"> Latest Requests </span>
           </div>
         </template>
         <template #button>

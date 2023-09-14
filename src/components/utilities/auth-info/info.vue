@@ -1,11 +1,11 @@
 <template>
     <InfoWraper>
-        <SearchBar />
-        <Message />
+        <!-- <SearchBar /> -->
+        <!-- <Message /> -->
         <Notification />
-        <Settings />
+        <!-- <Settings /> -->
         <!-- <Support /> -->
-        <div
+        <!-- <div
             class="ninjadash-nav-actions__item ninjadash-nav-actions__language"
         >
             <sdDropdown placement="bottomRight" :action="['click']">
@@ -68,7 +68,7 @@
                     />
                 </a>
             </sdDropdown>
-        </div>
+        </div> -->
 
         <div class="ninjadash-nav-actions__item ninjadash-nav-actions__author">
             <sdPopover placement="bottomRight" action="click">
@@ -144,17 +144,19 @@
 </template>
 
 <script setup>
-import { InfoWraper, NavAuth, UserDropDown } from './auth-info-style';
+import { InfoWraper, 
+    // NavAuth, 
+    UserDropDown } from './auth-info-style';
 // import Support from "./Support";
-import Settings from './Settings.vue';
+// import Settings from './Settings.vue';
 import Notification from './Notification.vue';
-import Message from './Message.vue';
-import SearchBar from './Search.vue';
+// import Message from './Message.vue';
+// import SearchBar from './Search.vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { LogoutOutlined } from '@ant-design/icons-vue';
 
-let flag = 'english';
+// let flag = 'english';
 const { dispatch } = useStore();
 const { push } = useRouter();
 const SignOut = (e) => {
@@ -163,7 +165,7 @@ const SignOut = (e) => {
     dispatch('logOut');
 };
 
-const onFlagChangeHandle = (value) => {
-    flag = value;
-};
+// const onFlagChangeHandle = (value) => {
+//     flag = value;
+// };
 </script>

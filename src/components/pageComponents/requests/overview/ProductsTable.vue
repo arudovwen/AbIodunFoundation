@@ -1,22 +1,4 @@
 <template>
-  <div class="flex justify-between items-center py-6">
-    <div>
-      <span class="title-counter">274 Administrators</span>
-      <sdAutoComplete
-        :dataSource="searchData"
-        width="100%"
-        placeholder="Search by Name"
-        patterns
-      />
-    </div>
-
-    <div>
-      <sdButton class="btn-add_new" size="default" key="1" type="primary">
-        <unicon name="plus" width="14"></unicon> Add New Administrator
-      </sdButton>
-    </div>
-  </div>
-
   <UserTableStyleWrapper>
     <TableWrapper class="table-responsive">
       <a-table
@@ -36,7 +18,6 @@
 <script>
 import { UserTableStyleWrapper } from "../style";
 import { TableWrapper } from "../../../styled";
-import { useStore } from "vuex";
 import users from "@/demoData/usersData.json";
 import { computed, defineComponent } from "vue";
 const usersTableColumns = [
@@ -127,8 +108,7 @@ const UserListTable = defineComponent({
         };
       })
     );
-    const { state } = useStore();
-    const searchData = computed(() => state.headerSearchData.data);
+
     const rowSelection = {
       getCheckboxProps: (record) => ({
         disabled: record.name === "Disabled User", // Column configuration not to be checked
@@ -136,7 +116,7 @@ const UserListTable = defineComponent({
       }),
     };
 
-    return { usersTableColumns, usersTableData, rowSelection,searchData };
+    return { usersTableColumns, usersTableData, rowSelection };
   },
 });
 

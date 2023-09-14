@@ -37,6 +37,21 @@
         <router-link to="/user-management/users"> Users </router-link>
       </a-menu-item>
     </a-sub-menu>
+    <a-sub-menu key="product-management">
+      <template #icon>
+        <unicon name="box"></unicon>
+      </template>
+      <template #title>Product Management</template>
+
+      <a-menu-item @click="toggleCollapsed" key="administrators">
+        <router-link to="/product-management/products">
+          Products
+        </router-link>
+      </a-menu-item>
+      <a-menu-item @click="toggleCollapsed" key="users">
+        <router-link to="/product-management/requests"> Requests </router-link>
+      </a-menu-item>
+    </a-sub-menu>
 
     <a-sub-menu key="settings">
       <template #icon>
@@ -59,9 +74,7 @@
         <router-link to="/page/profile-settings/banners"> Banners </router-link>
       </a-menu-item>
 
-      <!-- <a-menu-item @click="toggleCollapsed" key="set-social">
-        <router-link to="/page/profile-settings/social"> Social </router-link>
-      </a-menu-item> -->
+
       <a-menu-item @click="toggleCollapsed" key="set-notification">
         <router-link to="/page/profile-settings/notification">
           Notification
@@ -118,11 +131,7 @@ export default defineComponent({
         icon: "home",
       },
 
-      {
-        title: "products",
-        url: "/products",
-        icon: "box",
-      },
+
       {
         title: "transactions",
         url: "/transactions",
