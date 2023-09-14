@@ -825,7 +825,7 @@ const ProfileCardWrapper = Styled.figure `
                 background-color: #209AE9;
             }
             &.ninjadash-dribble{
-                background-color: #0A315F;
+                background-color: #8231D3;
             }
             a{
                 line-height: 1;

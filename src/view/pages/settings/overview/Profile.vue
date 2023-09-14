@@ -15,39 +15,27 @@
             @finishFailed="handleFinishFailed"
             layout="vertical"
           >
-            <a-form-Item label="Name">
-              <a-input v-model:value="formState.name" />
+            <a-form-Item label="First Name">
+              <a-input v-model:value="formState.first_name" />
+            </a-form-Item>
+            <a-form-Item label="Last Name">
+              <a-input v-model:value="formState.last_name" />
             </a-form-Item>
             <a-form-item label="Phone Number">
               <a-input v-model:value="formState.phone" />
             </a-form-item>
-            <a-form-item label="Country">
-              <a-select v-model:value="formState.country" style="width: 100%">
+            <a-form-item label="Gender">
+              <a-select v-model:value="formState.gender" style="width: 100%">
                 <a-select-option value="">Please Select</a-select-option>
-                <a-select-option value="bangladesh">Bangladesh</a-select-option>
-                <a-select-option value="india">India</a-select-option>
-                <a-select-option value="pakistan">Pakistan</a-select-option>
+                <a-select-option value="bangladesh">Male</a-select-option>
+                <a-select-option value="india">Female</a-select-option>
               </a-select>
             </a-form-item>
 
-            <a-form-item label="City">
-              <a-select v-model:value="formState.city" style="width: 100%">
-                <a-select-option value="">Please Select</a-select-option>
-                <a-select-option value="dhaka">Dhaka</a-select-option>
-                <a-select-option value="mymensingh">Mymensingh</a-select-option>
-                <a-select-option value="khulna">Khulna</a-select-option>
-              </a-select>
-            </a-form-item>
-            <a-form-item label="Company Name">
-              <a-input v-model:value="formState.company" />
-            </a-form-item>
-            <a-form-item label="Website">
-              <a-input v-model:value="formState.website" />
-            </a-form-item>
-            <a-form-item label="User Bio">
+            <a-form-item label="Bio">
               <a-textarea v-model:value="formState.userBio" :rows="3" />
             </a-form-item>
-            <a-form-item name="skills" label="Skills">
+            <!-- <a-form-item name="skills" label="Skills">
               <TagInput>
                 <div>
                   <template v-for="(tag, index) in tags">
@@ -91,7 +79,7 @@
                   </div>
                 </div>
               </TagInput>
-            </a-form-item>
+            </a-form-item> -->
 
             <div class="setting-form-actions">
               <sdButton size="default" htmlType="submit" type="primary">
@@ -109,23 +97,26 @@
   </sdCards>
 </template>
 <script>
-import { BasicFormWrapper, TagInput } from "../../../styled";
+import {
+  BasicFormWrapper,
+  //  TagInput
+} from "../../../styled";
 import { defineComponent, reactive } from "vue";
 
 const Profile = defineComponent({
   name: "Profile",
-  components: { BasicFormWrapper, TagInput },
+  components: {
+    BasicFormWrapper,
+    // , TagInput
+  },
 
   setup() {
     const formState = reactive({
-      name: "Duran Clayton",
-      phone: "01742920502",
-      country: "",
-      city: "",
-      company: "Example",
-      website: "www.example.com",
-      userBio:
-        "Nam malesuada dolor tellus pretium amet was hendrerit facilisi id vitae enim sed ornare there suspendisse sed orci neque ac sed aliquet risus faucibus in pretium molestee.",
+      first_name: "",
+      last_name: "",
+      phone: "",
+      gender: "",
+      userBio: "",
     });
 
     const handleFinish = (values) => {

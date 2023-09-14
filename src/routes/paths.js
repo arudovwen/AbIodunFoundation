@@ -7,12 +7,7 @@ export const paths = [
         /* webpackChunkName: "dashboard" */ "@/view/pages/DashboardPage.vue"
       ),
   },
-  {
-    name: "users",
-    path: "/users",
-    component: () =>
-      import(/* webpackChunkName: "users" */ "@/view/pages/UsersPage.vue"),
-  },
+
   {
     name: "products",
     path: "/products",
@@ -89,6 +84,39 @@ export const paths = [
         component: () =>
           import(
             /* webpackChunkName: "Notification" */ "@/view/pages/settings/overview/Notification.vue"
+          ),
+      },
+      {
+        path: "profile-settings/banners",
+        name: "set-banners",
+        component: () =>
+          import(
+            /* webpackChunkName: "Banners" */ "@/view/pages/settings/overview/Banner.vue"
+          ),
+      },
+    ],
+  },
+
+  {
+    path: "/user-management",
+    name: "user management",
+    component: () =>
+      import(
+        /* webpackChunkName: "Settings" */ "@/view/pages/UserManagement.vue"
+      ),
+    children: [
+      {
+        name: "users",
+        path: "users",
+        component: () =>
+          import(/* webpackChunkName: "users" */ "@/view/pages/UsersPage.vue"),
+      },
+      {
+        name: "administrators",
+        path: "administrators",
+        component: () =>
+          import(
+            /* webpackChunkName: "admins" */ "@/view/pages/AdminsPage.vue"
           ),
       },
     ],

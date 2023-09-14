@@ -22,13 +22,28 @@
         {{ menu.title }}
       </router-link>
     </a-menu-item>
+    <a-sub-menu key="user-management">
+      <template #icon>
+        <unicon name="users-alt"></unicon>
+      </template>
+      <template #title>User Management</template>
+
+      <a-menu-item @click="toggleCollapsed" key="administrators">
+        <router-link to="/user-management/administrators">
+          Administrators
+        </router-link>
+      </a-menu-item>
+      <a-menu-item @click="toggleCollapsed" key="users">
+        <router-link to="/user-management/users"> Users </router-link>
+      </a-menu-item>
+    </a-sub-menu>
 
     <a-sub-menu key="settings">
       <template #icon>
         <unicon name="setting"></unicon>
       </template>
       <template #title>Settings</template>
-  
+
       <a-menu-item @click="toggleCollapsed" key="set-profile">
         <router-link to="/page/profile-settings/profile"> Profile </router-link>
       </a-menu-item>
@@ -41,7 +56,7 @@
         </router-link>
       </a-menu-item>
       <a-menu-item @click="toggleCollapsed" key="banner-settings">
-        <router-link to="/page/banner-settings"> Banners </router-link>
+        <router-link to="/page/profile-settings/banners"> Banners </router-link>
       </a-menu-item>
 
       <!-- <a-menu-item @click="toggleCollapsed" key="set-social">
@@ -102,11 +117,7 @@ export default defineComponent({
         url: "/dashboard",
         icon: "home",
       },
-      {
-        title: "users",
-        url: "/users",
-        icon: "users-alt",
-      },
+
       {
         title: "products",
         url: "/products",
@@ -115,6 +126,21 @@ export default defineComponent({
       {
         title: "transactions",
         url: "/transactions",
+        icon: "transaction",
+      },
+      {
+        title: "airtime & data",
+        url: "/airtime-and-data",
+        icon: "sim-card",
+      },
+      {
+        title: "transfers",
+        url: "/transfers",
+        icon: "exchange",
+      },
+      {
+        title: "apply for grant",
+        url: "/apply-for-grant",
         icon: "receipt",
       },
     ];

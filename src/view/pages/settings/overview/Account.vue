@@ -20,17 +20,17 @@
                 <a-row type="flex" justify="center">
                   <a-col :xxl="10" :lg="16" :md="18" :xs="24">
                     <div class="account-form">
-                      <a-form-item label="Username">
+                      <!-- <a-form-item label="Username">
                         <a-input
                           v-model:value="formState.username"
                           @change="handleChange"
                         />
-                      </a-form-item>
-                      <p>
-                        Your Dashboard URL: http://dashboard.com/<span>{{
+                      </a-form-item> -->
+                      <!-- <p>
+                         Dashboard URL: http://dashboard.com/<span>{{
                           name
                         }}</span>
-                      </p>
+                      </p> -->
                       <a-form-item label="Email">
                         <a-input v-model:value="formState.email" />
                       </a-form-item>

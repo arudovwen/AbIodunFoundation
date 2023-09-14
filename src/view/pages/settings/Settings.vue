@@ -11,7 +11,7 @@
         </a-col>
         <a-col :xxl="18" :lg="16" :md="14" :xs="24">
           <SettingWrapper>
-            <CoverSection />
+            <!-- <CoverSection /> -->
             <Suspense>
               <template #default>
                 <router-view></router-view>
@@ -32,7 +32,7 @@
 <script>
 import { Main } from "../../styled";
 import { SettingWrapper } from "./overview/style";
-import CoverSection from "./overview/CoverSection";
+// import CoverSection from "./overview/CoverSection";
 import AuthorBox from "./overview/ProfileAuthorBox";
 import { ProfileAuthorBox } from "./overview/style";
 import { defineComponent } from "vue";
@@ -43,7 +43,7 @@ export default defineComponent({
     Main,
     SettingWrapper,
     AuthorBox,
-    CoverSection,
+    // CoverSection,
     ProfileAuthorBox,
   },
   data() {

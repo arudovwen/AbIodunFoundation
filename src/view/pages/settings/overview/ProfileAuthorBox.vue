@@ -36,12 +36,12 @@
             Change Password
           </router-link>
         </li>
-        <li>
+        <!-- <li>
           <router-link :to="{ name: 'set-social' }">
             <unicon name="users-alt" width="14"></unicon>
             Social Profile
           </router-link>
-        </li>
+        </li> -->
         <li>
           <router-link :to="{ name: 'set-notification' }">
             <unicon name="list-ul" width="14"></unicon> Notification

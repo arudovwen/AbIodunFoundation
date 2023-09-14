@@ -1,35 +1,110 @@
 <template>
   <div>
-    <sdPageHeader title="Dashboard" class="ninjadash-page-header-main"  :routes="breadcrumbs">
-    </sdPageHeader>
+    <sdPageHeader
+      title="Overview"
+      class="ninjadash-page-header-main"
+      :routes="pageRoutes"
+    ></sdPageHeader>
     <Main>
-      <div class="bg-white/10 rounded-lg flex flex-col gap-y-6">
-        <Banner />
-        <Stats />
-        <div class="flex flex-col lg:flex-row gap-y-6 lg:gap-y-0 gap-x-6">
-          <Chart />
-          <Transactions />
-        </div>
-      </div>
+      <a-row :gutter="25">
+        <a-col class="w-full" :xxl="24"><OverviewDataList /></a-col>
+        <a-col :xxl="12" :xl="12" :xs="24">
+          <Suspense>
+            <template #default>
+              <SaleRevenue />
+            </template>
+            <template #fallback>
+              <sdCards headless>
+                <a-skeleton active />
+              </sdCards>
+            </template>
+          </Suspense>
+        </a-col>
+        <a-col :xxl="12" :xl="12" :xs="24">
+          <Suspense>
+            <template #default>
+              <SourceRevenueGenerated />
+            </template>
+            <template #fallback>
+              <sdCards headless>
+                <a-skeleton active />
+              </sdCards>
+            </template>
+          </Suspense>
+        </a-col>
+        <a-col :xxl="8" :xl="24" :xs="24">
+          <Suspense>
+            <template #default>
+              <NewProduct />
+            </template>
+            <template #fallback>
+              <sdCards headless>
+                <a-skeleton active />
+              </sdCards>
+            </template>
+          </Suspense>
+        </a-col>
+        <a-col :xxl="16" :xl="24" :xs="24">
+          <Suspense>
+            <template #default>
+              <BestSeller />
+            </template>
+            <template #fallback>
+              <sdCards headless>
+                <a-skeleton active />
+              </sdCards>
+            </template>
+          </Suspense>
+        </a-col>
+      </a-row>
     </Main>
   </div>
 </template>
 
-<script setup>
+<script>
 import { Main } from "../styled";
-import Banner from "components/pageComponents/dashboard/Banner";
-import Stats from "components/pageComponents/dashboard/Stats";
-import Chart from "components/pageComponents/dashboard/Chart";
-import Transactions from "components/pageComponents/dashboard/Transactions";
+import cardData from "../../demoData/overviewCard.json";
+import { defineComponent, defineAsyncComponent } from "vue";
 
-const breadcrumbs = [
+const OverviewDataList = defineAsyncComponent(() =>
+  import("components/dashboard/OverviewDataList.vue")
+);
+const SaleRevenue = defineAsyncComponent(() =>
+  import("components/dashboard/SaleRevenue.vue")
+);
+const SourceRevenueGenerated = defineAsyncComponent(() =>
+  import("components/dashboard/SourceRevenueGenerated.vue")
+);
+const BestSeller = defineAsyncComponent(() =>
+  import("components/dashboard/BestSeller.vue")
+);
+const NewProduct = defineAsyncComponent(() =>
+  import("components/dashboard/NewProduct.vue")
+);
+
+const pageRoutes = [
   {
-    path: "index",
+    path: "/",
     breadcrumbName: "Dashboard",
   },
   {
-    path: "overview",
+    path: "#",
     breadcrumbName: "Overview",
   },
 ];
+
+export default defineComponent({
+  name: "DemoTwo",
+  components: {
+    Main,
+    OverviewDataList,
+    SaleRevenue,
+    SourceRevenueGenerated,
+    BestSeller,
+    NewProduct
+  },
+  setup() {
+    return { cardData, pageRoutes };
+  },
+});
 </script>
