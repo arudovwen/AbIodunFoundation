@@ -50,7 +50,7 @@ import { useStore } from "vuex";
 import users from "@/demoData/usersData.json";
 import { computed, defineComponent, ref } from "vue";
 import { adminTableHeader } from "@/utility/constant";
-import AddUser from "components/pageComponents/admin/AddUsers";
+import AddUser from "components/pageComponents/admins/AddUsers";
 
 const UserListTable = defineComponent({
   name: "UserListTable",

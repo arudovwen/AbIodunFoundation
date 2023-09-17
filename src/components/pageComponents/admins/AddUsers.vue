@@ -1,125 +1,86 @@
 <template>
-  <a-row justify="center">
-    <a-col :xxl="6" :xl="12" :md="12" :sm="18">
-      <AuthWrapper>
-        <div class="ninjadash-authentication-top">
-          <h2 class="ninjadash-authentication-top__title">
-            Sign Up Biodun & Ibikunle Foundation
-          </h2>
-        </div>
-        <div class="ninjadash-authentication-content">
-          <a-form
-            name="register"
-            :model="formState"
-            @finish="handleSubmit"
-            layout="vertical"
+ 
+  <div>
+    <h1 class="mb-7 text-base font-bold text-center">Register Administrator</h1>
+    <div class="ninjadash-authentication-content">
+      <a-form
+        name="register"
+        :model="formState"
+        @finish="handleSubmit"
+        layout="vertical"
+      >
+        <a-form-item
+          label="First Name"
+          name="first_name"
+          :rules="[
+            { required: true, message: 'Please input your First name!' },
+          ]"
+        >
+          <a-input v-model:value="formState.name" placeholder="First name" />
+        </a-form-item>
+        <a-form-item
+          label="Last Name"
+          name="last_name"
+          :rules="[{ required: true, message: 'Please input your Last name!' }]"
+        >
+          <a-input v-model:value="formState.name" placeholder="Last name" />
+        </a-form-item>
+        <a-form-item
+          name="email"
+          label="Email Address"
+          :rules="[
+            {
+              required: true,
+              message: 'Please input your email!',
+              type: 'email',
+            },
+          ]"
+        >
+          <a-input
+            type="email"
+            v-model:value="formState.email"
+            placeholder="name@example.com"
+          />
+        </a-form-item>
+
+        <a-form-item
+          label="Phone Number"
+          name="phone"
+          :rules="[
+            {
+              required: true,
+              message: 'Please input your phone number!',
+            },
+            {
+              validator: validatePhoneNumber,
+              message: 'Please enter a valid 11-digit phone number.',
+            },
+          ]"
+        >
+          <a-input v-model:value="formState.phone" placeholder="Phone number" />
+        </a-form-item>
+
+        <a-form-item>
+          <sdButton
+            class="btn-create"
+            htmlType="submit"
+            type="primary"
+            size="lg"
           >
-            <a-form-item
-              label="First Name"
-              name="first_name"
-              :rules="[
-                { required: true, message: 'Please input your First name!' },
-              ]"
-            >
-              <a-input
-                v-model:value="formState.name"
-                placeholder="First name"
-              />
-            </a-form-item>
-            <a-form-item
-              label="Last Name"
-              name="last_name"
-              :rules="[
-                { required: true, message: 'Please input your Last name!' },
-              ]"
-            >
-              <a-input v-model:value="formState.name" placeholder="Last name" />
-            </a-form-item>
-            <a-form-item
-              name="email"
-              label="Email Address"
-              :rules="[
-                {
-                  required: true,
-                  message: 'Please input your email!',
-                  type: 'email',
-                },
-              ]"
-            >
-              <a-input
-                type="email"
-                v-model:value="formState.email"
-                placeholder="name@example.com"
-              />
-            </a-form-item>
-
-            <a-form-item
-              name="gender"
-              label="Gender"
-              :rules="[
-                { required: true, message: 'Please select your gender!' },
-              ]"
-            >
-              <a-select size="large" v-model:value="formState.gender">
-                <a-select-option value="">Please Select</a-select-option>
-                <a-select-option value="male">Male</a-select-option>
-                <a-select-option value="female">Female</a-select-option>
-              </a-select>
-            </a-form-item>
-            <a-form-item
-              label="Phone Number"
-              name="phone"
-              :rules="[
-                {
-                  required: true,
-                  message: 'Please input your phone number!',
-                },
-                {
-                  validator: validatePhoneNumber,
-                  message: 'Please enter a valid 11-digit phone number.',
-                },
-              ]"
-            >
-              <a-input
-                v-model:value="formState.phone"
-                placeholder="Phone number"
-              />
-            </a-form-item>
-
-        
-            <a-form-item>
-              <sdButton
-                class="btn-create"
-                htmlType="submit"
-                type="primary"
-                size="lg"
-              >
-                Create Account
-              </sdButton>
-            </a-form-item>
-           
-          </a-form>
-        </div>
-        <div class="ninjadash-authentication-bottom">
-          <p>
-            Already have an account?<router-link to="/auth/login"
-              >Sign In</router-link
-            >
-          </p>
-        </div>
-      </AuthWrapper>
-    </a-col>
-  </a-row>
+            Create Account
+          </sdButton>
+        </a-form-item>
+      </a-form>
+    </div>
+  </div>
 </template>
 <script>
-import { AuthWrapper } from "./style";
 import { reactive, ref, defineComponent } from "vue";
 // import InlineSvg from "vue-inline-svg";
 
 const SignUp = defineComponent({
   name: "SignUp",
   components: {
-    AuthWrapper,
     // ,  InlineSvg
   },
   setup() {
