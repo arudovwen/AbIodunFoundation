@@ -1,34 +1,10 @@
 <template>
-  <div class="flex justify-between items-center py-6">
-    <div>
-      <span class="title-counter">274 Administrators</span>
-      <sdAutoComplete
-        :dataSource="searchData"
-        width="100%"
-        placeholder="Search by Name"
-        patterns
-      />
-    </div>
-
-    <div>
-      <sdButton
-        @click="visible = true"
-        class="btn-add_new"
-        size="default"
-        key="1"
-        type="primary"
-      >
-        <unicon name="plus" width="14"></unicon> Add New Administrator
-      </sdButton>
-    </div>
-  </div>
-
   <UserTableStyleWrapper>
     <TableWrapper class="table-responsive">
       <a-table
         :rowSelection="rowSelection"
         :dataSource="usersTableData"
-        :columns="adminTableHeader"
+        :columns="userProductTableHeader"
         :pagination="{
           defaultPageSize: 5,
           total: usersTableData.length,
@@ -38,23 +14,19 @@
       />
     </TableWrapper>
   </UserTableStyleWrapper>
-  <Modal :open="visible" @close="visible = false">
-    <AddUser />
-  </Modal>
 </template>
 <script>
-import Modal from "components/Modal";
 import { UserTableStyleWrapper } from "../style";
 import { TableWrapper } from "../../../styled";
-import { useStore } from "vuex";
 import users from "@/demoData/usersData.json";
-import { computed, defineComponent, ref } from "vue";
-import { adminTableHeader } from "@/utility/constant";
-import AddUser from "components/pageComponents/admin/AddUsers";
+import { computed, defineComponent } from "vue";
+import { userProductTableHeader } from "@/utility/constant";
+
+
 
 const UserListTable = defineComponent({
   name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper, AddUser, Modal },
+  components: { UserTableStyleWrapper, TableWrapper },
   setup() {
     const usersTableData = computed(() =>
       users.map((user) => {
@@ -102,9 +74,7 @@ const UserListTable = defineComponent({
         };
       })
     );
-    const visible = ref(false);
-    const { state } = useStore();
-    const searchData = computed(() => state.headerSearchData.data);
+
     const rowSelection = {
       getCheckboxProps: (record) => ({
         disabled: record.name === "Disabled User", // Column configuration not to be checked
@@ -112,13 +82,7 @@ const UserListTable = defineComponent({
       }),
     };
 
-    return {
-      visible,
-      adminTableHeader,
-      usersTableData,
-      rowSelection,
-      searchData,
-    };
+    return { userProductTableHeader, usersTableData, rowSelection };
   },
 });
 

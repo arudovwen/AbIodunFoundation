@@ -43,12 +43,17 @@
       </template>
       <template #title>Product Management</template>
 
-      <a-menu-item @click="toggleCollapsed" key="administrators">
+      <a-menu-item @click="toggleCollapsed" key="products">
         <router-link to="/product-management/products">
           Products
         </router-link>
       </a-menu-item>
-      <a-menu-item @click="toggleCollapsed" key="users">
+      <a-menu-item @click="toggleCollapsed" key="add product">
+        <router-link to="/product-management/add-product">
+         Add Product
+        </router-link>
+      </a-menu-item>
+      <a-menu-item @click="toggleCollapsed" key="requests">
         <router-link to="/product-management/requests"> Requests </router-link>
       </a-menu-item>
     </a-sub-menu>
@@ -130,7 +135,11 @@ export default defineComponent({
         url: "/dashboard",
         icon: "home",
       },
-
+      {
+        title: "user products",
+        url: "/products",
+        icon: "archive",
+      },
 
       {
         title: "transactions",

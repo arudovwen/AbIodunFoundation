@@ -1635,7 +1635,7 @@ const BasicFormWrapper = Styled.div`
             label{
                 font-weight: 500;
                 display: block;
-                margin-bottom: 15px;
+                margin-bottom: 0px;
                 color: ${({ theme }) => theme[theme.mainContent]['gray-text']};
             }
             .ant-cascader-picker{

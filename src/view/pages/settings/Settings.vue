@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sdPageHeader title="Profile Settings" class="ninjadash-page-header-main">
+    <sdPageHeader title="Settings" class="ninjadash-page-header-main">
     </sdPageHeader>
     <Main>
       <a-row :gutter="25">

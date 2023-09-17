@@ -13,7 +13,7 @@
   
   <script setup>
 //   import { Main } from "../../../styled";
-  import Banners from "components/pageComponents/banners/overview/UserTable";
+  import Banners from "components/pageComponents/banners/overview/BannerTable";
 
   </script>
   

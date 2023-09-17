@@ -7,6 +7,7 @@
     ></sdPageHeader>
     <Main>
       <a-row :gutter="25">
+        <a-col class="w-full" :xxl="24"><Banner /></a-col>
         <a-col class="w-full" :xxl="24"><OverviewDataList /></a-col>
         <a-col :xxl="12" :xl="12" :xs="24">
           <Suspense>
@@ -66,6 +67,10 @@ import { Main } from "../styled";
 import cardData from "../../demoData/overviewCard.json";
 import { defineComponent, defineAsyncComponent } from "vue";
 
+const Banner = defineAsyncComponent(() =>
+  import("components/banners/Banners.vue")
+);
+
 const OverviewDataList = defineAsyncComponent(() =>
   import("components/dashboard/OverviewDataList.vue")
 );
@@ -101,7 +106,8 @@ export default defineComponent({
     SaleRevenue,
     SourceRevenueGenerated,
     BestSeller,
-    NewProduct
+    NewProduct,
+    Banner,
   },
   setup() {
     return { cardData, pageRoutes };

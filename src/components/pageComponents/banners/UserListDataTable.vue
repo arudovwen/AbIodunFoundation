@@ -11,7 +11,7 @@
   </Main>
 </template>
 <script>
-import UserListTable from "./overview/UserTable";
+import UserListTable from "./overview/BannerTable";
 import { computed, ref, defineComponent } from "vue";
 import { useStore } from "vuex";
 import { Main } from "../../styled";

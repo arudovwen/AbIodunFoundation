@@ -60,11 +60,8 @@
                 { required: true, message: 'Please select your gender!' },
               ]"
             >
-              <a-select
-                class="h-[49px] leading-[47px]"
-                v-model:value="formState.gender"
-              >
-              <a-select-option value="">Please Select</a-select-option>
+              <a-select size="large" v-model:value="formState.gender">
+                <a-select-option value="">Please Select</a-select-option>
                 <a-select-option value="male">Male</a-select-option>
                 <a-select-option value="female">Female</a-select-option>
               </a-select>

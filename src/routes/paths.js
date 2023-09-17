@@ -7,8 +7,20 @@ export const paths = [
         /* webpackChunkName: "dashboard" */ "@/view/pages/DashboardPage.vue"
       ),
   },
-
-
+  {
+    name: "user products",
+    path: "/products",
+    component: () =>
+    import(
+      /* webpackChunkName: "userproducts" */ "@/view/pages/UserProducts.vue"
+    ),
+  },
+  {
+    name: "product",
+    path: "/product/:id",
+    component: () =>
+      import(/* webpackChunkName: "product detail" */ "@/view/pages/ProductPage.vue"),
+  },
   {
     name: "transactions",
     path: "/transactions",
@@ -151,9 +163,21 @@ export const paths = [
       },
       {
         name: "product",
-        path: "/product/:id",
+        path: "product/:id",
         component: () =>
           import(/* webpackChunkName: "product" */ "@/view/pages/ProductPage.vue"),
+      },
+      {
+        name: "add product",
+        path: "add-product",
+        component: () =>
+          import(/* webpackChunkName: "addproduct" */ "@/view/pages/AddProductPage.vue"),
+      },
+      {
+        name: "edit product",
+        path: "edit-product/:id",
+        component: () =>
+          import(/* webpackChunkName: "editproduct" */ "@/view/pages/EditProductPage.vue"),
       },
       {
         name: "requests",

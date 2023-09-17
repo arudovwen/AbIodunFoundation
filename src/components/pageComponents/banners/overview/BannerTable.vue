@@ -1,34 +1,40 @@
 <template>
   <div class="flex justify-between items-center py-6">
     <div>
-     <div class="flex gap-x-2">
-      <span class="title-counter">8 Banners</span>
-      <span class="border-l border h-6"/>
-      <span class="title-counter text-green-600">4 Active</span>
-      <span class="border-l border h-6"/>
-      <span class="title-counter text-yellow-600">4 Inactive</span>
-     </div>
-      <sdAutoComplete
+      <div class="flex gap-x-2">
+        <span class="title-counter">8 Banners</span>
+        <span class="border-l border h-6" />
+        <span class="title-counter text-green-600">4 Active</span>
+        <span class="border-l border h-6" />
+        <span class="title-counter text-yellow-600">4 Inactive</span>
+      </div>
+      <!-- <sdAutoComplete
         :dataSource="searchData"
         width="100%"
         placeholder="Search by Name"
         patterns
-      />
+      /> -->
     </div>
 
     <div>
-      <sdButton class="btn-add_new" size="default" key="1" type="primary">
+      <sdButton
+        @click="visible = true"
+        class="btn-add_new"
+        size="default"
+        key="1"
+        type="primary"
+      >
         <unicon name="plus" width="14"></unicon> Add banner
       </sdButton>
     </div>
   </div>
-
+  {{ visible ? "true" : "false" }}
   <UserTableStyleWrapper>
     <TableWrapper class="table-responsive">
       <a-table
         :rowSelection="rowSelection"
         :dataSource="usersTableData"
-        :columns="usersTableColumns"
+        :columns="bannerTableHeader"
         :pagination="{
           defaultPageSize: 5,
           total: usersTableData.length,
@@ -38,59 +44,31 @@
       />
     </TableWrapper>
   </UserTableStyleWrapper>
+  <Modal :open="visible" @close="visible = false">
+    <AddBanner />
+  </Modal>
 </template>
 <script>
+import Modal from "components/Modal";
 import { UserTableStyleWrapper } from "../style";
 import { TableWrapper } from "../../../styled";
 import { useStore } from "vuex";
 import users from "@/demoData/usersData.json";
-import { computed, defineComponent } from "vue";
-const usersTableColumns = [
-  {
-    title: "User",
-    dataIndex: "user",
-    key: "user",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-  },
-  {
-    title: "Company",
-    dataIndex: "company",
-    key: "company",
-  },
-  {
-    title: "Position",
-    dataIndex: "position",
-    key: "position",
-  },
-  {
-    title: "Join Date",
-    dataIndex: "joinDate",
-    key: "joinDate",
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-  },
-  {
-    title: "Actions",
-    dataIndex: "action",
-    key: "action",
-    width: "90px",
-  },
-];
+import { computed, defineComponent, ref } from "vue";
+import { bannerTableHeader } from "@/utility/constant";
+import AddBanner from "components/pageComponents/banners/AddBanner";
+
 const UserListTable = defineComponent({
   name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper },
+  components: { UserTableStyleWrapper, TableWrapper, AddBanner, Modal },
   setup() {
+    const visible = ref(false);
+    function handleCancel() {
+      visible.value = false;
+    }
     const usersTableData = computed(() =>
       users.map((user) => {
         const { id, name, designation, img, status } = user;
-
         return {
           key: id,
           user: (
@@ -142,7 +120,15 @@ const UserListTable = defineComponent({
       }),
     };
 
-    return { usersTableColumns, usersTableData, rowSelection,searchData };
+    return {
+      handleCancel,
+      visible,
+      bannerTableHeader,
+      usersTableData,
+      rowSelection,
+      searchData,
+      Modal,
+    };
   },
 });
 

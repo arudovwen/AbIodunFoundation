@@ -4,7 +4,7 @@
       <a-table
         :rowSelection="rowSelection"
         :dataSource="usersTableData"
-        :columns="usersTableColumns"
+        :columns="requestTableHeader"
         :pagination="{
           defaultPageSize: 5,
           total: usersTableData.length,
@@ -20,44 +20,9 @@ import { UserTableStyleWrapper } from "../style";
 import { TableWrapper } from "../../../styled";
 import users from "@/demoData/usersData.json";
 import { computed, defineComponent } from "vue";
-const usersTableColumns = [
-  {
-    title: "User",
-    dataIndex: "user",
-    key: "user",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-  },
-  {
-    title: "Company",
-    dataIndex: "company",
-    key: "company",
-  },
-  {
-    title: "Position",
-    dataIndex: "position",
-    key: "position",
-  },
-  {
-    title: "Join Date",
-    dataIndex: "joinDate",
-    key: "joinDate",
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-  },
-  {
-    title: "Actions",
-    dataIndex: "action",
-    key: "action",
-    width: "90px",
-  },
-];
+import { requestTableHeader } from "@/utility/constant";
+
+
 const UserListTable = defineComponent({
   name: "UserListTable",
   components: { UserTableStyleWrapper, TableWrapper },
@@ -116,7 +81,7 @@ const UserListTable = defineComponent({
       }),
     };
 
-    return { usersTableColumns, usersTableData, rowSelection };
+    return { requestTableHeader, usersTableData, rowSelection };
   },
 });
 

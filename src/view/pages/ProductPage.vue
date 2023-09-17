@@ -1,6 +1,6 @@
 <template>
     <div>
-      <sdPageHeader title="Product Page" class="ninjadash-page-header-main">
+      <sdPageHeader title="Product Detail" class="ninjadash-page-header-main"   :routes="breadcrumbs">
   
       </sdPageHeader>
       <Main>
@@ -15,15 +15,18 @@
     </div>
   </template>
   
-  <script>
+  <script setup>
   import { Main } from "../styled";
-  import { defineComponent } from "vue";
-  
-  export default defineComponent({
-    name: "ProductPage",
-    components: {
-      Main,
-    },
-  });
+
+  const breadcrumbs = [
+  {
+    path: "/dashboard",
+    breadcrumbName: "Dashboard",
+  },
+  {
+    path: "#",
+    breadcrumbName: "Product detail",
+  },
+];
   </script>
   
