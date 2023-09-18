@@ -12,17 +12,27 @@
         <div class="ninjadash-header-content d-flex">
           <div class="ninjadash-header-content__left">
             <div class="navbar-brand align-cener-v">
-             <div> <router-link
-                :class="
-                  topMenu && innerWidth > 991
-                    ? 'ninjadash-logo top-menu'
-                    : 'ninjadash-logo'
-                "
-                to="/"
-              >
-              <img :src="require(`../static/img/logo-icon.png`)" class="mx-auto !w-[24px] !h-auto md:hidden" alt="logo" />
-               <img :src="require(`../static/img/logo.png`)" class="mx-auto !w-[150px] !h-auto hidden md:inline-flex " alt="logo" />
-              </router-link></div>
+              <div>
+                <router-link
+                  :class="
+                    topMenu && innerWidth > 991
+                      ? 'ninjadash-logo top-menu'
+                      : 'ninjadash-logo'
+                  "
+                  to="/"
+                >
+                  <img
+                    :src="require(`../static/img/logo-icon.png`)"
+                    class="mx-auto !w-[24px] !h-auto md:hidden"
+                    alt="logo"
+                  />
+                  <img
+                    :src="require(`../static/img/logo.png`)"
+                    class="mx-auto !w-[150px] !h-auto hidden md:inline-flex"
+                    alt="logo"
+                  />
+                </router-link>
+              </div>
               <sdButton
                 v-if="!topMenu || innerWidth <= 991"
                 @click="toggleCollapsed"
@@ -160,7 +170,7 @@
               <a-row>
                 <a-col :md="12" :xs="24">
                   <span class="admin-footer__copyright"
-                    >{{new Date().getFullYear()}} ©
+                    >{{ new Date().getFullYear() }} ©
                     <a href="/" style="">Biodun & Ibikunle Foundation</a>
                   </span>
                 </a-col>
