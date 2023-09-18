@@ -27,25 +27,14 @@
       <template #icon>
         <unicon name="receipt"></unicon>
       </template>
-      <a target="_blank" href="https://biodunandibikunle.org/application-form/" class="capitalize">
+      <a
+        target="_blank"
+        href="https://biodunandibikunle.org/application-form/"
+        class="capitalize"
+      >
         Apply for grant
       </a>
     </a-menu-item>
-
-    <a-sub-menu key="product-management">
-      <template #icon>
-        <unicon name="box"></unicon>
-      </template>
-      <template #title>Product Management</template>
-
-      <a-menu-item @click="toggleCollapsed" key="products">
-        <router-link to="/product-management/products"> Products </router-link>
-      </a-menu-item>
-
-      <a-menu-item @click="toggleCollapsed" key="requests">
-        <router-link to="/product-management/requests"> Requests </router-link>
-      </a-menu-item>
-    </a-sub-menu>
 
     <a-sub-menu key="settings">
       <template #icon>
@@ -113,45 +102,51 @@ export default defineComponent({
         title: "dashboard",
         url: "/dashboard",
         icon: "home",
-        disable: false
+        disable: false,
       },
       {
         title: "services",
         url: "/services",
         icon: "archive",
-        disable: false
+        disable: false,
       },
 
       {
         title: "transactions",
         url: "/transactions",
         icon: "transaction",
-        disable: false
+        disable: false,
       },
       {
         title: "airtime & data",
         url: "/airtime-and-data",
         icon: "sim-card",
-        disable: true
+        disable: true,
       },
       {
         title: "transfers",
         url: "/transfers",
         icon: "exchange",
-        disable: true
+        disable: true,
       },
-     
+
       {
         title: "user management",
         url: "/user-management",
         icon: "users-alt",
-        disable: false
+        disable: false,
+      },
+      {
+        title: "Product Management",
+        url: "/product-management",
+        icon: "box",
+        disable: false,
       },
       {
         title: "banner management",
         url: "/banner-management",
         icon: "browser",
-        disable: false
+        disable: false,
       },
     ];
     const state = reactive({

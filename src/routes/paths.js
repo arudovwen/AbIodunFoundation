@@ -121,7 +121,7 @@ export const paths = [
     children: [
       {
         name: "products",
-        path: "products",
+        path: "",
         component: () =>
           import(
             /* webpackChunkName: "products" */ "@/view/pages/ProductsPage.vue"

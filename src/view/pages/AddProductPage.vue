@@ -28,8 +28,8 @@ const breadcrumbs = [
     breadcrumbName: "Dashboard",
   },
   {
-    path: "/page-management/products",
-    breadcrumbName: "Products",
+    path: "/product-management",
+    breadcrumbName: "Product management",
   },
   {
     path: "#",

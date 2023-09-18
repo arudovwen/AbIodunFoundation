@@ -17,18 +17,18 @@
             <sdButton
              
               class="btn-add_new"
-              size="default"
+              size="small"
               key="1"
               type="primary"
             >
-              <unicon name="plus" width="14"></unicon> Add product
+            <unicon name="plus" width="14"></unicon>  Add product
             </sdButton>
           </router-link>
           <router-link to="/product-management/requests">
             <sdButton
              
               class="btn-add_new"
-              size="default"
+              size="small"
               key="1"
               type="primary"
             >

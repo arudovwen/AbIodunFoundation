@@ -18,7 +18,7 @@
       <sdButton
         @click="visible = true"
         class="btn-add_new"
-        size="default"
+        size="small"
         key="1"
         type="primary"
       >
