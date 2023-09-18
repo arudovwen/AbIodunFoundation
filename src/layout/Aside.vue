@@ -14,6 +14,7 @@
       v-for="menu in menus"
       @click="toggleCollapsed"
       :key="menu.title"
+      :disabled="menu.disable"
     >
       <template #icon>
         <unicon :name="menu.icon"></unicon>
@@ -22,21 +23,15 @@
         {{ menu.title }}
       </router-link>
     </a-menu-item>
-    <a-sub-menu key="user-management">
+    <a-menu-item>
       <template #icon>
-        <unicon name="users-alt"></unicon>
+        <unicon name="receipt"></unicon>
       </template>
-      <template #title>User Management</template>
+      <a target="_blank" href="https://biodunandibikunle.org/application-form/" class="capitalize">
+        Apply for grant
+      </a>
+    </a-menu-item>
 
-      <a-menu-item @click="toggleCollapsed" key="administrators">
-        <router-link to="/user-management/administrators">
-          Administrators
-        </router-link>
-      </a-menu-item>
-      <a-menu-item @click="toggleCollapsed" key="users">
-        <router-link to="/user-management/users"> Users </router-link>
-      </a-menu-item>
-    </a-sub-menu>
     <a-sub-menu key="product-management">
       <template #icon>
         <unicon name="box"></unicon>
@@ -44,15 +39,9 @@
       <template #title>Product Management</template>
 
       <a-menu-item @click="toggleCollapsed" key="products">
-        <router-link to="/product-management/products">
-          Products
-        </router-link>
+        <router-link to="/product-management/products"> Products </router-link>
       </a-menu-item>
-      <a-menu-item @click="toggleCollapsed" key="add product">
-        <router-link to="/product-management/add-product">
-         Add Product
-        </router-link>
-      </a-menu-item>
+
       <a-menu-item @click="toggleCollapsed" key="requests">
         <router-link to="/product-management/requests"> Requests </router-link>
       </a-menu-item>
@@ -73,16 +62,6 @@
       <a-menu-item @click="toggleCollapsed" key="set-password">
         <router-link to="/page/profile-settings/password">
           Password
-        </router-link>
-      </a-menu-item>
-      <a-menu-item @click="toggleCollapsed" key="set-banners">
-        <router-link to="/page/profile-settings/banners"> Banners </router-link>
-      </a-menu-item>
-
-
-      <a-menu-item @click="toggleCollapsed" key="set-notification">
-        <router-link to="/page/profile-settings/notification">
-          Notification
         </router-link>
       </a-menu-item>
     </a-sub-menu>
@@ -134,32 +113,45 @@ export default defineComponent({
         title: "dashboard",
         url: "/dashboard",
         icon: "home",
+        disable: false
       },
       {
-        title: "user products",
-        url: "/products",
+        title: "services",
+        url: "/services",
         icon: "archive",
+        disable: false
       },
 
       {
         title: "transactions",
         url: "/transactions",
         icon: "transaction",
+        disable: false
       },
       {
         title: "airtime & data",
         url: "/airtime-and-data",
         icon: "sim-card",
+        disable: true
       },
       {
         title: "transfers",
         url: "/transfers",
         icon: "exchange",
+        disable: true
+      },
+     
+      {
+        title: "user management",
+        url: "/user-management",
+        icon: "users-alt",
+        disable: false
       },
       {
-        title: "apply for grant",
-        url: "/apply-for-grant",
-        icon: "receipt",
+        title: "banner management",
+        url: "/banner-management",
+        icon: "browser",
+        disable: false
       },
     ];
     const state = reactive({

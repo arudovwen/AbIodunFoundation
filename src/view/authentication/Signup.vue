@@ -1,6 +1,6 @@
 <template>
   <a-row justify="center">
-    <a-col :xxl="6" :xl="12" :md="12" :sm="18">
+    <a-col :xxl="6" :xl="8" :md="12" :sm="18">
       <AuthWrapper>
         <div class="ninjadash-authentication-top">
           <h2 class="ninjadash-authentication-top__title">
@@ -162,6 +162,7 @@
 </template>
 <script>
 import { AuthWrapper } from "./style";
+import {useRouter} from "vue-router"
 import { reactive, ref, defineComponent } from "vue";
 // import InlineSvg from "vue-inline-svg";
 
@@ -172,10 +173,12 @@ const SignUp = defineComponent({
     // ,  InlineSvg
   },
   setup() {
+    const router = useRouter()
     const values = ref(null);
     const checked = ref(null);
     const handleSubmit = (value) => {
       values.value = value;
+      router.push("/auth/validate-email")
     };
 
     const onChange = (check) => {

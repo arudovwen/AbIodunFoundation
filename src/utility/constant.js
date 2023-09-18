@@ -217,12 +217,7 @@ export const transactionTableHeader = [
     title: "Description",
     dataIndex: "description",
     key: "description",
-  }, {
-    title: "Actions",
-    dataIndex: "action",
-    key: "action",
-    width: "90px",
-  },
+  }
 ];
 
 export const requestTableHeader = [

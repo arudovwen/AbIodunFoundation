@@ -1,7 +1,7 @@
 <template>
   <div>
     <sdPageHeader
-      title="Request Product"
+      title="Request service"
       class="ninjadash-page-header-main"
       :routes="breadcrumbs"
     >
@@ -295,12 +295,12 @@ const breadcrumbs = [
     breadcrumbName: "Dashboard",
   },
   {
-    path: "/products",
-    breadcrumbName: "Products",
+    path: "/services",
+    breadcrumbName: "Services",
   },
   {
     path: "#",
-    breadcrumbName: "Request product",
+    breadcrumbName: "Request service",
   },
 ];
 const handleChange = (info) => {

@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-between items-center py-6">
-    <div>
+    <div class="flex gap-x-4 items-center flex-1">
       <div class="flex gap-x-2">
         <span class="title-counter">8 Banners</span>
         <span class="border-l border h-6" />
@@ -8,12 +8,10 @@
         <span class="border-l border h-6" />
         <span class="title-counter text-yellow-600">4 Inactive</span>
       </div>
-      <!-- <sdAutoComplete
-        :dataSource="searchData"
-        width="100%"
-        placeholder="Search by Name"
-        patterns
-      /> -->
+      <input
+        class="max-w-[300px] w-full border bordergray-300 rounded-lg px-3 py-2"
+        placeholder="Search by title"
+      />
     </div>
 
     <div>

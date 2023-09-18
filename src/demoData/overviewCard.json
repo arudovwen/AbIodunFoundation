@@ -15,7 +15,7 @@
     {
         "id": "2",
         "type": "secondary",
-        "icon": "achometer-fast-alt",
+        "icon": "tachometer-fast-alt",
         "total": "30825",
         "suffix": "",
         "prefix": "$",

@@ -8,18 +8,20 @@ export const paths = [
       ),
   },
   {
-    name: "user products",
-    path: "/products",
+    name: "services",
+    path: "/services",
     component: () =>
-    import(
-      /* webpackChunkName: "userproducts" */ "@/view/pages/UserProducts.vue"
-    ),
+      import(
+        /* webpackChunkName: "userproducts" */ "@/view/pages/UserProducts.vue"
+      ),
   },
   {
     name: "product",
     path: "/product/:id",
     component: () =>
-      import(/* webpackChunkName: "product detail" */ "@/view/pages/ProductPage.vue"),
+      import(
+        /* webpackChunkName: "product detail" */ "@/view/pages/ProductPage.vue"
+      ),
   },
   {
     name: "transactions",
@@ -29,18 +31,22 @@ export const paths = [
         /* webpackChunkName: "transactions" */ "@/view/pages/TransactionsPage.vue"
       ),
   },
- 
+
   {
     name: "airtime & data",
     path: "/airtime-and-data",
     component: () =>
-      import(/* webpackChunkName: "airtime-and-data" */ "@/view/pages/AirtimeAndData.vue"),
+      import(
+        /* webpackChunkName: "airtime-and-data" */ "@/view/pages/AirtimeAndData.vue"
+      ),
   },
   {
     name: "apply for grant",
     path: "/apply-for-grant",
     component: () =>
-      import(/* webpackChunkName: "apply-for-grant" */ "@/view/pages/ApplyGrant.vue"),
+      import(
+        /* webpackChunkName: "apply-for-grant" */ "@/view/pages/ApplyGrant.vue"
+      ),
   },
   {
     name: "transfers",
@@ -49,10 +55,12 @@ export const paths = [
       import(/* webpackChunkName: "transfers" */ "@/view/pages/Transfers.vue"),
   },
   {
-    name: "request-product",
-    path: "/product-management/products/request-product",
+    name: "request-service",
+    path: "/service/request",
     component: () =>
-      import(/* webpackChunkName: "transfers" */ "@/view/pages/RequestProduct.vue"),
+      import(
+        /* webpackChunkName: "transfers" */ "@/view/pages/RequestProduct.vue"
+      ),
   },
   {
     path: "/page",
@@ -94,30 +102,6 @@ export const paths = [
             /* webpackChunkName: "Password" */ "@/view/pages/settings/overview/Password.vue"
           ),
       },
-      {
-        path: "profile-settings/social",
-        name: "set-social",
-        component: () =>
-          import(
-            /* webpackChunkName: "Social" */ "@/view/pages/settings/overview/SocialProfile.vue"
-          ),
-      },
-      {
-        path: "profile-settings/notification",
-        name: "set-notification",
-        component: () =>
-          import(
-            /* webpackChunkName: "Notification" */ "@/view/pages/settings/overview/Notification.vue"
-          ),
-      },
-      {
-        path: "profile-settings/banners",
-        name: "set-banners",
-        component: () =>
-          import(
-            /* webpackChunkName: "Banners" */ "@/view/pages/settings/overview/Banner.vue"
-          ),
-      },
     ],
   },
 
@@ -125,25 +109,7 @@ export const paths = [
     path: "/user-management",
     name: "user-management",
     component: () =>
-      import(
-        /* webpackChunkName: "Settings" */ "@/view/pages/UserManagement.vue"
-      ),
-    children: [
-      {
-        name: "users",
-        path: "users",
-        component: () =>
-          import(/* webpackChunkName: "users" */ "@/view/pages/UsersPage.vue"),
-      },
-      {
-        name: "administrators",
-        path: "administrators",
-        component: () =>
-          import(
-            /* webpackChunkName: "admins" */ "@/view/pages/AdminsPage.vue"
-          ),
-      },
-    ],
+      import(/* webpackChunkName: "users" */ "@/view/pages/UsersPage.vue"),
   },
   {
     path: "/product-management",
@@ -157,27 +123,33 @@ export const paths = [
         name: "products",
         path: "products",
         component: () =>
-        import(
-          /* webpackChunkName: "products" */ "@/view/pages/ProductsPage.vue"
-        ),
+          import(
+            /* webpackChunkName: "products" */ "@/view/pages/ProductsPage.vue"
+          ),
       },
       {
         name: "product",
         path: "product/:id",
         component: () =>
-          import(/* webpackChunkName: "product" */ "@/view/pages/ProductPage.vue"),
+          import(
+            /* webpackChunkName: "product" */ "@/view/pages/ProductPage.vue"
+          ),
       },
       {
         name: "add product",
-        path: "add-product",
+        path: "add",
         component: () =>
-          import(/* webpackChunkName: "addproduct" */ "@/view/pages/AddProductPage.vue"),
+          import(
+            /* webpackChunkName: "addproduct" */ "@/view/pages/AddProductPage.vue"
+          ),
       },
       {
         name: "edit product",
         path: "edit-product/:id",
         component: () =>
-          import(/* webpackChunkName: "editproduct" */ "@/view/pages/EditProductPage.vue"),
+          import(
+            /* webpackChunkName: "editproduct" */ "@/view/pages/EditProductPage.vue"
+          ),
       },
       {
         name: "requests",
@@ -188,5 +160,13 @@ export const paths = [
           ),
       },
     ],
+  },
+  {
+    path: "/banner-management",
+    name: "banner management",
+    component: () =>
+      import(
+        /* webpackChunkName: "Banners" */ "@/view/pages/BannerPage.vue"
+      ),
   },
 ];

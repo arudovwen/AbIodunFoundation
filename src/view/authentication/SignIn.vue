@@ -1,6 +1,6 @@
 <template>
   <a-row justify="center">
-    <a-col :xxl="6" :xl="12" :md="12" :sm="18">
+    <a-col :xxl="6" :xl="8" :md="12" :sm="18">
       <AuthWrapper>
         <div class="ninjadash-authentication-top">
           <h2 class="ninjadash-authentication-top__title">Sign in Biodun & Ibikunle Foundation</h2>

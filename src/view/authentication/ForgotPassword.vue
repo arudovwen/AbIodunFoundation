@@ -1,6 +1,6 @@
 <template>
   <a-row justify="center">
-    <a-col :xxl="6" :xl="12" :md="12" :sm="18">
+    <a-col :xxl="6" :xl="8" :md="12" :sm="18">
       <AuthWrapper>
         <div class="ninjadash-authentication-top">
           <h2 class="ninjadash-authentication-top__title">Forgot Password?</h2>
@@ -20,7 +20,7 @@
             </a-form-item>
             <a-form-item>
               <sdButton
-                class="btn-reset"
+                class="btn-reset w-full"
                 htmlType="submit"
                 type="primary"
                 size="lg"
@@ -28,7 +28,7 @@
                 Send Reset Instructions
               </sdButton>
             </a-form-item>
-            <p class="return-text">
+            <p class="return-text text-center">
               Return to <router-link to="/auth/login">Sign In</router-link>
             </p>
           </a-form>

@@ -7,6 +7,13 @@
       >
       </sdPageHeader>
       <Main>
+        <div class="flex justify-between my-6">
+        <input
+        class="max-w-[300px] w-full border bordergray-300 rounded-lg px-3 py-2"
+        placeholder="Search by request"
+      />
+  
+    </div>
         <a-row :gutter="15">
           <a-col :md="24">
             <Products />
