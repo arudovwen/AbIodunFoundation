@@ -12,7 +12,7 @@
         <div class="ninjadash-header-content d-flex">
           <div class="ninjadash-header-content__left">
             <div class="navbar-brand align-cener-v">
-              <router-link
+             <div> <router-link
                 :class="
                   topMenu && innerWidth > 991
                     ? 'ninjadash-logo top-menu'
@@ -20,8 +20,8 @@
                 "
                 to="/"
               >
-              <img :src="require(`../static/img/logo.png`)" class="mx-auto w-[150px]" alt="logo" />
-              </router-link>
+              <img :src="require(`../static/img/logo-icon.png`)" class="mx-auto !w-[24px] !h-auto" alt="logo" />
+              </router-link></div>
               <sdButton
                 v-if="!topMenu || innerWidth <= 991"
                 @click="toggleCollapsed"

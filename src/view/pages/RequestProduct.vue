@@ -10,13 +10,13 @@
       <a-row justify="center">
         <a-col  :sm="24">
           <sdCards headless>
-            <div class="ninjadash-authentication-content">
+            <div>
               <a-form
                 name="register"
                 :model="formState"
                 @finish="handleSubmit"
                 layout="vertical"
-                class="grid md:grid-cols-2 md:gap-x-8"
+                class="md:grid grid-cols-1 md:grid-cols-2 md:gap-y-0 md:gap-x-8"
               >
                 <a-form-item
                   name="gender"
