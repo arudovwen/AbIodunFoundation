@@ -3,14 +3,17 @@
     <a-col :xxl="6" :xl="8" :md="12" :sm="18">
       <AuthWrapper>
         <div class="ninjadash-authentication-top">
-          <h2 class="ninjadash-authentication-top__title">Sign in Biodun & Ibikunle Foundation</h2>
+          <h2 class="ninjadash-authentication-top__title">
+            Sign in Biodun & Ibikunle Foundation
+          </h2>
         </div>
+
         <div class="ninjadash-authentication-content">
           <a-form @finish="handleSubmit" :model="formState" layout="vertical">
             <a-form-item name="username" label="Email Address">
-              <a-input type="email" v-model:value="formState.email" />
+              <a-input type="email" v-model:value="formState.username" />
             </a-form-item>
-            <a-form-item name="password" initialValue="123456" label="Password">
+            <a-form-item name="password" label="Password">
               <a-input
                 type="password"
                 v-model:value="formState.password"
@@ -19,7 +22,7 @@
             </a-form-item>
             <div class="ninjadash-auth-extra-links">
               <a-checkbox @change="onChange">Keep me logged in</a-checkbox>
-              <router-link class="forgot-pass-link" to="/auth/forgotPassword">
+              <router-link class="forgot-pass-link" to="/auth/forgot-password">
                 Forgot password?
               </router-link>
             </div>
@@ -72,31 +75,32 @@
 import { computed, reactive, ref, defineComponent } from "vue";
 import { useStore } from "vuex";
 import { AuthWrapper } from "./style";
-import { useRouter } from "vue-router";
+
 // import InlineSvg from "vue-inline-svg";
 
 const SignIn = defineComponent({
   name: "SignIn",
-  components: { AuthWrapper
+  components: {
+    AuthWrapper,
     // , InlineSvg
-   },
+  },
   setup() {
     const { state, dispatch } = useStore();
     const isLoading = computed(() => state.auth.loading);
+    const error = computed(() => state.auth.error);
     const checked = ref(null);
-    const router = useRouter();
 
     const handleSubmit = () => {
-      router.push("/");
-      dispatch("login");
+      dispatch("login", formState);
     };
     const onChange = (checked) => {
       checked.value = checked;
     };
 
     const formState = reactive({
-      email: "example@email.com",
-      password: "1234565",
+      username: "",
+      password: "",
+      grantType: "password",
     });
 
     return {
@@ -105,6 +109,7 @@ const SignIn = defineComponent({
       handleSubmit,
       onChange,
       formState,
+      error,
     };
   },
 });

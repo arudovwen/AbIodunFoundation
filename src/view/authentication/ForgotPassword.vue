@@ -7,14 +7,24 @@
         </div>
         <div class="ninjadash-authentication-content">
           <a-form @finish="handleSubmit" :model="formState" layout="vertical">
-            <p class="forgot-text">
+            <p class="forgot-text mb-8">
               Enter the email address you used when you joined and we’ll send
               you instructions to reset your password.
             </p>
-            <a-form-item label="Email Address" name="email">
+            <a-form-item
+              label="Email Address"
+              name="EmailAddress"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Please input your email!',
+                  type: 'email',
+                },
+              ]"
+            >
               <a-input
                 type="email"
-                v-model:value="formState.email"
+                v-model:value="formState.EmailAddress"
                 placeholder="name@example.com"
               />
             </a-form-item>
@@ -25,7 +35,7 @@
                 type="primary"
                 size="lg"
               >
-                Send Reset Instructions
+                {{ isLoading ? "Loading..." : "Send Reset Instructions" }}
               </sdButton>
             </a-form-item>
             <p class="return-text text-center">
@@ -38,24 +48,34 @@
   </a-row>
 </template>
 <script>
-import { reactive, defineComponent } from "vue";
+import { reactive, defineComponent, computed, watch } from "vue";
 import { AuthWrapper } from "./style";
-
+import { message } from "ant-design-vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 const ForgotPassword = defineComponent({
   name: "ForgotPassword",
   components: { AuthWrapper },
   setup() {
+    const router = useRouter();
+    const { state, dispatch } = useStore();
+    const isLoading = computed(() => state.auth.loading);
+    const isSuccess = computed(() => state.auth.success);
     const handleSubmit = (values) => {
-      console.log(values);
+      dispatch("forgotPassword", values);
     };
 
     const formState = reactive({
-      email: "",
+      EmailAddress: "",
     });
-
+    watch(isSuccess, () => {
+      message.success("Email sent!");
+      router.push(`/auth/reset-password`);
+    });
     return {
       handleSubmit,
       formState,
+      isLoading,
     };
   },
 });

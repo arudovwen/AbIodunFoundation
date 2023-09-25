@@ -1,59 +1,60 @@
-import axios from 'axios';
-import { getItem } from '../../utility/localStorageControl';
+import axios from "axios";
+import { Notification } from "ant-design-vue";
+import { getItem } from "../../utility/localStorageControl";
 
 const API_ENDPOINT = process.env.VUE_APP_API_ENDPOINT;
 
 const authHeader = () => ({
-  Authorization: `Bearer ${getItem('access_token')}`,
+  Authorization: `Bearer ${getItem("accessToken")}`,
 });
 
 const client = axios.create({
   baseURL: API_ENDPOINT,
   headers: {
-    Authorization: `Bearer ${getItem('access_token')}`,
-    'Content-Type': 'application/json',
+    Authorization: `Bearer ${getItem("accessToken")}`,
+    "Content-Type": "application/json",
   },
 });
 
 class DataService {
-  static get(path = '') {
+  static get(path = "") {
     return client({
-      method: 'GET',
+      method: "GET",
       url: path,
       headers: { ...authHeader() },
     });
   }
 
-  static post(path = '', data = {}, optionalHeader = {}) {
+  static post(path = "", data = {}, optionalHeader = {}) {
     return client({
-      method: 'POST',
+      method: "POST",
       url: path,
       data,
       headers: { ...authHeader(), ...optionalHeader },
     });
   }
 
-  static patch(path = '', data = {}) {
+  static patch(path = "", data = {}) {
     return client({
-      method: 'PATCH',
+      method: "PATCH",
       url: path,
       data: JSON.stringify(data),
       headers: { ...authHeader() },
     });
   }
 
-  static delete(path = '', data = {}) {
+  static delete(path = "", data = {}) {
     return client({
-      method: 'DELETE',
+      method: "DELETE",
       url: path,
       data: JSON.stringify(data),
       headers: { ...authHeader() },
     });
   }
 
-  static put(path = '', data = {}) {
+  static put(path = "", data = {}) {
     return client({
-      method: 'PUT',
+      method: "PUT",
       url: path,
       data: JSON.stringify(data),
       headers: { ...authHeader() },
@@ -70,7 +71,10 @@ client.interceptors.request.use((config) => {
   // For example tag along the bearer access token to request header or set a cookie
   const requestConfig = config;
   const { headers } = config;
-  requestConfig.headers = { ...headers, Authorization: `Bearer ${getItem('access_token')}` };
+  requestConfig.headers = {
+    ...headers,
+    Authorization: `Bearer ${getItem("accessToken")}`,
+  };
 
   return requestConfig;
 });
@@ -86,12 +90,20 @@ client.interceptors.response.use(
     const originalRequest = error.config;
     if (response) {
       if (response.status === 500) {
-        // do something here
+        Notification.error({
+          message: "Error",
+          description: response.data.message,
+        });
+      } else if (response.status === 400) {
+        Notification.error({
+          message: "Error",
+          description: response.data.message,
+        });
       } else {
         return originalRequest;
       }
     }
     return Promise.reject(error);
-  },
+  }
 );
 export { DataService };

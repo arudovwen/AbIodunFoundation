@@ -16,27 +16,30 @@
           >
             <a-form-item
               label="First Name"
-              name="first_name"
+              name="firstName"
               :rules="[
                 { required: true, message: 'Please input your First name!' },
               ]"
             >
               <a-input
-                v-model:value="formState.name"
+                v-model:value="formState.firstName"
                 placeholder="First name"
               />
             </a-form-item>
             <a-form-item
               label="Last Name"
-              name="last_name"
+              name="lastName"
               :rules="[
                 { required: true, message: 'Please input your Last name!' },
               ]"
             >
-              <a-input v-model:value="formState.name" placeholder="Last name" />
+              <a-input
+                v-model:value="formState.lastName"
+                placeholder="Last name"
+              />
             </a-form-item>
             <a-form-item
-              name="email"
+              name="emailAddress"
               label="Email Address"
               :rules="[
                 {
@@ -48,7 +51,7 @@
             >
               <a-input
                 type="email"
-                v-model:value="formState.email"
+                v-model:value="formState.emailAddress"
                 placeholder="name@example.com"
               />
             </a-form-item>
@@ -68,7 +71,7 @@
             </a-form-item>
             <a-form-item
               label="Phone Number"
-              name="phone"
+              name="phoneNumber"
               :rules="[
                 {
                   required: true,
@@ -81,7 +84,7 @@
               ]"
             >
               <a-input
-                v-model:value="formState.phone"
+                v-model:value="formState.phoneNumber"
                 placeholder="Phone number"
               />
             </a-form-item>
@@ -117,7 +120,7 @@
                 type="primary"
                 size="lg"
               >
-                Create Account
+                {{ isLoading ? "Loading..." : "Create Account" }}
               </sdButton>
             </a-form-item>
             <!-- <p class="ninjadash-form-divider">
@@ -162,8 +165,9 @@
 </template>
 <script>
 import { AuthWrapper } from "./style";
-import {useRouter} from "vue-router"
-import { reactive, ref, defineComponent } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { computed, reactive, ref, defineComponent, watch } from "vue";
 // import InlineSvg from "vue-inline-svg";
 
 const SignUp = defineComponent({
@@ -173,12 +177,17 @@ const SignUp = defineComponent({
     // ,  InlineSvg
   },
   setup() {
-    const router = useRouter()
+    const { state, dispatch } = useStore();
+    const isLoading = computed(() => state.auth.loading);
+    const isSuccess = computed(() => state.auth.success);
+    const error = computed(() => state.auth.error);
+    const router = useRouter();
     const values = ref(null);
     const checked = ref(null);
     const handleSubmit = (value) => {
+    
       values.value = value;
-      router.push("/auth/validate-email")
+      dispatch("signup", formState);
     };
 
     const onChange = (check) => {
@@ -219,10 +228,10 @@ const SignUp = defineComponent({
 
     const validatePhoneNumber = (rule, value, callback) => {
       // Remove any non-numeric characters from the input
-      const phoneNumber = value.replace(/\D/g, "");
+      const phoneNumber = value?.replace(/\D/g, "");
 
       // Check if the cleaned phone number has exactly 10 digits
-      if (phoneNumber.length === 11) {
+      if (phoneNumber?.length === 11) {
         // Valid phone number
         callback();
       } else {
@@ -231,12 +240,17 @@ const SignUp = defineComponent({
       }
     };
     const formState = reactive({
-      first_name: "",
-      last_name: "",
-      phone: "",
+      firstName: "",
+      lastName: "",
       gender: "",
-      email: "",
       password: "",
+      emailAddress: "",
+      phoneNumber: "",
+    });
+    watch(isSuccess, () => {
+      router.push(
+        `/auth/validate-email/${encodeURIComponent(formState.emailAddress)}`
+      );
     });
     return {
       validatePassword,
@@ -244,6 +258,8 @@ const SignUp = defineComponent({
       handleSubmit,
       formState,
       validatePhoneNumber,
+      isLoading,
+      error,
     };
   },
 });

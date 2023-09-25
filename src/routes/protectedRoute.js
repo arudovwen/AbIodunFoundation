@@ -28,9 +28,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   // console.log(to, store);
-  if (to.meta.auth && store.state.auth.login) {
+  if (to.meta.auth && store.state.auth.accessToken) {
     next({ to: '/' });
-  } else if (!to.meta.auth && !store.state.auth.login) {
+  } else if (!to.meta.auth && !store.state.auth.accessToken) {
     next({ name: 'login' });
   } else {
     next();

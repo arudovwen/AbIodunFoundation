@@ -10,15 +10,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "register" */ '@/view/authentication/Signup.vue'),
   },
   {
-    path: 'forgotPassword',
+    path: 'forgot-password',
     name: 'forgotPassword',
     component: () => import(/* webpackChunkName: "forgotPassword" */ '@/view/authentication/ForgotPassword.vue'),
   },{
-    path: 'resetPassword',
+    path: 'reset-password',
     name: 'resetPassword',
     component: () => import(/* webpackChunkName: "resetPassword" */ '@/view/authentication/ResetPassword.vue'),
   },{
-    path: 'validate-email',
+    path: 'validate-email/:email',
     name: 'validateEmail',
     component: () => import(/* webpackChunkName: "validateEmail" */ '@/view/authentication/ValidateEmail.vue'),
   },
