@@ -30,6 +30,20 @@ const actions = {
       commit("uploadErr", err);
     }
   },
+  async getFileId({ commit }, id) {
+    try {
+      commit("uploadBegin");
+      const response = await DataService.get(
+        `${urls.GET_FILE_BY_ID}?fileid=${id}`
+      );
+      if (response.status === 200) {
+        commit("uploadSuccess", response.data.data);
+      }
+    } catch (err) {
+      commit("uploadErr", err);
+    }
+  },
+
 };
 
 export default {

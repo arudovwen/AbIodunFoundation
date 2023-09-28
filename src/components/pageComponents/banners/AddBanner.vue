@@ -90,6 +90,10 @@ const handleSubmit = (value) => {
   values.value = value;
   formState.status = checked.value.toString();
 
+  const formData = new FormData();
+  formData.append("description", formState.description);
+  formData.append("bannerUrl", formState.bannerUrl)
+  formData.append("status", formState.status)
   dispatch("addBanner", formState);
 };
 const previewVisible = ref(false);
@@ -97,11 +101,11 @@ const previewImage = ref("");
 const previewTitle = ref("");
 const formState = reactive({
   description: "",
-  bannerUrl: "string",
+  bannerUrl: "",
   status: "",
 });
 
-const handleChange = (info) => {
+const handleChange = async (info) => {
   const file = info.file;
 
   const allowedTypes = [
@@ -119,13 +123,14 @@ const handleChange = (info) => {
 
   const formData = new FormData();
   formData.append("file", file);
-  console.log("🚀 ~ file: AddBanner.vue:118 ~ handleChange ~ file:", file);
-  myfile.value = file;
-  dispatch("uploadFile", {
-    userId: state.auth.userData.id,
-    fileType: "banner",
-    formData,
-  });
+
+  formState.bannerUrl = await getBase64(file);
+  fileList.value = [file];
+  // dispatch("uploadFile", {
+  //   userId: state.auth.userData.id,
+  //   fileType: "banner",
+  //   formData,
+  // });
 
   return false; // Prevent default behavior
 };
@@ -137,12 +142,15 @@ function getBase64(file) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
+   
     reader.onerror = (error) => reject(error);
   });
 }
 const handlePreview = async (file) => {
+  
   if (!file.url && !file.preview) {
     file.preview = await getBase64(file.originFileObj);
+    formState.bannerUrl = await getBase64(file.originFileObj);
   }
   previewImage.value = file.url || file.preview;
   previewVisible.value = true;

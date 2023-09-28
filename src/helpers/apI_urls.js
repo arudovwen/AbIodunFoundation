@@ -24,6 +24,7 @@ export const urls = {
 
   // Files
   UPLOAD_FILE: "/Files/uploadfile",
+  GET_FILE_BY_ID: "/Files/GetFileById",
 
   // Product
   CREATE_PRODUCT: "/Product/CreateProduct",

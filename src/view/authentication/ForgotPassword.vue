@@ -74,13 +74,16 @@ const ForgotPassword = defineComponent({
       token: "",
     });
     watch(token, () => {
-    
       formState.token = token?.value
-        
+
         ?.replace("Password reset initiated successfully!", "")
         ?.trim();
-       
-       router.push(`/auth/reset-password?code=${formState.token}`);
+
+      router.push(
+        `/auth/reset-password?code=${encodeURIComponent(
+          formState.token
+        )}&email=${encodeURIComponent(formState.emailAddress)}`
+      );
     });
     watch(isSuccess, () => {
       if (isSuccess.value) {

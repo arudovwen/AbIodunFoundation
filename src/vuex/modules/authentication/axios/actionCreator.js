@@ -2,9 +2,7 @@ import { Notification } from "ant-design-vue";
 import { DataService } from "@/config/dataService/dataService";
 import mutations from "./mutations";
 import { urls } from "@/helpers/apI_urls";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
 const state = () => ({
   accessToken: localStorage.getItem("accessToken") || null,
   avatar: localStorage.getItem("avatar") || null,
@@ -117,9 +115,8 @@ const actions = {
       );
 
       if (response.status === 200) {
+        console.log("🚀 ~ file: actionCreator.js:118 ~ resetPassword ~ response:", response)
         commit("resetSuccess");
-
-        router.push("/auth/login");
       }
     } catch (err) {
       commit("resetErr", err);

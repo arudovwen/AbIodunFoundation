@@ -11,10 +11,22 @@
               Enter the email address you used when you joined and we’ll send
               you instructions to reset your password.
             </p>
-            <a-form-item name="password" initialValue="" label="New Password">
+            <a-form-item
+              :rules="[
+                { required: true, message: 'Please input a password!' },
+                {
+                  validator: validatePassword,
+                  message:
+                    'Password must be at least 8 characters long and contain both uppercase and lowercase letters as well as numbers.',
+                },
+              ]"
+              name="newPassword"
+              initialValue=""
+              label="New Password"
+            >
               <a-input
                 type="password"
-                v-model:value="formState.password"
+                v-model:value="formState.newPassword"
                 placeholder="Password"
               />
             </a-form-item>
@@ -22,6 +34,7 @@
               name="confirmPassword"
               initialValue=""
               label="Confirm Password"
+              :rules="confirmPasswordRules"
             >
               <a-input
                 type="password"
@@ -64,16 +77,64 @@ const ResetPassword = defineComponent({
     const route = useRoute();
     const { state, dispatch } = useStore();
     const isLoading = computed(() => state.auth.loading);
-    const isSuccess = computed(() => state.auth.forgotsuccess);
+    const isSuccess = computed(() => state.auth.resetsuccess);
     const handleSubmit = () => {
       dispatch("resetPassword", formState);
     };
 
     const formState = reactive({
-      password: "",
+      newPassword: "",
       confirmPassword: "",
       token: route.query.code,
+      userName: route.query.email,
     });
+    const validatePassword = (rule, value, callback) => {
+      // Check if the password is at least 8 characters long
+      if (value?.length >= 8) {
+        // Check if the password contains at least one uppercase letter
+        if (/[A-Z]/.test(value)) {
+          // Check if the password contains at least one lowercase letter
+          if (/[a-z]/.test(value)) {
+            // Check if the password contains at least one digit
+            if (/\d/.test(value)) {
+              // Valid password
+              callback();
+            } else {
+              // Password does not contain a digit
+              callback(new Error("Password must contain at least one digit."));
+            }
+          } else {
+            // Password does not contain a lowercase letter
+            callback(
+              new Error("Password must contain at least one lowercase letter.")
+            );
+          }
+        } else {
+          // Password does not contain an uppercase letter
+          callback(
+            new Error("Password must contain at least one uppercase letter.")
+          );
+        }
+      } else {
+        // Password is less than 8 characters
+        callback(new Error("Password must be at least 8 characters long."));
+      }
+    };
+
+    const confirmPasswordRules = [
+      {
+        required: true,
+        message: "Please confirm your password",
+      },
+      ({ getFieldValue }) => ({
+        validator(_, value) {
+          if (!value || getFieldValue("newPassword") === value) {
+            return Promise.resolve();
+          }
+          return Promise.reject(new Error("The two passwords do not match"));
+        },
+      }),
+    ];
     watch(isSuccess, () => {
       if (isSuccess.value) {
         message.success("Email reset successful!");
@@ -85,6 +146,8 @@ const ResetPassword = defineComponent({
       handleSubmit,
       formState,
       isLoading,
+      confirmPasswordRules,
+      validatePassword,
     };
   },
 });
