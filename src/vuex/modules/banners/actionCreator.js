@@ -36,10 +36,13 @@ const actions = {
       commit("addErr", err);
     }
   },
-  async editBanner({ commit }, data) {
+  async editBanner({ commit }, { description, formData, status }) {
     try {
       commit("ediBegin");
-      const response = await DataService.put(urls.UPDATE_BANNER, data);
+      const response = await DataService.put(
+        `${urls.UPDATE_BANNER}?description=${description}&status=${status}`,
+        formData
+      );
 
       if (response.status === 200) {
         commit("editSuccess");
