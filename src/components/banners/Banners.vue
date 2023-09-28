@@ -2,18 +2,13 @@
   <BannerCarouselWrap>
     <a-carousel autoplay>
       <div class="banner-signle" v-for="ban in banners" :key="ban.id">
-        <div class="banner-single__img">
-          <img
-            class="h-[200px] object-cover"
-            :src="base64ToImage(ban.bannerUrl)"
-            alt=""
-          />
+        <div class="banner-single__img w-full h-[300px]">
+          <img class="h-full w-full object-cover" :src="ban.bannerUrl" alt="" />
         </div>
-        <div class="banner-single__content">
-          <h3>{{ ban.description }}</h3>
+        <div class="banner-single__content text-left">
+          <h3 class="text-left">{{ ban.description }}</h3>
         </div>
       </div>
-
       <!-- End of /.banner-signle -->
     </a-carousel>
   </BannerCarouselWrap>
@@ -33,8 +28,8 @@ const query = reactive({
 });
 const carouselRef = ref(null);
 const { state, dispatch } = useStore();
-const banners = computed(() => state.banners.data);
-console.log("🚀 ~ file: Banners.vue:52 ~ banners:", banners);
+const banners = computed(() => state.banners.data.map(ban => ({ ...ban, bannerUrl: base64ToImage(ban.bannerUrl) })));
+
 onMounted(() => {
   dispatch("getBanners", query);
   if (carouselRef.value) {

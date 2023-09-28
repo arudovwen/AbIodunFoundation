@@ -367,7 +367,8 @@ const BannerNormal = Styled.div`
 const BannerCarouselWrap = Styled.div`
     margin-bottom: 20px;
     border-radius: 10px;
-    padding: 30px 0 50px;
+    padding: 0px 0 30px;
+    overflow:hidden;
     background-color: ${({ theme }) => theme['primary-color']};
     @media only screen and (max-width: 1199px){
         margin-bottom: 50px !important;
