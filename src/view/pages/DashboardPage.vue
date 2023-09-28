@@ -9,7 +9,7 @@
       <a-row :gutter="25">
         <a-col class="w-full" :xxl="24"><Banner /></a-col>
         <a-col class="w-full" :xxl="24"><OverviewDataList /></a-col>
-        <a-col :xxl="12" :xl="12" :xs="24">
+        <a-col :xxl="24" :xl="24" :xs="24">
           <Suspense>
             <template #default>
               <SaleRevenue />
@@ -21,7 +21,7 @@
             </template>
           </Suspense>
         </a-col>
-        <a-col :xxl="12" :xl="12" :xs="24">
+        <!-- <a-col :xxl="12" :xl="12" :xs="24">
           <Suspense>
             <template #default>
               <SourceRevenueGenerated />
@@ -32,7 +32,7 @@
               </sdCards>
             </template>
           </Suspense>
-        </a-col>
+        </a-col> -->
         <a-col :xxl="8" :xl="24" :xs="24">
           <Suspense>
             <template #default>
@@ -104,6 +104,7 @@ export default defineComponent({
     Main,
     OverviewDataList,
     SaleRevenue,
+    // eslint-disable-next-line vue/no-unused-components
     SourceRevenueGenerated,
     BestSeller,
     NewProduct,

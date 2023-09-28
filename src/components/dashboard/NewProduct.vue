@@ -4,10 +4,10 @@
       <Cards>
         <template #title>
           <div class="ninjadash-card-title-wrap">
-            <span class="ninjadash-card-title-text"> New Products </span>
+            <span class="ninjadash-card-title-text"> Recent Products </span>
           </div>
         </template>
-        <template #button>
+        <!-- <template #button>
           <div class="ninjadash-card-nav">
             <ul>
               <li
@@ -52,11 +52,12 @@
               </li>
             </ul>
           </div>
-        </template>
+        </template> -->
         <TableDefaultStyle class="ninjadash-having-header-bg">
           <NewProductWrapper>
             <div className="table-responsive">
               <a-table
+              :loading="loading"
                 :columns="productColumns"
                 :dataSource="newProductData"
                 :pagination="false"
@@ -69,7 +70,16 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, computed } from "vue";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+
+  reactive,
+
+  ref,
+} from "vue";
+import { useStore } from "vuex";
 import Cards from "components/cards/frame/CardsFrame.vue";
 import { NewProductWrapper } from "./style";
 import { BorderLessHeading, TableDefaultStyle } from "../styled";
@@ -85,46 +95,50 @@ const NewProducts = defineComponent({
     TableDefaultStyle,
   },
   setup() {
+    const query = reactive({
+      pageNumber: 1,
+      pageSize: 5,
+      name: "",
+    });
+    const { state, dispatch } = useStore();
+    const loading = computed(() => state.products.loading);
+
+    onMounted(() => {
+      dispatch("getProducts", query);
+    });
+
     const { newProduct } = tableData;
     const productColumns = [
       {
         title: "Product Name",
-        dataIndex: "name",
-        key: "name",
+        dataIndex: "productName",
+        key: "productName",
       },
       {
-        title: "Price",
-        dataIndex: "price",
-        key: "price",
+        title: "Product Type",
+        dataIndex: "productType",
+        key: "productType",
       },
     ];
     const productTab = ref("today");
 
-    const newProductData = computed(() => {
-      return (
-        newProduct !== null &&
-        newProduct[productTab.value].map((value) => {
-          const { key, name, img, price } = value;
-          return {
-            key,
-            name: (
-              <div className="ninjadash-info-element align-center-v">
-                <div className="ninjadash-info-element__media">
-                  <img
-                    src={require(`../../static/img/products/electronics/${img}`)}
-                    alt="HexaDash Product"
-                  />
-                </div>
-                <div className="ninjadash-info-element__content">
-                  <span className="ninjadash-info-element__text">{name}</span>
-                </div>
-              </div>
-            ),
-            price: <span className="ninjadash-product-price">{price}</span>,
-          };
-        })
-      );
-    });
+    const newProductData = computed(() =>
+      state.products.data.map((user) => {
+        const {
+          id,
+
+          productName,
+          productType,
+        } = user;
+
+        return {
+          key: id,
+          productid: id,
+          productName,
+          productType: <span class="capitalize">{productType}</span>,
+        };
+      })
+    );
 
     const handleTabActivation = (event, value) => {
       event.preventDefault();
@@ -136,7 +150,7 @@ const NewProducts = defineComponent({
       newProduct,
       productColumns,
       productTab,
-      newProductData,
+      newProductData,loading
     };
   },
 });

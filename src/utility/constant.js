@@ -280,11 +280,7 @@ export const requestTableHeader = [
     dataIndex: "type",
     key: "type",
   },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-  },
+
   {
     title: "Description",
     dataIndex: "description",

@@ -4,11 +4,15 @@
       <div class="flex gap-x-2">
         <span class="title-counter px-4" @click="query.status = ''">All</span>
         <span class="border-l border h-6" />
-        <span :class="`title-counter text-green-600 px-3`" @click="query.status = 1"
+        <span
+          :class="`title-counter text-green-600 px-3`"
+          @click="query.status = 'true'"
           >Active</span
         >
         <span class="border-l border h-6" />
-        <span class="title-counter text-yellow-600 px-3" @click="query.status = 0"
+        <span
+          class="title-counter text-yellow-600 px-3"
+          @click="query.status = 'false'"
           >Inactive</span
         >
       </div>
@@ -34,7 +38,12 @@
 
   <UserTableStyleWrapper>
     <div class="font-bold text-lg my-6 capitalize">
-      Showing {{ query.status === "" ? "All" : query.status }}
+      Showing
+      {{
+        query.status === ""
+          ? "All"
+          : (query.status === "false" ? "Inactive" : "Active")
+      }}
     </div>
     <TableWrapper class="table-responsive">
       <a-table
@@ -53,10 +62,18 @@
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
             <div class="flex gap-x-4 items-center">
-              <button v-if="status== 'True'" class="text-xs" @click="openModal(record, 'disable')">
+              <button
+                v-if="status.toLowerCase() == 'true'"
+                class="text-xs"
+                @click="openModal(record, 'disable')"
+              >
                 Disable
               </button>
-              <button v-if="status== 'False'" class="text-xs" @click="openModal(record, 'enable')">
+              <button
+                v-if="status.toLowerCase() == 'false'"
+                class="text-xs"
+                @click="openModal(record, 'enable')"
+              >
                 Enable
               </button>
               <button class="text-xs" @click="openModal(record, 'edit')">
@@ -141,39 +158,41 @@ const UserListTable = defineComponent({
     });
     const { state, dispatch } = useStore();
     const bannersData = computed(() =>
-  state.banners.data.map((user) => {
-    const { id, title, description, bannerUrl, status } = user;
+      state.banners.data.map((user) => {
+        const { id, title, description, bannerUrl, status } = user;
 
-    return {
-      key: id,
-      id,
-      title,
-      cover: (
-        <span>
-          <figure>
-            <img
-              src={bannerUrl}
-              className="bg-gray-100 w-[100px] h-10 rounded-lg"
-              alt=""
-            />
-          </figure>
-        </span>
-      ),
-      description,
-      stat: status,
-      status: (
-        <span
-          className={`status-text ${
-            status== "False" ? "bg-red-50 text-red-500" : "bg-green-50 text-green-500"
-          }`}
-        >
-          {status== "True" ? "Active" : "Inactive"}
-        </span>
-      ),
-      action: "", // You can add action logic here if needed
-    };
-  })
-);
+        return {
+          key: id,
+          id,
+          title,
+          cover: (
+            <span>
+              <figure>
+                <img
+                  src={bannerUrl}
+                  className="bg-gray-100 w-[100px] h-10 rounded-lg"
+                  alt=""
+                />
+              </figure>
+            </span>
+          ),
+          description,
+          stat: status,
+          status: (
+            <span
+              className={`status-text ${
+                status?.toLowerCase() == "false"
+                  ? "bg-red-50 text-red-500"
+                  : "bg-green-50 text-green-500"
+              }`}
+            >
+              {status?.toLowerCase() == "true" ? "Active" : "Inactive"}
+            </span>
+          ),
+          action: "", // You can add action logic here if needed
+        };
+      })
+    );
 
     onMounted(() => {
       dispatch("getBanners", query);
@@ -271,6 +290,7 @@ const UserListTable = defineComponent({
       type,
       handleStatus,
       detail,
+      status,
     };
   },
 });

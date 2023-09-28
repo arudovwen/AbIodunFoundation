@@ -91,7 +91,7 @@ const OverviewCards = defineComponent({
       id: "1",
       type: "primary",
       icon: "briefcase-alt",
-      total: "100",
+      total: "0",
       suffix: "+",
       prefix: "",
       label: "Total Products",

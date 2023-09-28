@@ -65,7 +65,7 @@
                   custom: customTooltips,
                   ...tooltip,
                 }"
-                :height="height"
+                :height="100"
               />
             </template>
             <div v-else class="ninjadash-sales-revenue-loading"><a-spin /></div>

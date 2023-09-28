@@ -4,10 +4,10 @@
       <Cards>
         <template #title>
           <div class="ninjadash-card-title-wrap">
-            <span class="ninjadash-card-title-text"> Latest Requests </span>
+            <span class="ninjadash-card-title-text"> Recent Requests </span>
           </div>
         </template>
-        <template #button>
+        <!-- <template #button>
           <div class="ninjadash-card-nav">
             <ul>
               <li
@@ -48,7 +48,7 @@
               </li>
             </ul>
           </div>
-        </template>
+        </template> -->
         <TableDefaultStyle
           class="ninjadash-having-header-bg ninjadash-large-table"
         >
@@ -82,60 +82,24 @@ const BestSeller = defineComponent({
     const { bestSeller } = tableData;
     const sellerColumns = [
       {
-        title: "Seller Name",
-        dataIndex: "sellerName",
-        key: "sellerName",
+        title: "Date",
+        dataIndex: "date",
+        key: "date",
       },
       {
-        title: "Company",
-        dataIndex: "company",
-        key: "company",
+        title: "Type",
+        dataIndex: "type",
+        key: "type",
       },
+
       {
-        title: "Product",
-        dataIndex: "product",
-        key: "product",
-      },
-      {
-        title: "Revenue",
-        dataIndex: "revenue",
-        key: "revenue",
-      },
-      {
-        title: "Status",
-        dataIndex: "status",
-        key: "status",
+        title: "Description",
+        dataIndex: "description",
+        key: "description",
       },
     ];
     const sellerTab = ref("today");
-    const bestSellerData = computed(() => {
-      return (
-        bestSeller !== null &&
-        bestSeller[sellerTab.value].map((value) => {
-          const { key, img, name, company, product, revenue, status } = value;
-          return {
-            key,
-            sellerName: (
-              <div className="ninjadash-info-element align-center-v">
-                <div className="ninjadash-info-element__media">
-                  <img
-                    src={require(`../../static/img/sellers/${img}`)}
-                    alt="HexaDash Product"
-                  />
-                </div>
-                <div className="ninjadash-info-element__content">
-                  <span className="ninjadash-info-element__text">{name}</span>
-                </div>
-              </div>
-            ),
-            company,
-            product,
-            revenue,
-            status,
-          };
-        })
-      );
-    });
+    const bestSellerData = computed(() => [] );
 
     const handleTabActivation = (event, value) => {
       event.preventDefault();

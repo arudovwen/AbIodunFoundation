@@ -37,6 +37,7 @@
                     name="file"
                     :customRequest="handleChange"
                     @preview="handlePreview"
+                    @drop="handleDrop"
                   >
                     <p class="ant-up load-text">Drop file here to upload</p>
                   </a-upload-dragger>
@@ -80,11 +81,14 @@ const values = ref(null);
 const { state, dispatch } = useStore();
 const isLoading = computed(() => state.banners.addloading);
 const addsuccess = computed(() => state.banners.addsuccess);
+const filesuccess = computed(() => state.file.success);
+const myfile = ref("");
+const id = computed(() => state.file.data);
 const checked = ref(false);
 const fileList = ref([]);
 const handleSubmit = (value) => {
   values.value = value;
-  formState.status = checked.value;
+  formState.status = checked.value.toString();
 
   dispatch("addBanner", formState);
 };
@@ -116,15 +120,18 @@ const handleChange = (info) => {
   const formData = new FormData();
   formData.append("file", file);
   console.log("🚀 ~ file: AddBanner.vue:118 ~ handleChange ~ file:", file);
-
+  myfile.value = file;
   dispatch("uploadFile", {
     userId: state.auth.userData.id,
     fileType: "banner",
     formData,
   });
-  fileList.value = [file];
+
   return false; // Prevent default behavior
 };
+function handleDrop(e) {
+  console.log(e);
+}
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -146,6 +153,12 @@ const handlePreview = async (file) => {
 watch(addsuccess, () => {
   if (addsuccess.value) {
     message.success("Banner creation successful!");
+  }
+});
+watch(filesuccess, () => {
+  if (filesuccess.value) {
+    formState.bannerUrl = id.value.toString();
+    fileList.value = [myfile.value];
   }
 });
 </script>

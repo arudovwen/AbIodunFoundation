@@ -3,7 +3,7 @@ import { DataService } from "@/config/dataService/dataService";
 import { urls } from "@/helpers/apI_urls";
 
 const state = () => ({
-  data: [],
+  data: "",
   loading: false,
   success: false,
   error: null,

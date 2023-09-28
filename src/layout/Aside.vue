@@ -204,7 +204,7 @@ export default defineComponent({
 
     const filteredMenu = computed(() => {
       return store.state.auth.userData.userRole.toLowerCase() !== "admin"
-        ? menus.filter((i) => i.role === "customers" ||  i.role === "all")
+        ? menus.filter((i) => i.role === "customer" ||  i.role === "all")
         :  menus.filter((i) => i.role === "admin" ||  i.role === "all")
     });
 

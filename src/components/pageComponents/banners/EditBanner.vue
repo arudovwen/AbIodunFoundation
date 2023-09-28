@@ -1,6 +1,6 @@
 <template>
   <div class="w-[300px] sm:w-[400px]">
-    <h1 class="text-center font-bold text-lg">Edit banner</h1>
+    <h1 class="text-center font-bold text-lg">Create banner</h1>
     <div>
       <a-row justify="center">
         <a-col :sm="24">
@@ -32,11 +32,14 @@
                 </a-form-item>
                 <a-form-item label="Cover" name="cover">
                   <a-upload-dragger
+                    v-model:file-list="fileList"
                     class="ninjadash-uploader-large"
                     name="file"
-                    @change="handleChange"
+                    :customRequest="handleChange"
+                    @preview="handlePreview"
+                    @drop="handleDrop"
                   >
-                    <p class="ant-upload-text">Drop file here to upload</p>
+                    <p class="ant-up load-text">Drop file here to upload</p>
                   </a-upload-dragger>
                 </a-form-item>
 
@@ -68,39 +71,46 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref, watch, computed, defineProps, onMounted } from "vue";
+import { reactive, ref, watch, computed, onMounted, defineProps } from "vue";
 import { BasicFormWrapper } from "../../styled";
 import { message } from "ant-design-vue";
 import { useStore } from "vuex";
 
-const props = defineProps(["detail"]);
-
 const values = ref(null);
 // eslint-disable-next-line no-unused-vars
 const { state, dispatch } = useStore();
+
+const props = defineProps(["detail"]);
+
 const isLoading = computed(() => state.banners.editloading);
 const editsuccess = computed(() => state.banners.editsuccess);
+const filesuccess = computed(() => state.file.success);
+const myfile = ref("");
+const id = computed(() => state.file.data);
 const checked = ref(false);
-
-onMounted(() => {
-  formState.description = props.detail.description;
-  formState.status = checked.value =
-    props.detail.stat === "inactive" ? false : true;
-
-  formState.bannerUrl = props.detail.bannerUrl;
-});
+const fileList = ref([]);
 const handleSubmit = (value) => {
   values.value = value;
-  formState.status = checked.value;
-  dispatch("updateBanner", formState);
-};
+  formState.status = checked.value.toString();
 
+  dispatch("editBanner", formState);
+};
+const previewVisible = ref(false);
+const previewImage = ref("");
+const previewTitle = ref("");
 const formState = reactive({
   description: "",
-  bannerUrl: "string",
+  bannerUrl: "",
   status: "",
 });
 
+onMounted(() => {
+  formState.description = props.detail.description;
+  formState.status = checked.value = props.detail.stat;
+
+  formState.bannerUrl = props.detail.bannerUrl;
+  formState.id = props.detail.id;
+});
 const handleChange = (info) => {
   const file = info.file;
 
@@ -119,19 +129,45 @@ const handleChange = (info) => {
 
   const formData = new FormData();
   formData.append("file", file);
-
+  myfile.value = file;
   dispatch("uploadFile", {
-    userId: this.userData.id,
-    fileType: "avatar",
+    userId: state.auth.userData.id,
+    fileType: "banner",
     formData,
   });
 
   return false; // Prevent default behavior
 };
+function handleDrop(e) {
+  console.log(e);
+}
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}
+const handlePreview = async (file) => {
+  if (!file.url && !file.preview) {
+    file.preview = await getBase64(file.originFileObj);
+  }
+  previewImage.value = file.url || file.preview;
+  previewVisible.value = true;
+  previewTitle.value =
+    file.name || file.url.substring(file.url.lastIndexOf("/") + 1);
+};
 
 watch(editsuccess, () => {
   if (editsuccess.value) {
-    message.success("Banner update successful!");
+    message.success("Banner creation successful!");
+  }
+});
+watch(filesuccess, () => {
+  if (filesuccess.value) {
+    formState.bannerUrl = id.value.toString();
+    fileList.value = [myfile.value];
   }
 });
 </script>
