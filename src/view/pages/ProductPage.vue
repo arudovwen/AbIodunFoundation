@@ -7,7 +7,7 @@
         <a-row :gutter="25">
           <a-col :sm="24" :xs="24">
             <sdCards headless>
-              <h3>Skeleton Page</h3>
+             <Product />
             </sdCards>
           </a-col>
         </a-row>
@@ -17,15 +17,19 @@
   
   <script setup>
   import { Main } from "../styled";
-
+  import Product from "components/pageComponents/product/Detail";
   const breadcrumbs = [
   {
     path: "/dashboard",
     breadcrumbName: "Dashboard",
   },
   {
+    path: "/product-management",
+    breadcrumbName: "Products",
+  },
+  {
     path: "#",
-    breadcrumbName: "Product detail",
+    breadcrumbName: "Details",
   },
 ];
   </script>

@@ -1,0 +1,45 @@
+<template>
+  <div>
+    <sdPageHeader
+      title="Edit Product detail"
+      class="ninjadash-page-header-main"
+      :routes="breadcrumbs"
+    >
+    </sdPageHeader>
+    <Main>
+      <a-row :gutter="25">
+        <a-col :sm="24" :xs="24">
+          <sdCards headless>
+           <ProductForm />
+          </sdCards>
+        </a-col>
+      </a-row>
+    </Main>
+  </div>
+</template>
+
+<script setup>
+import { Main } from "../styled";
+import ProductForm from "components/pageComponents/product/EditProductDetail"
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const breadcrumbs = [
+  {
+    path: "/dashboard",
+    breadcrumbName: "Dashboard",
+  },
+  {
+    path: "/product-management",
+    breadcrumbName: "Products",
+  },
+  {
+    path: `/product-management/product/${route.params.id}`,
+    breadcrumbName: "Details",
+  },
+  {
+    path: "#",
+    breadcrumbName: "Edit product detail",
+  },
+];
+</script>

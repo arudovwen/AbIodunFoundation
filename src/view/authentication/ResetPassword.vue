@@ -35,6 +35,7 @@
                 htmlType="submit"
                 type="primary"
                 size="lg"
+                :disabled="isLoading"
               >
                 {{ isLoading ? "Loading" : "Submit" }}
               </sdButton>
@@ -52,7 +53,7 @@
 import { reactive, defineComponent, computed, watch } from "vue";
 import { AuthWrapper } from "./style";
 import { message } from "ant-design-vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 const ResetPassword = defineComponent({
@@ -60,20 +61,24 @@ const ResetPassword = defineComponent({
   components: { AuthWrapper },
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const { state, dispatch } = useStore();
     const isLoading = computed(() => state.auth.loading);
-    const isSuccess = computed(() => state.auth.success);
-    const handleSubmit = (values) => {
-      dispatch("resetPassword", values);
+    const isSuccess = computed(() => state.auth.forgotsuccess);
+    const handleSubmit = () => {
+      dispatch("resetPassword", formState);
     };
 
     const formState = reactive({
       password: "",
       confirmPassword: "",
+      token: route.query.code,
     });
     watch(isSuccess, () => {
-      message.success("Email reset successful!");
-      router.push(`/auth/login`);
+      if (isSuccess.value) {
+        message.success("Email reset successful!");
+        router.push(`/auth/login`);
+      }
     });
 
     return {

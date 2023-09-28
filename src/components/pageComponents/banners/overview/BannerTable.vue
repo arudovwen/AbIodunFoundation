@@ -2,23 +2,28 @@
   <div class="flex justify-between items-center py-6">
     <div class="flex gap-x-4 items-center flex-1">
       <div class="flex gap-x-2">
-        <span class="title-counter">8 Banners</span>
+        <span class="title-counter px-4" @click="query.status = ''">All</span>
         <span class="border-l border h-6" />
-        <span class="title-counter text-green-600">4 Active</span>
+        <span :class="`title-counter text-green-600 px-3`" @click="query.status = 1"
+          >Active</span
+        >
         <span class="border-l border h-6" />
-        <span class="title-counter text-yellow-600">4 Inactive</span>
+        <span class="title-counter text-yellow-600 px-3" @click="query.status = 0"
+          >Inactive</span
+        >
       </div>
       <input
         class="max-w-[300px] w-full border bordergray-300 rounded-lg px-3 py-2"
-        placeholder="Search by title"
+        placeholder="Search by description"
+        v-model="search"
       />
     </div>
 
     <div>
       <sdButton
-        @click="visible = true"
+        @click="openModal('', 'add')"
         class="btn-add_new"
-        size="small"
+        size="sm"
         key="1"
         type="primary"
       >
@@ -26,106 +31,246 @@
       </sdButton>
     </div>
   </div>
-  {{ visible ? "true" : "false" }}
+
   <UserTableStyleWrapper>
+    <div class="font-bold text-lg my-6 capitalize">
+      Showing {{ query.status === "" ? "All" : query.status }}
+    </div>
     <TableWrapper class="table-responsive">
       <a-table
-        :rowSelection="rowSelection"
-        :dataSource="usersTableData"
+        :dataSource="bannersData"
         :columns="bannerTableHeader"
         :pagination="{
-          defaultPageSize: 5,
-          total: usersTableData.length,
+          defaultPageSize: query.pageSize,
+          total: total,
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
+          onChange: (page) => {
+            fetchRecords(page);
+          },
         }"
-      />
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'action'">
+            <div class="flex gap-x-4 items-center">
+              <button v-if="status== 'True'" class="text-xs" @click="openModal(record, 'disable')">
+                Disable
+              </button>
+              <button v-if="status== 'False'" class="text-xs" @click="openModal(record, 'enable')">
+                Enable
+              </button>
+              <button class="text-xs" @click="openModal(record, 'edit')">
+                Edit
+              </button>
+              <button @click="openModal(record, 'delete')" class="text-xs">
+                Delete
+              </button>
+            </div>
+          </template>
+        </template></a-table
+      >
     </TableWrapper>
   </UserTableStyleWrapper>
   <Modal :open="visible" @close="visible = false">
-    <AddBanner />
+    <AddBanner v-if="type === 'add'" />
+    <EditBanner :detail="detail" v-else-if="type === 'edit'" />
+    <div class="bg-white rounded-lg" v-else>
+      <h3 class="text-xl font-bold mb-4">Confirm action</h3>
+      <p class="mb-7">Are you sure about this action?</p>
+      <div class="flex justify-between">
+        <sdButton
+          :disabled="deleteloading"
+          @click="visible = false"
+          size="sm"
+          key="1"
+          type="light"
+        >
+          Cancel
+        </sdButton>
+        <sdButton
+          :disabled="deleteloading"
+          class=""
+          size="sm"
+          key="1"
+          type="error"
+          @click="handleUpdate"
+          >{{ deleteloading ? "Processing..." : "Confirm" }}
+        </sdButton>
+      </div>
+    </div>
   </Modal>
 </template>
 <script>
 import Modal from "components/Modal";
+import { useStore } from "vuex";
+import { debounce } from "lodash";
 import { UserTableStyleWrapper } from "../style";
 import { TableWrapper } from "../../../styled";
-import { useStore } from "vuex";
-import users from "@/demoData/usersData.json";
-import { computed, defineComponent, ref } from "vue";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  watch,
+  reactive,
+  ref,
+} from "vue";
 import { bannerTableHeader } from "@/utility/constant";
 import AddBanner from "components/pageComponents/banners/AddBanner";
+import EditBanner from "components/pageComponents/banners/EditBanner";
+import { message } from "ant-design-vue";
 
 const UserListTable = defineComponent({
   name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper, AddBanner, Modal },
+  components: {
+    EditBanner,
+    UserTableStyleWrapper,
+    TableWrapper,
+    AddBanner,
+    Modal,
+  },
   setup() {
+    const type = ref("");
     const visible = ref(false);
-    function handleCancel() {
-      visible.value = false;
-    }
-    const usersTableData = computed(() =>
-      users.map((user) => {
-        const { id, name, designation, img, status } = user;
-        return {
-          key: id,
-          user: (
-            <div class="user-info">
-              <figure>
-                <img
-                  style={{ width: "40px" }}
-                  src={require(`@/${img}`)}
-                  alt=""
-                />
-              </figure>
-              <figcaption>
-                <sdHeading class="user-name" as="h6">
-                  {name}
-                </sdHeading>
-                <span class="user-designation">San Francisco, CA</span>
-              </figcaption>
-            </div>
-          ),
-          email: "john@gmail.com",
-          company: "Business Development",
-          position: designation,
-          joinDate: "January 20, 2021",
-          status: <span class={`status-text ${status}`}>{status}</span>,
-          action: (
-            <div class="table-actions">
-              <>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="eye" width="16"></unicon>
-                </sdButton>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="edit" width="16"></unicon>
-                </sdButton>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="trash-alt" width="16"></unicon>
-                </sdButton>
-              </>
-            </div>
-          ),
-        };
-      })
-    );
-    const { state } = useStore();
-    const searchData = computed(() => state.headerSearchData.data);
-    const rowSelection = {
-      getCheckboxProps: (record) => ({
-        disabled: record.name === "Disabled User", // Column configuration not to be checked
-        name: record.name,
-      }),
-    };
+    const detail = ref("");
+    const search = ref("");
+    const query = reactive({
+      pageNumber: 1,
+      pageSize: 10,
+      description: "",
+      status: "",
+    });
+    const { state, dispatch } = useStore();
+    const bannersData = computed(() =>
+  state.banners.data.map((user) => {
+    const { id, title, description, bannerUrl, status } = user;
 
     return {
-      handleCancel,
+      key: id,
+      id,
+      title,
+      cover: (
+        <span>
+          <figure>
+            <img
+              src={bannerUrl}
+              className="bg-gray-100 w-[100px] h-10 rounded-lg"
+              alt=""
+            />
+          </figure>
+        </span>
+      ),
+      description,
+      stat: status,
+      status: (
+        <span
+          className={`status-text ${
+            status== "False" ? "bg-red-50 text-red-500" : "bg-green-50 text-green-500"
+          }`}
+        >
+          {status== "True" ? "Active" : "Inactive"}
+        </span>
+      ),
+      action: "", // You can add action logic here if needed
+    };
+  })
+);
+
+    onMounted(() => {
+      dispatch("getBanners", query);
+    });
+    function fetchRecords(page) {
+      dispatch("getBanners", { ...query, pageNumber: page });
+    }
+    const bannersuccess = computed(() => state.banners.addsuccess);
+    const loading = computed(() => state.banners.loading);
+    const total = computed(() => state.banners.total);
+    const addsuccess = computed(() => state.banners.addsuccess);
+    const deleteloading = computed(() => state.banners.deleteloading);
+    const deletesuccess = computed(() => state.banners.deletesuccess);
+    // const editloading = computed(() => state.banners.editloading);
+    const editsuccess = computed(() => state.banners.editsuccess);
+    // const updateloading = computed(() => state.banners.updateloading);
+    // const updatesuccess = computed(() => state.banners.updatesuccess);
+
+    function openModal(data, value) {
+      type.value = value;
+      visible.value = true;
+      detail.value = data;
+    }
+
+    function handleDelete() {
+      dispatch("deleteBanner", detail.value.id);
+    }
+    function handleStatus() {
+      dispatch("statusBanner", detail.value.bannerid);
+    }
+    // Define a debounce delay (e.g., 500 milliseconds)
+    const debounceDelay = 800;
+    const debouncedSearch = debounce((searchValue) => {
+      dispatch("getBanners", { ...query, description: searchValue });
+    }, debounceDelay);
+
+    watch(bannersuccess, () => {
+      if (bannersuccess.value) {
+        visible.value = false;
+      }
+    });
+    watch(addsuccess, () => {
+      visible.value = false;
+      addsuccess.value && dispatch("getBanners", query);
+    });
+
+    watch(editsuccess, () => {
+      if (editsuccess.value) {
+        visible.value = false;
+        dispatch("getBanners", query);
+      }
+    });
+
+    watch(query, () => {
+      dispatch("getBanners", query);
+    });
+
+    watch(deletesuccess, () => {
+      if (deletesuccess.value) {
+        dispatch("getBanners", query);
+        message.success("Banner deleted!");
+        visible.value = false;
+      }
+    });
+
+    watch(search, () => {
+      debouncedSearch(search.value);
+    });
+
+    function handleUpdate() {
+      if (type.value === "delete") {
+        dispatch("deleteBanner", detail.value.id);
+      }
+      if (type.value === "enable") {
+        dispatch("statusBanner", { id: detail.value.id, status: true });
+      }
+      if (type.value === "disable") {
+        dispatch("statusBanner", { id: detail.value.id, status: false });
+      }
+    }
+    return {
+      handleDelete,
+      openModal,
       visible,
+      query,
+      total,
+      fetchRecords,
+      loading,
+      deleteloading,
       bannerTableHeader,
-      usersTableData,
-      rowSelection,
-      searchData,
       Modal,
+      bannersData,
+      search,
+      handleUpdate,
+      type,
+      handleStatus,
+      detail,
     };
   },
 });

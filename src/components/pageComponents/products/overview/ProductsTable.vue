@@ -2,87 +2,197 @@
   <UserTableStyleWrapper>
     <TableWrapper class="table-responsive">
       <a-table
-        :rowSelection="rowSelection"
-        :dataSource="usersTableData"
+        :loading="loading"
+        :dataSource="productsData"
         :columns="productTableHeader"
         :pagination="{
-          defaultPageSize: 5,
-          total: usersTableData.length,
+          defaultPageSize: query.pageSize,
+          total: total,
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
+          onChange: (page) => {
+            fetchRecords(page);
+          },
         }"
-      />
-    </TableWrapper>
-  </UserTableStyleWrapper>
-</template>
-<script>
-import { UserTableStyleWrapper } from "../style";
-import { TableWrapper } from "../../../styled";
-import users from "@/demoData/usersData.json";
-import { computed, defineComponent } from "vue";
-import { productTableHeader } from "@/utility/constant";
-
-
-
-const UserListTable = defineComponent({
-  name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper },
-  setup() {
-    const usersTableData = computed(() =>
-      users.map((user) => {
-        const { id, name, designation, img, status } = user;
-
-        return {
-          key: id,
-          user: (
-            <div class="user-info">
-              <figure>
-                <img
-                  style={{ width: "40px" }}
-                  src={require(`@/${img}`)}
-                  alt=""
-                />
-              </figure>
-              <figcaption>
-                <sdHeading class="user-name" as="h6">
-                  {name}
-                </sdHeading>
-                <span class="user-designation">San Francisco, CA</span>
-              </figcaption>
-            </div>
-          ),
-          email: "john@gmail.com",
-          company: "Business Development",
-          position: designation,
-          joinDate: "January 20, 2021",
-          status: <span class={`status-text ${status}`}>{status}</span>,
-          action: (
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'action'">
             <div class="table-actions">
-              <>
+              <router-link
+                :to="`product-management/product/${record.productid}`"
+              >
                 <sdButton class="btn-icon" type="default" to="#" shape="circle">
                   <unicon name="eye" width="16"></unicon>
                 </sdButton>
+              </router-link>
+              <router-link
+                :to="`product-management/edit-product/${record.productid}`"
+              >
                 <sdButton class="btn-icon" type="default" to="#" shape="circle">
                   <unicon name="edit" width="16"></unicon>
                 </sdButton>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="trash-alt" width="16"></unicon>
-                </sdButton>
-              </>
+              </router-link>
+              <sdButton
+                @click="openDelete(record)"
+                class="btn-icon"
+                type="default"
+                to="#"
+                shape="circle"
+              >
+                <unicon name="trash-alt" width="16"></unicon>
+              </sdButton>
             </div>
+          </template> </template
+      ></a-table>
+    </TableWrapper>
+  </UserTableStyleWrapper>
+  <Modal :open="visible" @close="visible = false">
+    <div class="bg-white rounded-lg">
+      <h3 class="text-xl font-bold mb-4">Confirm delete</h3>
+      <p class="mb-10">Are you sure about this action?</p>
+      <div class="flex justify-between">
+        <sdButton
+          :disabled="deleteloading"
+          @click="visible = false"
+          size="sm"
+          type="light"
+        >
+          Cancel
+        </sdButton>
+        <sdButton
+          :disabled="deleteloading"
+          size="sm"
+          type="error"
+          @click="handleDelete"
+          >{{ deleteloading ? "Deleting..." : "Delete" }}
+        </sdButton>
+      </div>
+    </div>
+  </Modal>
+</template>
+<script>
+import Modal from "components/Modal";
+import moment from "moment";
+import { useStore } from "vuex";
+import { debounce } from "lodash";
+import { UserTableStyleWrapper } from "../style";
+import { TableWrapper } from "../../../styled";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  watch,
+  reactive,
+  inject,
+  ref,
+} from "vue";
+import { productTableHeader } from "@/utility/constant";
+import { message } from "ant-design-vue";
+
+const UserListTable = defineComponent({
+  name: "UserListTable",
+  components: { UserTableStyleWrapper, TableWrapper, Modal },
+  setup() {
+    const visible = ref(false);
+    const detail = ref("");
+    const search = inject("search");
+    const query = reactive({
+      pageNumber: 1,
+      pageSize: 10,
+      name: "",
+    });
+    const { state, dispatch } = useStore();
+    onMounted(() => {
+      dispatch("getProducts", query);
+    });
+    function fetchRecords(page) {
+      dispatch("getProducts", { ...query, pageNumber: page });
+    }
+    const loading = computed(() => state.products.loading);
+    const total = computed(() => state.products.total);
+    const addsuccess = computed(() => state.products.addsuccess);
+    const deleteloading = computed(() => state.products.deleteloading);
+    const deletesuccess = computed(() => state.products.deletesuccess);
+    const productsData = computed(() =>
+      state.products.data.map((user) => {
+        const {
+          createdAt,
+          id,
+          isDeleted,
+          productDescription,
+          productName,
+          productType,
+        } = user;
+
+        return {
+          key: id,
+          productid: id,
+          productName,
+          productType: <span class="capitalize">{productType}</span>,
+          isDeleted: isDeleted ? "Yes" : "No",
+          description: (
+            <span class="block truncate max-w-[160px]">
+              {productDescription}
+            </span>
           ),
+          createdOn: moment(createdAt).format("ll"),
+          status: (
+            <span
+              class={`status-text  ${
+                isDeleted
+                  ? "bg-red-50 text-red-500"
+                  : "bg-green-50 text-green-500"
+              }`}
+            >
+              {isDeleted ? "Inactive" : "Active"}
+            </span>
+          ),
+          action: "",
         };
       })
     );
+    function openDelete(data) {
+      visible.value = true;
+      detail.value = data;
+    }
 
-    const rowSelection = {
-      getCheckboxProps: (record) => ({
-        disabled: record.name === "Disabled User", // Column configuration not to be checked
-        name: record.name,
-      }),
+    function handleDelete() {
+      dispatch("deleteProduct", detail.value.productid);
+    }
+    // Define a debounce delay (e.g., 500 milliseconds)
+    const debounceDelay = 800;
+    const debouncedSearch = debounce((searchValue) => {
+      dispatch("getProducts", { ...query, name: searchValue });
+    }, debounceDelay);
+
+    watch(addsuccess, () => {
+      addsuccess.value && dispatch("getProducts", query);
+    });
+
+    watch(deletesuccess, () => {
+      if (deletesuccess.value) {
+        dispatch("getProducts", query);
+        message.success("Product deleted!");
+        visible.value = false;
+      }
+    });
+
+    watch(search, () => {
+      debouncedSearch(search.value);
+    });
+
+    return {
+      handleDelete,
+      openDelete,
+      visible,
+      query,
+      total,
+      fetchRecords,
+      productsData,
+      productTableHeader,
+      loading,
+      deleteloading,
     };
-
-    return { productTableHeader, usersTableData, rowSelection };
   },
 });
 

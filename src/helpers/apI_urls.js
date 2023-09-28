@@ -1,14 +1,16 @@
 export const urls = {
-  // Auth 
+  // Auth
   LOGIN: "/Auth/login",
   CHANGE_PASSWORD_INITIATE: "/Auth/ChangePasswordInitiate",
   CHANGE_PASSWORD_COMPLETE: "/Auth/ChangePasswordComplete",
+  CHANGE_PASSWORD: "/Auth/ChangePasswordCompleteInside",
   VALIDATE_EMAIL_INITIATE: "/Auth/ValidateEmailInitiate",
   VALIDATE_EMAIL_COMPLETE: "/Auth/ValidateEmailComplete",
 
   // Admin
   CREATE_ADMIN: "/Admin/CreateAdmin",
   DISABLE_USER: "/Admin/DisableUser",
+  ENABLE_USER: "/Admin/EnableUser",
   ADMIM_GET_ALL_USERS: "/Admin/GetAllUsers",
 
   //- Banner
@@ -18,6 +20,7 @@ export const urls = {
   UPDATE_BANNER: "/Banner/UpdateBanner",
   CHANGE_BANNER_STATUS: "/Banner/ChangeBannerStatus",
   DELETE_BANNER: "/Banner/DeleteBanner",
+  UPDATE_BANNER_STATUS: "/Banner/ChangeBannerStatus",
 
   // Files
   UPLOAD_FILE: "/Files/uploadfile",

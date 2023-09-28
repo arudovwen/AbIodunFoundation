@@ -1,7 +1,7 @@
 <template>
   <div>
     <sdPageHeader
-      title="Update Product"
+      title="Edit Product"
       class="ninjadash-page-header-main"
       :routes="breadcrumbs"
     >

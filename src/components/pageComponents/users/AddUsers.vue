@@ -1,57 +1,209 @@
 <template>
-  <sdPageHeader title="Add User" :routes="[]" />
-  <Main>
-    <a-row :gutter="15">
-      <a-col :xs="24">
-        <AddUser>
-          <sdCards>
-            <template #title>
-              <div class="card-nav">
-                <ul>
-                  <li>
-                    <router-link :to="`info`">
-                      <unicon name="user" width="14"></unicon>
-                      Personal Info
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link :to="`work`">
-                      <unicon name="briefcase-alt" width="14"></unicon>
-                      Work Info
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link :to="`social`">
-                      <unicon name="share-alt" width="14"></unicon>
-                      Social
-                    </router-link>
-                  </li>
-                </ul>
-              </div>
-            </template>
-            <router-view name="descendant" />
-          </sdCards>
-        </AddUser>
-      </a-col>
-    </a-row>
-  </Main>
+  <div class="w-full sm:w-[400px]">
+    <h1 class="mb-7 text-base font-bold text-center">Register Administrator</h1>
+    <div class="ninjadash-authentication-content">
+      <a-form
+        name="register"
+        :model="formState"
+        @finish="handleSubmit"
+        layout="vertical"
+      >
+        <a-form-item
+          label="First Name"
+          name="firstName"
+          :rules="[
+            { required: true, message: 'Please input your First name!' },
+          ]"
+        >
+          <a-input
+            v-model:value="formState.firstName"
+            placeholder="First name"
+          />
+        </a-form-item>
+        <a-form-item
+          label="Last Name"
+          name="lastName"
+          :rules="[{ required: true, message: 'Please input your Last name!' }]"
+        >
+          <a-input v-model:value="formState.lastName" placeholder="Last name" />
+        </a-form-item>
+        <a-form-item
+          name="emailAddress"
+          label="Email Address"
+          :rules="[
+            {
+              required: true,
+              message: 'Please input your email!',
+              type: 'email',
+            },
+          ]"
+        >
+          <a-input
+            type="email"
+            v-model:value="formState.emailAddress"
+            placeholder="name@example.com"
+          />
+        </a-form-item>
+
+        <a-form-item
+          name="gender"
+          label="Gender"
+          :rules="[{ required: true, message: 'Please select your gender!' }]"
+        >
+          <a-select size="large" v-model:value="formState.gender">
+            <a-select-option value="">Please Select</a-select-option>
+            <a-select-option value="male">Male</a-select-option>
+            <a-select-option value="female">Female</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          label="Phone Number"
+          name="phoneNumber"
+          :rules="[
+            {
+              required: true,
+              message: 'Please input your phone number!',
+            },
+            {
+              validator: validatePhoneNumber,
+              message: 'Please enter a valid 11-digit phone number.',
+            },
+          ]"
+        >
+          <a-input
+            v-model:value="formState.phoneNumber"
+            placeholder="Phone number"
+          />
+        </a-form-item>
+
+        <a-form-item
+          label="Password"
+          name="password"
+          :rules="[
+            { required: true, message: 'Please input your password!' },
+            {
+              validator: validatePassword,
+              message:
+                'Password must be at least 8 characters long and contain both uppercase and lowercase letters as well as numbers.',
+            },
+          ]"
+        >
+          <a-input
+            type="password"
+            v-model:value="formState.password"
+            placeholder="Password"
+          />
+        </a-form-item>
+
+        <a-form-item>
+          <sdButton
+            class="btn-create w-full"
+            htmlType="submit"
+            type="primary"
+            size="lg"
+            :disabled="isLoading"
+          >
+            {{ isLoading ? "Loading..." : "Create Account" }}
+          </sdButton>
+        </a-form-item>
+      </a-form>
+    </div>
+  </div>
 </template>
 <script>
-import { AddUser } from "./style";
-import { Main } from "../../styled";
-import { useRoute } from "vue-router";
-import { defineComponent } from "vue";
+import { message } from "ant-design-vue";
+import { computed, inject, reactive, ref, defineComponent, watch } from "vue";
+import { useStore } from "vuex";
 
-const AddNew = defineComponent({
-  name: "AddNew",
-  components: { Main, AddUser },
+const SignUp = defineComponent({
+  name: "SignUp",
+
   setup() {
-    const { matched } = useRoute();
+    const visible = inject("visible");
+    const { state, dispatch } = useStore();
+    const isLoading = computed(() => state.users.addloading);
+    const addsuccess = computed(() => state.users.addsuccess);
+    const error = computed(() => state.users.error);
+    const values = ref(null);
+
+    const handleSubmit = (value) => {
+      values.value = value;
+      dispatch("addUser", formState);
+    };
+
+    const validatePassword = (rule, value, callback) => {
+      // Check if the password is at least 8 characters long
+      if (value.length >= 8) {
+        // Check if the password contains at least one uppercase letter
+        if (/[A-Z]/.test(value)) {
+          // Check if the password contains at least one lowercase letter
+          if (/[a-z]/.test(value)) {
+            // Check if the password contains at least one digit
+            if (/\d/.test(value)) {
+              // Valid password
+              callback();
+            } else {
+              // Password does not contain a digit
+              callback(new Error("Password must contain at least one digit."));
+            }
+          } else {
+            // Password does not contain a lowercase letter
+            callback(
+              new Error("Password must contain at least one lowercase letter.")
+            );
+          }
+        } else {
+          // Password does not contain an uppercase letter
+          callback(
+            new Error("Password must contain at least one uppercase letter.")
+          );
+        }
+      } else {
+        // Password is less than 8 characters
+        callback(new Error("Password must be at least 8 characters long."));
+      }
+    };
+
+    const validatePhoneNumber = (rule, value, callback) => {
+      // Remove any non-numeric characters from the input
+      const phoneNumber = value?.replace(/\D/g, "");
+
+      // Check if the cleaned phone number has exactly 10 digits
+      if (phoneNumber?.length === 11) {
+        // Valid phone number
+        callback();
+      } else {
+        // Invalid phone number
+        callback(new Error("Please enter a valid 11-digit phone number."));
+      }
+    };
+    const formState = reactive({
+      firstName: "",
+      lastName: "",
+      gender: "",
+      password: "",
+      emailAddress: "",
+      phoneNumber: "",
+      userRole: "admin",
+    });
+    watch(addsuccess, () => {
+    
+      if (addsuccess.value) {
+        message.success("Admin creation successful!")
+        visible.value = false;
+      }
+    });
     return {
-      matched,
+      validatePassword,
+
+      handleSubmit,
+      formState,
+      validatePhoneNumber,
+      isLoading,
+      error,
     };
   },
 });
 
-export default AddNew;
+export default SignUp;
 </script>

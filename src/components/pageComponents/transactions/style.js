@@ -74,7 +74,7 @@ const UserTableStyleWrapper = Styled.nav`
           border-radius: 12px;
           text-transform: capitalize;
           display: inline-block !important;
-          background: #ddd;
+        
           &.active{
             background-color: ${({ theme }) => theme['success-color']}15;
             color: ${({ theme }) => theme['success-color']};

@@ -11,7 +11,7 @@
     <NavTitle class="ninjadash-sidebar-nav-title">Menu</NavTitle>
 
     <a-menu-item
-      v-for="menu in menus"
+      v-for="menu in filteredMenu"
       @click="toggleCollapsed"
       :key="menu.title"
       :disabled="menu.disable"
@@ -103,12 +103,14 @@ export default defineComponent({
         url: "/dashboard",
         icon: "home",
         disable: false,
+        role: "all",
       },
       {
         title: "services",
         url: "/services",
         icon: "archive",
         disable: false,
+        role: "all",
       },
 
       {
@@ -116,18 +118,21 @@ export default defineComponent({
         url: "/transactions",
         icon: "transaction",
         disable: false,
+        role: "all",
       },
       {
         title: "airtime & data",
         url: "/airtime-and-data",
         icon: "sim-card",
         disable: true,
+        role: "all",
       },
       {
         title: "transfers",
         url: "/transfers",
         icon: "exchange",
         disable: true,
+        role: "all",
       },
 
       {
@@ -135,18 +140,21 @@ export default defineComponent({
         url: "/user-management",
         icon: "users-alt",
         disable: false,
+        role: "admin",
       },
       {
         title: "Product Management",
         url: "/product-management",
         icon: "box",
         disable: false,
+        role: "admin",
       },
       {
         title: "banner management",
         url: "/banner-management",
         icon: "browser",
         disable: false,
+        role: "admin",
       },
     ];
     const state = reactive({
@@ -192,6 +200,12 @@ export default defineComponent({
       }
     );
 
+    const filteredMenu = computed(() => {
+      return store.state.auth.userData.userRole.toLowerCase() !== "admin"
+        ? menus.filter((i) => i.role !== "admin")
+        : menus;
+    });
+
     return {
       mode,
       ...toRefs(state),
@@ -206,6 +220,7 @@ export default defineComponent({
       onClick,
       t,
       menus,
+      filteredMenu,
     };
   },
 });

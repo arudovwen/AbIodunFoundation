@@ -1,33 +1,33 @@
 export const userTableHeader = [
-  {
-    title: "Id",
-    dataIndex: "userId",
-    key: "userid",
-  },
+  // {
+  //   title: "Id",
+  //   dataIndex: "userId",
+  //   key: "userId",
+  // },
   {
     title: "Name",
-    dataIndex: "user",
-    key: "user",
+    dataIndex: "fullName",
+    key: "fullName",
   },
   {
     title: "Email",
-    dataIndex: "email",
-    key: "email",
+    dataIndex: "emailAddress",
+    key: "emailAddress",
   },
   {
     title: "Email validated",
-    dataIndex: "emailvalidated",
-    key: "company",
+    dataIndex: "emailValidated",
+    key: "emailValidated",
   },
   {
     title: "Phone number",
-    dataIndex: "phoneNumber",
-    key: "phoneNumber",
+    dataIndex: "mobileNo",
+    key: "mobileNo",
   },
   {
     title: "Join Date",
-    dataIndex: "joinDate",
-    key: "joinDate",
+    dataIndex: "createdOn",
+    key: "createdOn",
   },
   {
     title: "Role",
@@ -43,7 +43,7 @@ export const userTableHeader = [
     title: "Actions",
     dataIndex: "action",
     key: "action",
-    width: "90px",
+   
   },
 ];
 export const adminTableHeader = [
@@ -85,15 +85,15 @@ export const adminTableHeader = [
   },
 ];
 export const productTableHeader = [
+  // {
+  //   title: "Product Id",
+  //   dataIndex: "productid",
+  //   key: "productid",
+  // },
   {
-    title: "Id",
-    dataIndex: "id",
-    key: "id",
-  },
-  {
-    title: "Product Id",
-    dataIndex: "productid",
-    key: "productid",
+    title: "Product Name",
+    dataIndex: "productName",
+    key: "productName",
   },
   {
     title: "Product type",
@@ -101,25 +101,21 @@ export const productTableHeader = [
     key: "productType",
   },
   {
-    title: "Product Name",
-    dataIndex: "productName",
-    key: "productName",
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
   },
   {
     title: "Created On",
     dataIndex: "createdOn",
     key: "createdOn",
   },
-  {
-    title: "Created by",
-    dataIndex: "createdBy",
-    key: "createdBy",
-  },
-  {
-    title: "Description",
-    dataIndex: "derscription",
-    key: "description",
-  },
+  // {
+  //   title: "Created by",
+  //   dataIndex: "createdBy",
+  //   key: "createdBy",
+  // },
+
   {
     title: "Deleted",
     dataIndex: "isDeleted",
@@ -132,18 +128,70 @@ export const productTableHeader = [
     width: "90px",
   },
 ];
+export const productDetailTableHeader = [
+  // {
+  //   title: "Product Id",
+  //   dataIndex: "productId",
+  //   key: "productId",
+  // },
+  {
+    title: "MaxAmount",
+    dataIndex: "maxAmount",
+    key: "maxAmount",
+  },
+  {
+    title: "Min Amount",
+    dataIndex: "minAmount",
+    key: "minAmount",
+  },
+
+  {
+    title: "Equity Contribution",
+    dataIndex: "equityContribution",
+    key: "equityContribution",
+  },
+  {
+    title: "Lock-In Period",
+    dataIndex: "lockInPeriod",
+    key: "lockInPeriod",
+  },
+  {
+    title: "Upfront Fees",
+    dataIndex: "upfrontFees",
+    key: "upfrontFees",
+  },
+
+  {
+    title: "Interest Rate",
+    dataIndex: "interestRate",
+    key: "interestRate",
+  },
+
+  {
+    title: "Rate",
+    dataIndex: "rate",
+    key: "rate",
+  },
+
+  {
+    title: "Actions",
+    dataIndex: "action",
+    key: "action",
+    width: "90px",
+  },
+];
 
 export const userProductTableHeader = [
-  {
-    title: "User Id",
-    dataIndex: "userId",
-    key: "userId",
-  },
-  {
-    title: "Product Id",
-    dataIndex: "productId",
-    key: "productId",
-  },
+  // {
+  //   title: "User Id",
+  //   dataIndex: "userId",
+  //   key: "userId",
+  // },
+  // {
+  //   title: "Product Id",
+  //   dataIndex: "productId",
+  //   key: "productId",
+  // },
   {
     title: "Amount",
     dataIndex: "amount",
@@ -193,16 +241,16 @@ export const transactionTableHeader = [
     dataIndex: "TransactionDate",
     key: "TransactionDate",
   },
-  {
-    title: "Product Id",
-    dataIndex: "ProductId",
-    key: "ProductId",
-  },
-  {
-    title: "User Id",
-    dataIndex: "UserId",
-    key: "UserId",
-  },
+  // {
+  //   title: "Product Id",
+  //   dataIndex: "ProductId",
+  //   key: "ProductId",
+  // },
+  // {
+  //   title: "User Id",
+  //   dataIndex: "UserId",
+  //   key: "UserId",
+  // },
   {
     title: "Amount",
     dataIndex: "Amount",
@@ -217,7 +265,7 @@ export const transactionTableHeader = [
     title: "Description",
     dataIndex: "description",
     key: "description",
-  }
+  },
 ];
 
 export const requestTableHeader = [
@@ -241,7 +289,7 @@ export const requestTableHeader = [
     dataIndex: "description",
     key: "description",
   },
- 
+
   {
     title: "Actions",
     dataIndex: "action",
@@ -251,11 +299,11 @@ export const requestTableHeader = [
 ];
 
 export const bannerTableHeader = [
-  {
-    title: "Title",
-    dataIndex: "title",
-    key: "title",
-  },
+  // {
+  //   title: "Title",
+  //   dataIndex: "title",
+  //   key: "title",
+  // },
   {
     title: "Description",
     dataIndex: "description",

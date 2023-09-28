@@ -1,3 +1,4 @@
+<!-- eslint-disable no-unused-vars -->
 <template>
   <div>
     <div>
@@ -10,111 +11,60 @@
                 :model="formState"
                 @finish="handleSubmit"
                 layout="vertical"
-                class="grid md:grid-cols-2 md:gap-x-8"
+                class="max-w-sm mx-auto"
               >
                 <a-form-item
-                  label="Name"
-                  name="name"
-                  :rules="[{ required: true, message: 'Please input a name!' }]"
-                >
-                  <a-input
-                    v-model:value="formState.amount"
-                    placeholder="Name"
-                  />
-                </a-form-item>
-
-                <a-form-item
-                  label="Minimum amount"
-                  name="minAmount"
+                  label="Product Name"
+                  name="productName"
                   :rules="[
-                    {
-                      required: true,
-                      message: 'Please input a minimum amount!',
-                    },
-                  ]"
-                >
-                  <CurrencyInput
-                    v-model:value="formState.businessAddress"
-                    placeholder="Provide a Minimum amount"
-                    :options="{ currency: 'ngn' }"
-                  />
-                </a-form-item>
-                <a-form-item
-                  label="Maximum amount"
-                  name="maxAmount"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'Please input a maximum amount!',
-                    },
-                  ]"
-                >
-                  <CurrencyInput
-                    v-model:value="formState.businessAddress"
-                    placeholder="Provide a Maximum amount"
-                    :options="{ currency: 'ngn' }"
-                  />
-                </a-form-item>
-                <a-form-item
-                  label="Rate"
-                  name="residentialAddress"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'Please input a rate !',
-                    },
+                    { required: true, message: 'Please input a product name!' },
                   ]"
                 >
                   <a-input
-                    v-model:value="formState.residentialAddress"
-                    placeholder="Enter rate"
+                    v-model:value="formState.productName"
+                    :placeholder="
+                      loading ? 'Loading...' : 'Provide a product name'
+                    "
+                    :disabled="loading"
                   />
                 </a-form-item>
                 <a-form-item
-                  label="Upfront Fees"
-                  name="businessType"
+                  name="productType"
+                  label="Product type"
                   :rules="[
-                    {
-                      required: true,
-                      message: 'Please input an upfront fee!',
-                    },
+                    { required: true, message: 'Please select a type!' },
                   ]"
                 >
-                  <CurrencyInput
-                    v-model:value="formState.businessAddress"
-                    placeholder="Provide an upfront fee"
-                    :options="{ currency: 'ngn' }"
-                  />
-                </a-form-item>
-                <a-form-item
-                  label="Interest rate"
-                  name="bvn"
-                  :rules="[
-                    { required: true, message: 'Please input your BVN!' },
-                  ]"
-                >
-                  <a-input v-model:value="formState.bvn" placeholder="" />
+                  <a-select size="large" v-model:value="formState.productType">
+                    <a-select-option disabled value="">
+                      {{
+                        loading ? "Loading..." : "Please Select"
+                      }}</a-select-option
+                    >
+                    <a-select-option value="loans">Loans</a-select-option>
+                    <a-select-option value="savings">Savings</a-select-option>
+                  </a-select>
                 </a-form-item>
 
-                <a-form-item label="Due date" name="dueDate">
-                  <a-date-picker class="w-full" />
-                </a-form-item>
-
-                <a-form-item label="Description" name="description">
+                <a-form-item label="Description" name="productDescription">
                   <a-textarea
-                    v-model:value="formState.description"
-                    placeholder="Enter a description"
+                    v-model:value="formState.productDescription"
+                    :placeholder="
+                      loading ? 'Loading...' : 'Enter a product description'
+                    "
+                    :disabled="loading"
                   />
                 </a-form-item>
 
                 <div class="col-span-2 flex justify-center my-4">
                   <sdButton
-                    class="btn-create w-full max-w-[250px] mx-auto"
+                    class="btn-create w-full mx-auto"
                     htmlType="submit"
                     type="primary"
                     size="lg"
+                    :disabled="isLoading"
                   >
-                    Update Product
+                    {{ isLoading ? "Processing..." : " Update Product" }}
                   </sdButton>
                 </div>
               </a-form>
@@ -126,34 +76,50 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
 import { BasicFormWrapper } from "../../styled";
-import CurrencyInput from "components/currency/CurrencyInput";
-// import { message } from "ant-design-vue";
+import { message } from "ant-design-vue";
+import { computed, reactive, ref, watch, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRouter, useRoute } from "vue-router";
 
+const { state, dispatch } = useStore();
+const isLoading = computed(() => state.products.editloading);
+const editsuccess = computed(() => state.products.editsuccess);
+const product = computed(() => state.products.product);
+const loading = computed(() => state.products.loading);
+
+const router = useRouter();
+const route = useRoute();
 const values = ref(null);
-
 const handleSubmit = (value) => {
   values.value = value;
+  dispatch("editProduct", formState);
 };
 
 const formState = reactive({
-  first_name: "",
-  last_name: "",
-  phone: "",
-  gender: "",
-  email: "",
-  password: "",
+  id: "",
+  productName: "",
+  productType: "",
+  productDescription: "",
 });
 
-// const handleChange = (info) => {
-//   if (info.file.status !== "uploading") {
-//     console.log(info.file, info.fileList);
-//   }
-//   if (info.file.status === "done") {
-//     message.success(`${info.file.name} file uploaded successfully`);
-//   } else if (info.file.status === "error") {
-//     message.error(`${info.file.name} file upload failed.`);
-//   }
-// };
+onMounted(() => {
+ if(route.params.id){
+  dispatch("getProduct", route.params.id);
+ }
+});
+watch(editsuccess, () => {
+  if (editsuccess.value) {
+    message.success("Product update successful!");
+    router.push("/product-management");
+  }
+});
+watch(product, () => {
+  if (product.value) {
+    formState.id =  product.value.id;
+    formState.productName = product.value.productName;
+    formState.productType = product.value.productType;
+    formState.productDescription = product.value.productDescription;
+  }
+});
 </script>

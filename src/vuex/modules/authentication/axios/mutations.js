@@ -1,88 +1,114 @@
 export default {
+  updateAvatar(state, data) {
+    state.avatar = data;
+  },
   loginBegin(state) {
     state.loading = true;
     state.error = null;
-    state.success = false;
+    state.loginsuccess = false;
   },
   loginSuccess(state, data) {
     state.loading = false;
-    state.success = true;
+    state.loginsuccess = true;
     state.login = data;
-    state.accessToken = data; // Assuming 'accessToken' is a property in 'data'
+    state.accessToken = data;
   },
   loginErr(state, err) {
     state.loading = false;
     state.error = err;
     state.accessToken = null;
+    state.loginsuccess = false;
   },
   logoutBegin(state) {
     state.loading = true;
     state.error = null;
-    state.success = false;
+    state.logoutsuccess = false;
   },
   logoutSuccess(state) {
     state.loading = false;
     state.login = false;
     state.accessToken = null;
-    state.success = true;
+    state.logoutsuccess = true;
   },
   logoutErr(state, err) {
     state.loading = false;
     state.error = err;
+    state.logoutsuccess = false;
   },
   signupBegin(state) {
     state.loading = true;
     state.error = null;
-    state.success = false;
+    state.signupsuccess = false;
   },
   signupSuccess(state) {
     state.loading = false;
-    state.success = true;
+    state.signupsuccess = true;
   },
   signupErr(state, err) {
     state.loading = false;
     state.error = err;
+    state.signupsuccess = false;
   },
 
-  validateBegin(state) {
-    state.loading = true;
+  validateInitiateBegin(state) {
+    state.validatebeginloading = true;
     state.error = null;
-    state.success = false;
-    state.token = "";
+    state.validatebeginsuccess = false;
   },
-  validateSuccess(state, data) {
-    state.loading = false;
-    state.success = true;
+  validateInitiateSuccess(state, data) {
+    state.validatebeginloading = false;
+    state.validatebeginsuccess = true;
     state.token = data;
   },
-  validateErr(state, err) {
-    state.loading = false;
+  validateInitiateErr(state, err) {
+    state.validatebeginloading = false;
     state.error = err;
+    state.validatebeginsuccess = false;
   },
+
+  validatEndBegin(state) {
+    state.validateendloading = true;
+    state.error = null;
+    state.validateendsuccess = false;
+  },
+  validateEndSuccess(state, data) {
+    state.validateendloading = false;
+    state.validateendsuccess = true;
+    state.token = data;
+  },
+  validateEndErr(state, err) {
+    state.validateendloading = false;
+    state.error = err;
+    state.validateendsuccess = false;
+  },
+
   forgotBegin(state) {
     state.loading = true;
     state.error = null;
-    state.success = false;
+    state.forgotsuccess = false;
   },
-  forgotSuccess(state) {
+  forgotSuccess(state, data) {
     state.loading = false;
-    state.success = true;
+    state.forgotsuccess = true;
+    state.token = data;
   },
   forgotErr(state, err) {
     state.loading = false;
     state.error = err;
+    state.forgotsuccess = false;
   },
   resetBegin(state) {
     state.loading = true;
     state.error = null;
-    state.success = false;
+    state.resetsuccess = false;
   },
   resetSuccess(state) {
     state.loading = false;
-    state.success = true;
+    state.resetsuccess = true;
   },
   resetErr(state, err) {
     state.loading = false;
     state.error = err;
+    state.resetsuccess = false;
   },
 };

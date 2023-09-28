@@ -119,6 +119,7 @@
                 htmlType="submit"
                 type="primary"
                 size="lg"
+                :disabled="isLoading || !checked"
               >
                 {{ isLoading ? "Loading..." : "Create Account" }}
               </sdButton>
@@ -179,20 +180,20 @@ const SignUp = defineComponent({
   setup() {
     const { state, dispatch } = useStore();
     const isLoading = computed(() => state.auth.loading);
-    const isSuccess = computed(() => state.auth.success);
+    const isSuccess = computed(() => state.auth.signupsuccess);
     const error = computed(() => state.auth.error);
     const router = useRouter();
     const values = ref(null);
     const checked = ref(null);
     const handleSubmit = (value) => {
-    
       values.value = value;
       dispatch("signup", formState);
     };
 
-    const onChange = (check) => {
-      checked.value = check;
+    const onChange = (e) => {
+      checked.value = e.target.checked;
     };
+
     const validatePassword = (rule, value, callback) => {
       // Check if the password is at least 8 characters long
       if (value.length >= 8) {
@@ -246,11 +247,13 @@ const SignUp = defineComponent({
       password: "",
       emailAddress: "",
       phoneNumber: "",
+      userRole: "cust",
     });
     watch(isSuccess, () => {
-      router.push(
-        `/auth/validate-email/${encodeURIComponent(formState.emailAddress)}`
-      );
+      isSuccess.value &&
+        router.push(
+          `/auth/validate-email/${encodeURIComponent(formState.emailAddress)}`
+        );
     });
     return {
       validatePassword,
@@ -260,6 +263,7 @@ const SignUp = defineComponent({
       validatePhoneNumber,
       isLoading,
       error,
+      checked,
     };
   },
 });

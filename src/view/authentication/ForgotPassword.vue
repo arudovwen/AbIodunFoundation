@@ -13,7 +13,7 @@
             </p>
             <a-form-item
               label="Email Address"
-              name="EmailAddress"
+              name="emailAddress"
               :rules="[
                 {
                   required: true,
@@ -24,7 +24,7 @@
             >
               <a-input
                 type="email"
-                v-model:value="formState.EmailAddress"
+                v-model:value="formState.emailAddress"
                 placeholder="name@example.com"
               />
             </a-form-item>
@@ -34,6 +34,7 @@
                 htmlType="submit"
                 type="primary"
                 size="lg"
+                :disabled="isLoading"
               >
                 {{ isLoading ? "Loading..." : "Send Reset Instructions" }}
               </sdButton>
@@ -57,20 +58,34 @@ const ForgotPassword = defineComponent({
   name: "ForgotPassword",
   components: { AuthWrapper },
   setup() {
+    // eslint-disable-next-line no-unused-vars
     const router = useRouter();
     const { state, dispatch } = useStore();
     const isLoading = computed(() => state.auth.loading);
-    const isSuccess = computed(() => state.auth.success);
+    const isSuccess = computed(() => state.auth.forgotsuccess);
+    const token = computed(() => state.auth.token);
+
     const handleSubmit = (values) => {
       dispatch("forgotPassword", values);
     };
 
     const formState = reactive({
-      EmailAddress: "",
+      emailAddress: "",
+      token: "",
+    });
+    watch(token, () => {
+    
+      formState.token = token?.value
+        
+        ?.replace("Password reset initiated successfully!", "")
+        ?.trim();
+       
+       router.push(`/auth/reset-password?code=${formState.token}`);
     });
     watch(isSuccess, () => {
-      message.success("Email sent!");
-      router.push(`/auth/reset-password`);
+      if (isSuccess.value) {
+        message.success("Email sent!");
+      }
     });
     return {
       handleSubmit,

@@ -29,7 +29,7 @@ const breadcrumbs = [
   },
   {
     path: "/product-management",
-    breadcrumbName: "Product management",
+    breadcrumbName: "Products",
   },
   {
     path: "#",

@@ -107,16 +107,17 @@ export const paths = [
 
   {
     path: "/user-management",
-    name: "user-management",
+    name: "user management",
     component: () =>
       import(/* webpackChunkName: "users" */ "@/view/pages/UsersPage.vue"),
+    meta: { admin: true },
   },
   {
     path: "/product-management",
-    name: "product-management",
+    name: "product management",
     component: () =>
       import(
-        /* webpackChunkName: "Settings" */ "@/view/pages/ProductManagement.vue"
+        /* webpackChunkName: "productmanagement" */ "@/view/pages/ProductManagement.vue"
       ),
     children: [
       {
@@ -152,6 +153,22 @@ export const paths = [
           ),
       },
       {
+        name: "add product detail",
+        path: "product-detail/:id",
+        component: () =>
+          import(
+            /* webpackChunkName: "addproductdetail" */ "@/view/pages/AddProductDetailPage.vue"
+          ),
+      },
+      {
+        name: "edit product detail",
+        path: "edit-product-detail/:id",
+        component: () =>
+          import(
+            /* webpackChunkName: "editproductdetail" */ "@/view/pages/EditProductDetailPage.vue"
+          ),
+      },
+      {
         name: "requests",
         path: "requests",
         component: () =>
@@ -160,13 +177,13 @@ export const paths = [
           ),
       },
     ],
+    meta: { admin: true },
   },
   {
     path: "/banner-management",
     name: "banner management",
     component: () =>
-      import(
-        /* webpackChunkName: "Banners" */ "@/view/pages/BannerPage.vue"
-      ),
+      import(/* webpackChunkName: "Banners" */ "@/view/pages/BannerPage.vue"),
+    meta: { admin: true },
   },
 ];

@@ -2295,7 +2295,7 @@ const TableWrapper = Styled.div`
         }
         .table-actions{
             text-align: ${({ theme }) => (theme.rtl ? 'left' : 'right')};
-            min-width: 150px !important;
+            // min-width: 150px !important;
             button{
                 height: 40px;
                 padding: 0 11px;

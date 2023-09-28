@@ -10,13 +10,7 @@
             <p class="forgot-text mb-6">
               Enter the otp code sent your email on registration
             </p>
-            <a-form-item
-              label="Otp Code"
-              name="token"
-              :rules="[{ required: true, message: 'Please input your otp!' }]"
-            >
-              <a-input type="text" v-model:value="formState.token" />
-            </a-form-item>
+
             <a-form-item
               name="password"
               label="Password"
@@ -34,7 +28,7 @@
               Didn't get an otp?
               <button
                 @click="handleRequest"
-                :disabled="isLoading || isRequesting"
+                :disabled="validatebeginloading || isRequesting"
                 class="font-medium disabled:cursor-not-allowed"
               >
                 {{
@@ -50,9 +44,9 @@
                 htmlType="submit"
                 type="primary"
                 size="lg"
-                :disabled="isLoading"
+                :disabled="validateendloading || validatebeginloading"
               >
-                {{ isLoading ? "Loading..." : "Submit" }}
+                {{ validateendloading ? "Loading..." : "Submit" }}
               </sdButton>
             </a-form-item>
             <p class="return-text text-center">
@@ -82,16 +76,21 @@ const ValidateEmail = defineComponent({
   name: "ValidateEmail",
   components: { AuthWrapper },
   setup() {
+    const { state, dispatch } = useStore();
     const router = useRouter();
     const route = useRoute();
     const emailAddress = route.params.email;
-    const { state, dispatch } = useStore();
-    const isLoading = computed(() => state.auth.loading);
-    const isSuccess = computed(() => state.auth.success);
+
+
+    const validatebeginloading = computed(() => state.auth.validatebeginloading);
+    const validateendloading = computed(() => state.auth.validateendloading);
+    // const validatebeginsuccess = computed(() => state.auth.validatebeginsuccess);
+    const validateendsuccess = computed(() => state.auth.validateendsuccess);
+    const token = computed(() => state.auth.token);
+
     const error = computed(() => state.auth.error);
     const handleSubmit = () => {
-      console.log(formState);
-      // dispatch("validateEmailComplete", { formState });
+      dispatch("validateEmailComplete", formState);
     };
 
     const formState = reactive({
@@ -99,13 +98,24 @@ const ValidateEmail = defineComponent({
       token: "",
       password: "",
     });
-    watch(isSuccess, () => {
-      message.success("Email validation successful");
-      router.push("/auth/login");
+
+    watch(validateendsuccess, () => {
+      if (validateendsuccess.value) {
+        message.success("Email validation successful");
+        router.push("/auth/login");
+      }
     });
+
+    watch(token, () => {
+      formState.token = token?.value?.split(":")[1]?.trim();
+    });
+
     onMounted(() => {
-      dispatch("validateEmailInitiate", { emailAddress });
+      setTimeout(() => {
+        dispatch("validateEmailInitiate", { emailAddress });
+      }, 1000);
     });
+
     const requestCountdown = ref(0);
     const isRequesting = ref(false);
 
@@ -132,11 +142,14 @@ const ValidateEmail = defineComponent({
     return {
       handleSubmit,
       formState,
-      isLoading,
+ 
       error,
       requestCountdown,
       isRequesting,
       handleRequest,
+      token,
+      validatebeginloading,
+      validateendloading
     };
   },
 });

@@ -27,7 +27,7 @@
               </router-link>
             </div>
             <a-form-item>
-              <sdButton class="btn-signin" htmlType="submit" type="primary">
+              <sdButton :disabled="isLoading" class="btn-signin" htmlType="submit" type="primary">
                 {{ isLoading ? "Loading..." : "Sign In" }}
               </sdButton>
             </a-form-item>

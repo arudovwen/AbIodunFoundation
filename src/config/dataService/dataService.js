@@ -87,6 +87,7 @@ client.interceptors.response.use(
      * For example, on token expiration retrieve a new access token, retry a failed request etc
      */
     const { response } = error;
+   
     const originalRequest = error.config;
     if (response) {
       if (response.status === 500) {
@@ -94,7 +95,7 @@ client.interceptors.response.use(
           message: "Error",
           description: response.data.message,
         });
-      } else if (response.status === 400) {
+      } else if (response.status > 399 && response.status < 500) {
         Notification.error({
           message: "Error",
           description: response.data.message,

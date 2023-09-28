@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="w-[300px] sm:w-[400px]">
+    <h1 class="text-center font-bold text-lg">Create banner</h1>
     <div>
       <a-row justify="center">
         <a-col :sm="24">
@@ -11,7 +12,7 @@
                 @finish="handleSubmit"
                 layout="vertical"
               >
-                <a-form-item
+                <!-- <a-form-item
                   label="Title"
                   name="name"
                   :rules="[{ required: true, message: 'Please input a name!' }]"
@@ -20,40 +21,42 @@
                     v-model:value="formState.amount"
                     placeholder="Name"
                   />
-                </a-form-item>
+                </a-form-item> -->
 
                 <a-form-item label="Description" name="description">
                   <a-textarea
                     v-model:value="formState.description"
                     placeholder="Enter a description"
+                    :rows="5"
                   />
                 </a-form-item>
                 <a-form-item label="Cover" name="cover">
                   <a-upload-dragger
                     class="ninjadash-uploader-large"
-                    v-model:fileList="fileList"
                     name="file"
-                    :multiple="true"
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     @change="handleChange"
                   >
                     <p class="ant-upload-text">Drop file here to upload</p>
                   </a-upload-dragger>
                 </a-form-item>
-               
-                  <div class="flex gap-x-2 items-center">
-                    <a-switch v-model:checked="checked" :class="checked?'bg-blue-600':' bg-gray-400'"/>
-                    <span class="font-medium">Active</span>
-                  </div>
-               
+
+                <div class="flex gap-x-2 items-center">
+                  <a-switch
+                    v-model:checked="checked"
+                    :class="checked ? 'bg-blue-600' : ' bg-gray-400'"
+                  />
+                  <span class="font-medium">Active</span>
+                </div>
+
                 <div class="col-span-2 flex justify-center mt-7">
                   <sdButton
                     class="btn-create w-full max-w-[250px] mx-auto"
                     htmlType="submit"
                     type="primary"
                     size="lg"
+                    :disabled="isLoading"
                   >
-                    Create Banner
+                    {{ isLoading ? "Processing..." : "Create Banner" }}
                   </sdButton>
                 </div>
               </a-form>
@@ -65,33 +68,61 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, watch, computed } from "vue";
 import { BasicFormWrapper } from "../../styled";
 import { message } from "ant-design-vue";
+import { useStore } from "vuex";
 
 const values = ref(null);
-const checked = ref(false)
+// eslint-disable-next-line no-unused-vars
+const { state, dispatch } = useStore();
+const isLoading = computed(() => state.banners.addloading);
+const addsuccess = computed(() => state.banners.addsuccess);
+const checked = ref(false);
 const handleSubmit = (value) => {
   values.value = value;
+  formState.status = checked.value;
+ 
+dispatch("addBanner", formState);
 };
 
 const formState = reactive({
-  first_name: "",
-  last_name: "",
-  phone: "",
-  gender: "",
-  email: "",
-  password: "",
+  description: "",
+  bannerUrl: "string",
+  status: "",
 });
-const fileList = [];
+
 const handleChange = (info) => {
-  if (info.file.status !== "uploading") {
-    console.log(info.file, info.fileList);
+  const file = info.file;
+  console.log("🚀 ~ file: AddBanner.vue:101 ~ handleChange ~ file:", file);
+  const allowedTypes = [
+    "image/svg+xml",
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+  ];
+  if (!allowedTypes.includes(file.type)) {
+    message.error(
+      `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG allowed)`
+    );
+    return false; // Prevent the upload
   }
-  if (info.file.status === "done") {
-    message.success(`${info.file.name} file uploaded successfully`);
-  } else if (info.file.status === "error") {
-    message.error(`${info.file.name} file upload failed.`);
-  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  dispatch("uploadFile", {
+    userId: this.userData.id,
+    fileType: "avatar",
+    formData,
+  });
+
+  return false; // Prevent default behavior
 };
+
+watch(addsuccess, () => {
+  if (addsuccess.value) {
+    message.success("Banner creation successful!");
+  }
+});
 </script>

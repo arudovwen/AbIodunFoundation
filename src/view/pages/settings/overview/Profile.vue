@@ -15,71 +15,81 @@
             @finishFailed="handleFinishFailed"
             layout="vertical"
           >
-            <a-form-Item label="First Name">
-              <a-input v-model:value="formState.first_name" />
-            </a-form-Item>
-            <a-form-Item label="Last Name">
-              <a-input v-model:value="formState.last_name" />
-            </a-form-Item>
-            <a-form-item label="Phone Number">
-              <a-input v-model:value="formState.phone" />
+            <a-form-item
+              label="First Name"
+              name="firstName"
+              :rules="[
+                { required: true, message: 'Please input your First name!' },
+              ]"
+            >
+              <a-input
+                v-model:value="formState.firstName"
+                placeholder="First name"
+              />
             </a-form-item>
-            <a-form-item label="Gender">
-              <a-select v-model:value="formState.gender" style="width: 100%">
-                <a-select-option value="">Please Select</a-select-option>
-                <a-select-option value="bangladesh">Male</a-select-option>
-                <a-select-option value="india">Female</a-select-option>
-              </a-select>
+            <a-form-item
+              label="Last Name"
+              name="lastName"
+              :rules="[
+                { required: true, message: 'Please input your Last name!' },
+              ]"
+            >
+              <a-input
+                v-model:value="formState.lastName"
+                placeholder="Last name"
+              />
+            </a-form-item>
+            <a-form-item
+              name="emailAddress"
+              label="Email Address"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Please input your email!',
+                  type: 'email',
+                },
+              ]"
+            >
+              <a-input
+                type="email"
+                readonly
+                :value="formState.emailAddress"
+                placeholder="name@example.com"
+              />
             </a-form-item>
 
-            <a-form-item label="Bio">
-              <a-textarea v-model:value="formState.userBio" :rows="3" />
+            <a-form-item
+              name="gender"
+              label="Gender"
+              :rules="[
+                { required: true, message: 'Please select your gender!' },
+              ]"
+            >
+              <a-select size="large" v-model:value="formState.gender">
+                <a-select-option value="">Please Select</a-select-option>
+                <a-select-option value="male">Male</a-select-option>
+                <a-select-option value="female">Female</a-select-option>
+              </a-select>
             </a-form-item>
-            <!-- <a-form-item name="skills" label="Skills">
-              <TagInput>
-                <div>
-                  <template v-for="(tag, index) in tags">
-                    <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
-                      <a-tag
-                        :key="tag"
-                        :closable="index !== 0"
-                        @close="() => handleClose(tag)"
-                      >
-                        {{ `${tag.slice(0, 20)}...` }}
-                      </a-tag>
-                    </a-tooltip>
-                    <a-tag
-                      v-else
-                      :key="index + 1"
-                      :closable="index !== 0"
-                      @close="() => handleClose(tag)"
-                    >
-                      {{ tag }}
-                    </a-tag>
-                  </template>
-                  <div>
-                    <a-input
-                      v-if="inputVisible"
-                      ref="input"
-                      type="text"
-                      size="small"
-                      :style="{ width: '78px' }"
-                      :value="inputValue"
-                      @change="handleInputChange"
-                      @blur="handleInputConfirm"
-                      @keyup.enter="handleInputConfirm"
-                    />
-                    <a-tag
-                      v-else
-                      style="background: #fff; borderstyle: dashed"
-                      @click="showInput"
-                    >
-                      <unicon name="plus" width="14"></unicon> New Tag
-                    </a-tag>
-                  </div>
-                </div>
-              </TagInput>
-            </a-form-item> -->
+            <a-form-item
+              label="Phone Number"
+              name="phoneNumber"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Please input your phone number!',
+                },
+                {
+                  validator: validatePhoneNumber,
+                  message: 'Please enter a valid 11-digit phone number.',
+                },
+              ]"
+            >
+              <a-input
+                v-model:value="formState.phoneNumber"
+                placeholder="Phone number"
+              />
+            </a-form-item>
 
             <div class="setting-form-actions">
               <sdButton size="default" htmlType="submit" type="primary">
@@ -101,8 +111,8 @@ import {
   BasicFormWrapper,
   //  TagInput
 } from "../../../styled";
-import { defineComponent, reactive } from "vue";
-
+import { onMounted, defineComponent, reactive, computed, watch } from "vue";
+import { useStore } from "vuex";
 const Profile = defineComponent({
   name: "Profile",
   components: {
@@ -111,12 +121,22 @@ const Profile = defineComponent({
   },
 
   setup() {
+    const { state, dispatch } = useStore();
+    const loading = computed(() => state.users.loading);
+    const profile = computed(() => state.users.profile);
+    const success = computed(() => state.users.success);
+    const userData = computed(() => state.auth.userData);
+
+    onMounted(() => {
+      dispatch("getUserById", userData.value.id);
+    });
     const formState = reactive({
-      first_name: "",
-      last_name: "",
-      phone: "",
+      firstName: "",
+      lastName: "",
       gender: "",
-      userBio: "",
+      password: "",
+      emailAddress: "",
+      phoneNumber: "",
     });
 
     const handleFinish = (values) => {
@@ -127,11 +147,37 @@ const Profile = defineComponent({
     const handleFinishFailed = (errors) => {
       console.log(errors);
     };
+    const validatePhoneNumber = (rule, value, callback) => {
+      // Remove any non-numeric characters from the input
+      const phoneNumber = value?.replace(/\D/g, "");
+
+      // Check if the cleaned phone number has exactly 10 digits
+      if (phoneNumber?.length === 11) {
+        // Valid phone number
+        callback();
+      } else {
+        // Invalid phone number
+        callback(new Error("Please enter a valid 11-digit phone number."));
+      }
+    };
+    watch(profile, () => {
+
+      formState.firstName = profile.value.firstName;
+      formState.lastName = profile.value.lastName;
+      formState.gender = profile.value.gender;
+
+      formState.emailAddress = profile.value.email;
+      formState.phoneNumber = profile.value.phoneNumber;
+    });
 
     return {
+      validatePhoneNumber,
+      success,
+      loading,
       formState,
       handleFinish,
       handleFinishFailed,
+      profile,
     };
   },
 
