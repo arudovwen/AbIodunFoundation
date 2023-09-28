@@ -21,10 +21,13 @@ const state = () => ({
 });
 
 const actions = {
-  async addBanner({ commit }, data) {
+  async addBanner({ commit }, { description, formData, status }) {
     try {
       commit("addBegin");
-      const response = await DataService.post(urls.CREATE_BANNER, data);
+      const response = await DataService.post(
+        `${urls.CREATE_BANNER}?description=${description}&status=${status}`,
+        formData
+      );
 
       if (response.status === 200) {
         commit("addSuccess");

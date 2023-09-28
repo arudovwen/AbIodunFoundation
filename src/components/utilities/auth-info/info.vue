@@ -79,7 +79,7 @@
                 <img
                   :src="avatar || require('../../../static/img/avatar/chat-auth.png')"
                   alt=""
-                  class="w-10"
+                  class="w-10 h-10 object-cover"
                 />
                 <figcaption>
                   <sdHeading as="h5">{{ profile.fullName }}</sdHeading>
@@ -93,16 +93,16 @@
                 </figcaption>
               </figure>
               <ul class="user-dropdown__links">
-                <li>
-                  <a to="/profile-settings/profile">
+                <!-- <li>
+                  <a to="page/profile-settings/profile">
                     <unicon name="user"></unicon> Profile
                   </a>
-                </li>
+                </li> -->
                 <li>
-                  <a to="/profile-settings">
+                  <router-link to="/page/profile-settings/profile">
                     <unicon name="setting"></unicon>
                     Settings
-                  </a>
+                  </router-link>
                 </li>
 
               
@@ -115,6 +115,7 @@
         </template>
         <a to="#" class="ninjadash-nav-action-link">
           <a-avatar
+          class="h-10 w-10 object-cover"
             :src="avatar || require('../../../static/img/avatar/chat-auth.png')"
           />
           <span class="ninjadash-nav-actions__author--name">{{

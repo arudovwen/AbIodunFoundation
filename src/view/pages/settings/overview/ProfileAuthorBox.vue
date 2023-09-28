@@ -2,7 +2,7 @@
   <sdCards headless>
     <div class="author-info">
       <figure>
-        <img :src="avatar || imageUrl" alt="avatar" />
+        <img :src="avatar || imageUrl" alt="avatar" class="h-32 w-32 object-cover" />
         <a-upload :before-upload="handleFileUpload">
           <a to="#">
             <loading-outlined v-if="loading"></loading-outlined>

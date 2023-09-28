@@ -1,4 +1,4 @@
-export function base64ToImage(base64, mimeType) {
+export function base64ToImage(base64, mimeType="image/png") {
   // Convert base64 to a Blob
   if (!base64 || !mimeType) return null; // Return null if base64 or mimeType is missing
 

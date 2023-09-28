@@ -114,7 +114,7 @@ export default defineComponent({
         role: "admin",
       },
       {
-        title: "Product Management",
+        title: "product management",
         url: "/product-management",
         icon: "box",
         disable: false,

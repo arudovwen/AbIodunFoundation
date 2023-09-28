@@ -135,6 +135,8 @@ import { bannerTableHeader } from "@/utility/constant";
 import AddBanner from "components/pageComponents/banners/AddBanner";
 import EditBanner from "components/pageComponents/banners/EditBanner";
 import { message } from "ant-design-vue";
+import { base64ToImage } from "@/utility/base64ToImage";
+
 
 const UserListTable = defineComponent({
   name: "UserListTable",
@@ -169,7 +171,7 @@ const UserListTable = defineComponent({
             <span>
               <figure>
                 <img
-                  src={bannerUrl}
+                  src={base64ToImage(bannerUrl)}
                   className="bg-gray-100 w-[100px] h-10 rounded-lg"
                   alt=""
                 />

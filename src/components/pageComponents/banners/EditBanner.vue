@@ -92,6 +92,8 @@ const fileList = ref([]);
 const handleSubmit = (value) => {
   values.value = value;
   formState.status = checked.value.toString();
+  const formData = new FormData();
+  formData.append("file", myfile.value);
 
   dispatch("editBanner", formState);
 };
@@ -126,15 +128,12 @@ const handleChange = (info) => {
     );
     return false; // Prevent the upload
   }
-
-  const formData = new FormData();
-  formData.append("file", file);
   myfile.value = file;
-  dispatch("uploadFile", {
-    userId: state.auth.userData.id,
-    fileType: "banner",
-    formData,
-  });
+  // dispatch("uploadFile", {
+  //   userId: state.auth.userData.id,
+  //   fileType: "banner",
+  //   formData,
+  // });
 
   return false; // Prevent default behavior
 };
