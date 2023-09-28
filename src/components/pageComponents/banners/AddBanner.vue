@@ -32,11 +32,13 @@
                 </a-form-item>
                 <a-form-item label="Cover" name="cover">
                   <a-upload-dragger
+                    v-model:file-list="fileList"
                     class="ninjadash-uploader-large"
                     name="file"
-                    @change="handleChange"
+                    :customRequest="handleChange"
+                    @preview="handlePreview"
                   >
-                    <p class="ant-upload-text">Drop file here to upload</p>
+                    <p class="ant-up load-text">Drop file here to upload</p>
                   </a-upload-dragger>
                 </a-form-item>
 
@@ -79,13 +81,16 @@ const { state, dispatch } = useStore();
 const isLoading = computed(() => state.banners.addloading);
 const addsuccess = computed(() => state.banners.addsuccess);
 const checked = ref(false);
+const fileList = ref([]);
 const handleSubmit = (value) => {
   values.value = value;
   formState.status = checked.value;
- 
-dispatch("addBanner", formState);
-};
 
+  dispatch("addBanner", formState);
+};
+const previewVisible = ref(false);
+const previewImage = ref("");
+const previewTitle = ref("");
 const formState = reactive({
   description: "",
   bannerUrl: "string",
@@ -94,7 +99,7 @@ const formState = reactive({
 
 const handleChange = (info) => {
   const file = info.file;
-  console.log("🚀 ~ file: AddBanner.vue:101 ~ handleChange ~ file:", file);
+
   const allowedTypes = [
     "image/svg+xml",
     "image/jpeg",
@@ -110,14 +115,32 @@ const handleChange = (info) => {
 
   const formData = new FormData();
   formData.append("file", file);
+  console.log("🚀 ~ file: AddBanner.vue:118 ~ handleChange ~ file:", file);
 
   dispatch("uploadFile", {
-    userId: this.userData.id,
-    fileType: "avatar",
+    userId: state.auth.userData.id,
+    fileType: "banner",
     formData,
   });
-
+  fileList.value = [file];
   return false; // Prevent default behavior
+};
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}
+const handlePreview = async (file) => {
+  if (!file.url && !file.preview) {
+    file.preview = await getBase64(file.originFileObj);
+  }
+  previewImage.value = file.url || file.preview;
+  previewVisible.value = true;
+  previewTitle.value =
+    file.name || file.url.substring(file.url.lastIndexOf("/") + 1);
 };
 
 watch(addsuccess, () => {

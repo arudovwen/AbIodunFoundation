@@ -23,7 +23,7 @@
         {{ menu.title }}
       </router-link>
     </a-menu-item>
-    <a-menu-item>
+    <a-menu-item v-if="role !== 'admin'">
       <template #icon>
         <unicon name="receipt"></unicon>
       </template>
@@ -97,6 +97,7 @@ export default defineComponent({
     } = events.value;
 
     const router = computed(() => useRoute());
+    const role = computed(()=> store.state.auth.userData.userRole.toLowerCase())
     const menus = [
       {
         title: "dashboard",
@@ -105,36 +106,6 @@ export default defineComponent({
         disable: false,
         role: "all",
       },
-      {
-        title: "services",
-        url: "/services",
-        icon: "archive",
-        disable: false,
-        role: "all",
-      },
-
-      {
-        title: "transactions",
-        url: "/transactions",
-        icon: "transaction",
-        disable: false,
-        role: "all",
-      },
-      {
-        title: "airtime & data",
-        url: "/airtime-and-data",
-        icon: "sim-card",
-        disable: true,
-        role: "all",
-      },
-      {
-        title: "transfers",
-        url: "/transfers",
-        icon: "exchange",
-        disable: true,
-        role: "all",
-      },
-
       {
         title: "user management",
         url: "/user-management",
@@ -156,6 +127,37 @@ export default defineComponent({
         disable: false,
         role: "admin",
       },
+      {
+        title: "services",
+        url: "/services",
+        icon: "archive",
+        disable: false,
+        role: "customer",
+      },
+
+      {
+        title: "transactions",
+        url: "/transactions",
+        icon: "transaction",
+        disable: false,
+        role: "all",
+      },
+      {
+        title: "airtime & data",
+        url: "/airtime-and-data",
+        icon: "sim-card",
+        disable: true,
+        role: "customer",
+      },
+      {
+        title: "transfers",
+        url: "/transfers",
+        icon: "exchange",
+        disable: true,
+        role: "customer",
+      },
+
+    
     ];
     const state = reactive({
       rootSubmenuKeys: ["sub1", "sub2", "sub4"],
@@ -202,8 +204,8 @@ export default defineComponent({
 
     const filteredMenu = computed(() => {
       return store.state.auth.userData.userRole.toLowerCase() !== "admin"
-        ? menus.filter((i) => i.role !== "admin")
-        : menus;
+        ? menus.filter((i) => i.role === "customers" ||  i.role === "all")
+        :  menus.filter((i) => i.role === "admin" ||  i.role === "all")
     });
 
     return {
@@ -221,6 +223,7 @@ export default defineComponent({
       t,
       menus,
       filteredMenu,
+      role
     };
   },
 });

@@ -2,12 +2,11 @@
   <UserTableStyleWrapper>
     <TableWrapper class="table-responsive">
       <a-table
-        :rowSelection="rowSelection"
-        :dataSource="usersTableData"
+        :dataSource="transactionsData"
         :columns="transactionTableHeader"
         :pagination="{
-          defaultPageSize: 5,
-          total: usersTableData.length,
+          defaultPageSize: query.pageSize,
+          total: total,
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
         }"
@@ -16,72 +15,139 @@
   </UserTableStyleWrapper>
 </template>
 <script>
+import moment from "moment";
+import { useStore } from "vuex";
+import { debounce } from "lodash";
 import { UserTableStyleWrapper } from "../style";
 import { TableWrapper } from "../../../styled";
-import users from "@/demoData/usersData.json";
-import { computed, defineComponent } from "vue";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  watch,
+  reactive,
+  inject,
+  ref,
+} from "vue";
 import { transactionTableHeader } from "@/utility/constant";
-
+import { message } from "ant-design-vue";
+import { formatCurrency } from "@/utility/formatCurrency";
 
 const UserListTable = defineComponent({
   name: "UserListTable",
   components: { UserTableStyleWrapper, TableWrapper },
   setup() {
-    const usersTableData = computed(() =>
-      users.map((user) => {
-        const { id, name, designation, img, status } = user;
+    const visible = ref(false);
+    const detail = ref("");
+    const type = ref("");
+    const search = inject("search");
+    const query = reactive({
+      pageNumber: 1,
+      pageSize: 10,
+      description: "",
+      
+    });
+    const { state, dispatch } = useStore();
+    onMounted(() => {
+      dispatch("getTransactions", query);
+    });
+    function fetchRecords(page) {
+      dispatch("getTransactions", { ...query, pageNumber: page });
+    }
+    const loading = computed(() => state.transactions.loading);
+    const total = computed(() => state.transactions.total);
+    const addsuccess = computed(() => state.transactions.addsuccess);
+    const deleteloading = computed(() => state.transactions.deleteloading);
+    const deletesuccess = computed(() => state.transactions.deletesuccess);
+    const transactionsData = computed(() =>
+      state.transactions.data.map((transaction) => {
+        const {
+          id,
+          amount,
+          transactionType,
+          createdOn,
+          description,
+        } = transaction;
 
         return {
           key: id,
-          user: (
-            <div class="user-info">
-              <figure>
-                <img
-                  style={{ width: "40px" }}
-                  src={require(`@/${img}`)}
-                  alt=""
-                />
-              </figure>
-              <figcaption>
-                <sdHeading class="user-name" as="h6">
-                  {name}
-                </sdHeading>
-                <span class="user-designation">San Francisco, CA</span>
-              </figcaption>
-            </div>
-          ),
-          email: "john@gmail.com",
-          company: "Business Development",
-          position: designation,
-          joinDate: "January 20, 2021",
-          status: <span class={`status-text ${status}`}>{status}</span>,
-          action: (
-            <div class="table-actions">
-              <>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="eye" width="16"></unicon>
-                </sdButton>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="edit" width="16"></unicon>
-                </sdButton>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="trash-alt" width="16"></unicon>
-                </sdButton>
-              </>
-            </div>
-          ),
+          id: id,
+          amount: <span class="capitalize">{formatCurrency(amount)}</span>,
+          description,
+          transactionType,
+          createdOn: moment(createdOn).format("ll"),
+
+          // status: (
+          //   <span class={`status-text `}>
+          //     {status === 0 && (
+          //       <span class="bg-orange-50 text-orange-500 px-3 py-[2px] rounded-full">
+          //         {" "}
+          //         Pending Activation
+          //       </span>
+          //     )}
+          //     {status === 1 && (
+          //       <span class="bg-green-50 text-green-500 px-3 py-[2px] rounded-full">
+          //         {" "}
+          //         Active
+          //       </span>
+          //     )}
+          //     {status === 5 && (
+          //       <span class="bg-green-50 text-red-500 px-3 py-[2px] rounded-full">
+          //         {" "}
+          //         Inactive
+          //       </span>
+          //     )}
+          //   </span>
+          // ),
+          action: "",
         };
       })
     );
+    function openDelete(data, value) {
+      type.value = value;
+      visible.value = true;
+      detail.value = data;
+    }
 
-    const rowSelection = {
-      getCheckboxProps: (record) => ({
-        disabled: record.name === "Disabled User", // Column configuration not to be checked
-        name: record.name,
-      }),
+    function handleDelete() {
+      if (type.value === "disable") {
+        dispatch("disableUser", detail.value.userId);
+      } else {
+        dispatch("enableUser", detail.value.userId);
+      }
+    }
+    // Define a debounce delay (e.g., 500 milliseconds)
+    const debounceDelay = 800;
+    const debouncedSearch = debounce((searchValue) => {
+      dispatch("getTransactions", { ...query, description: searchValue });
+    }, debounceDelay);
+    watch(addsuccess, () => {
+      addsuccess.value && dispatch("getTransactions", query);
+    });
+    watch(deletesuccess, () => {
+      if (deletesuccess.value) {
+        dispatch("getTransactions", query);
+        message.success("User disabled!");
+        visible.value = false;
+      }
+    });
+
+    watch(search, () => {
+      debouncedSearch(search.value);
+    });
+
+    return {
+      handleDelete,
+      openDelete,
+      visible,
+      query,
+      total,
+      fetchRecords,
+      transactionsData,
+      transactionTableHeader,
+      loading,
+      deleteloading,
     };
-
-    return { transactionTableHeader, usersTableData, rowSelection };
   },
 });
 

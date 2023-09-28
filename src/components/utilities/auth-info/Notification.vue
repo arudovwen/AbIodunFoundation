@@ -5,7 +5,7 @@
         <NinjadashTopDropdown class="ninjadash-top-dropdown">
           <sdHeading as="h5" class="ninjadash-top-dropdown__title">
             <span class="title-text">Notifications</span>
-            <a-badge class="badge-success" count="3" />
+            <!-- <a-badge class="badge-success" count="3" /> -->
           </sdHeading>
           <perfect-scrollbar
             :options="{
@@ -14,7 +14,7 @@
               suppressScrollX: true,
             }"
           >
-            <ul class="ninjadash-top-dropdown__nav notification-list">
+            <!-- <ul class="ninjadash-top-dropdown__nav notification-list">
               <li>
                 <a to="#">
                   <div class="ninjadash-top-dropdown__content notifications">
@@ -119,7 +119,7 @@
                   </div>
                 </a>
               </li>
-            </ul>
+            </ul> -->
           </perfect-scrollbar>
           <router-link class="btn-seeAll" to="#">
             See all incoming activity

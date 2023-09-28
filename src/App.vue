@@ -27,8 +27,9 @@
 <script>
 import { ThemeProvider } from "vue3-styled-components";
 import { themeColor } from "./config/theme/themeVariables";
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onMounted, watch } from "vue";
 import { useStore } from "vuex";
+import { base64ToImage } from "@/utility/base64ToImage";
 import "v-calendar/dist/style.css";
 
 export default defineComponent({
@@ -37,12 +38,19 @@ export default defineComponent({
     ThemeProvider,
   },
   setup() {
-    const { state } = useStore();
+    const { state, dispatch } = useStore();
     const rtl = computed(() => state.themeLayout.rtlData);
     const isLoading = computed(() => state.themeLayout.loading);
     const darkMode = computed(() => state.themeLayout.data);
     const topMenu = computed(() => state.themeLayout.topMenu);
     const mainContent = computed(() => state.themeLayout.main);
+    const avatar = computed(() =>
+      base64ToImage(
+        state?.users?.avatar?.fileBase64,
+        state.users?.avatar?.contentType
+      )
+    );
+    const avatarsuccess = computed(() => state?.users?.avatarsuccess);
 
     onMounted(() => {
       window.addEventListener("load", () => {
@@ -52,6 +60,16 @@ export default defineComponent({
           : domHtml.setAttribute("dir", "ltr");
         darkMode.value ? document.body.classList.add("dark-mode") : "";
       });
+      if (state?.auth?.userData) {
+        dispatch("getUserAvatar", state?.auth?.userData?.id);
+      }
+    });
+
+    watch(avatarsuccess, () => {
+      if (avatarsuccess?.value) {
+        localStorage.setItem("avatar", avatar?.value);
+        dispatch("updateAvatar", avatar?.value);
+      }
     });
 
     return {

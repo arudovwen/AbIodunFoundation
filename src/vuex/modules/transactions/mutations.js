@@ -1,76 +1,74 @@
 export default {
-  profileBegin(state) {
-    state.loading = true;
-  },
-
-  profileDataSuccess(state, data) {
-    state.loading = false;
-    state.data = data;
-  },
-
-  profileErr(state, err) {
-    state.loading = false;
-    state.error = err;
-  },
-
-  fetchBegin(state) {
-    state.loading = true;
+  addBegin(state) {
+    state.addloading = true;
     state.error = null;
-    state.success = false;
+    state.addsuccess = false;
   },
-  fetchSuccess(state, data) {
-    state.loading = false;
-    state.success = true;
-    state.data = data;
-  },
-  fetchErr(state, err) {
-    state.loading = false;
-    state.error = err;
-    state.success = false;
-  },
-  deleteBegin(state) {
-    state.loading = true;
-    state.error = null;
-    state.success = false;
-  },
-  deleteSuccess(state, data) {
-    state.loading = false;
-    state.success = true;
-    state.data = data;
-  },
-  deleteErr(state, err) {
-    state.loading = false;
-    state.error = err;
-    state.success = false;
-  },
-  editBegin(state) {
-    state.loading = true;
-    state.error = null;
-    state.success = false;
-  },
-  editSuccess(state, data) {
-    state.loading = false;
-    state.success = true;
-    state.data = data;
-  },
-  editErr(state, err) {
-    state.loading = false;
-    state.error = err;
-    state.success = false;
-  },
-   addBegin(state) {
-    state.loading = true;
-    state.error = null;
-    state.success = false;
-  },
-  addSuccess(state, data) {
-    state.loading = false;
-    state.success = true;
-    state.data = data;
+  addSuccess(state) {
+    state.addloading = false;
+    state.addsuccess = true;
   },
   addErr(state, err) {
-    state.loading = false;
+    state.addloading = false;
     state.error = err;
-    state.success = false;
+    state.addsuccess = false;
+  },
+  getBegin(state) {
+    state.getloading = true;
+    state.error = null;
+    state.getsuccess = false;
+  },
+  getSuccess(state) {
+    state.getloading = false;
+    state.getsuccess = true;
+  },
+  getErr(state, err) {
+    state.getloading = false;
+    state.error = err;
+    state.getsuccess = false;
+  },
+  fetchBegin(state) {
+    state.fetchloading = true;
+    state.error = null;
+    state.fetchsuccess = false;
+  },
+  fetchSuccess(state, { data, totalCount }) {
+    state.fetchloading = false;
+    state.fetchsuccess = true;
+    state.data = data;
+    state.total = totalCount;
+  },
+  fetchErr(state, err) {
+    state.fetchloading = false;
+    state.error = err;
+    state.fetchsuccess = false;
+  },
+  deleteBegin(state) {
+    state.deleteloading = true;
+    state.error = null;
+    state.deletesuccess = false;
+  },
+  deleteSuccess(state) {
+    state.deleteloading = false;
+    state.deletesuccess = true;
+  },
+  deleteErr(state, err) {
+    state.deleteloading = false;
+    state.error = err;
+    state.deleteuccess = false;
+  },
+  editBegin(state) {
+    state.editloading = true;
+    state.error = null;
+    state.editsuccess = false;
+  },
+  editSuccess(state) {
+    state.editloading = false;
+    state.editsuccess = true;
+  },
+  editErr(state, err) {
+    state.editloading = false;
+    state.error = err;
+    state.editsuccess = false;
   },
 };

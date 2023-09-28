@@ -4,17 +4,30 @@ import { urls } from "@/helpers/apI_urls";
 
 const state = () => ({
   data: [],
+  total: 0,
   transaction: null,
   loading: false,
   success: false,
+  addloading: false,
+  addsuccess: false,
+  getloading: false,
+  getsuccess: false,
+  fetchsuccess: false,
+  fetchloading: false,
+  editsuccess: false,
+  editloading: false,
+  deletesuccess: false,
+  deleteloading: false,
   error: null,
 });
 
 const actions = {
-  async getTransactions({ commit }) {
+  async getTransactions({ commit }, { pageNumber, description, pageSize }) {
     try {
       commit("fetchBegin");
-      const response = await DataService.get(urls.GET_ALL_TRANSACTIONS);
+      const response = await DataService.get(
+        `${urls.GET_ALL_TRANSACTIONS}?pageNumber=${pageNumber}&pageSize=${pageSize}&description=${description}`
+      );
       if (response.status === 200) {
         commit("fetchSuccess", response.data.data);
       }

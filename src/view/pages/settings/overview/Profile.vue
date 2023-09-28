@@ -39,23 +39,19 @@
                 placeholder="Last name"
               />
             </a-form-item>
-            <a-form-item
-              name="emailAddress"
-              label="Email Address"
-              :rules="[
-                {
-                  required: true,
-                  message: 'Please input your email!',
-                  type: 'email',
-                },
-              ]"
-            >
+            <a-form-item name="emailAddress" label="Email Address">
               <a-input
                 type="email"
                 readonly
+                disabled
+                class="bg-grey-100"
                 :value="formState.emailAddress"
                 placeholder="name@example.com"
-              />
+                ><template #suffix>
+                  
+                  <unicon name="lock" width="16"></unicon>
+                  </template
+              ></a-input>
             </a-form-item>
 
             <a-form-item
@@ -161,7 +157,6 @@ const Profile = defineComponent({
       }
     };
     watch(profile, () => {
-
       formState.firstName = profile.value.firstName;
       formState.lastName = profile.value.lastName;
       formState.gender = profile.value.gender;

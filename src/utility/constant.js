@@ -251,11 +251,7 @@ export const transactionTableHeader = [
   //   dataIndex: "UserId",
   //   key: "UserId",
   // },
-  {
-    title: "Amount",
-    dataIndex: "Amount",
-    key: "Amount",
-  },
+ 
   {
     title: "Transaction Type",
     dataIndex: "TransactionType",
@@ -265,6 +261,11 @@ export const transactionTableHeader = [
     title: "Description",
     dataIndex: "description",
     key: "description",
+  },
+  {
+    title: "Amount",
+    dataIndex: "Amount",
+    key: "Amount",
   },
 ];
 
