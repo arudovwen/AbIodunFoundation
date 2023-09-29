@@ -1,7 +1,7 @@
 <template>
   <div>
     <sdPageHeader
-      title="Request service"
+      title="Edit Request service"
       class="ninjadash-page-header-main"
       :routes="breadcrumbs"
     >
@@ -266,7 +266,7 @@
                     size="lg"
                     :disabled="isLoading"
                   >
-                    {{ isLoading ? "Processing" : "Submit request" }}
+                    {{ isLoading ? "Processing..." : "Update request" }}
                   </sdButton>
                 </div>
               </a-form>
@@ -282,13 +282,15 @@ import { Main } from "../styled";
 import { message } from "ant-design-vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import { onMounted, computed, reactive, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import CurrencyInput from "components/currency/CurrencyInput";
-import { useRouter } from "vue-router";
 
+const route = useRoute();
 const router = useRouter();
 onMounted(() => {
   dispatch("getProducts", query);
+  dispatch("getRequestById", route.params.id);
 });
 
 const query = reactive({
@@ -298,8 +300,9 @@ const query = reactive({
 });
 const { state, dispatch } = useStore();
 const products = computed(() => state.products.data);
-const isLoading = computed(() => state.requests.addloading);
-const addsuccess = computed(() => state.requests.addsuccess);
+const request = computed(() => state.requests.request);
+const isLoading = computed(() => state.requests.editloading);
+const editsuccess = computed(() => state.requests.editsuccess);
 const userData = computed(() => state.auth.userData);
 const values = ref(null);
 
@@ -313,7 +316,7 @@ const values = ref(null);
 // }
 const handleSubmit = (value) => {
   values.value = value;
-  dispatch("addRequest", {...formState, facilityAmount: formState.facilityAmount.toString()});
+  dispatch("addRequest", formState);
 };
 const onChange = (e) => {
   formState.alumni = e.target.checked;
@@ -332,10 +335,10 @@ const formState = reactive({
   residentialAddress: "",
   businessType: "",
   bvn: "",
-  cacDocumentUrl: "null", // This will hold the CAC file data
-  statementUrl: "null", // This will hold the account statement file data
-  identificationUrl: "null", // This will hold the means of identification file data
-  utilityBillUrl: "null", // This will hold the utility bill file data
+  cacDocumentUrl: null, // This will hold the CAC file data
+  statementUrl: null, // This will hold the account statement file data
+  identificationUrl: null, // This will hold the means of identification file data
+  utilityBillUrl: null, // This will hold the utility bill file data
   alumniCode: "", // Alumni code
 });
 
@@ -350,11 +353,11 @@ const breadcrumbs = [
   },
   {
     path: "#",
-    breadcrumbName: "Request service",
+    breadcrumbName: "Edit Request service",
   },
 ];
 const handleChange = (file, type) => {
-  console.log("🚀 ~ file: RequestProduct.vue:352 ~ handleChange ~ file:", file);
+ 
   const allowedTypes = [
     "image/svg+xml",
     "image/jpeg",
@@ -386,10 +389,25 @@ const handleChange = (file, type) => {
   }
   return false;
 };
-watch(addsuccess, () => {
-  if (addsuccess.value) {
-    message.success("Request creation successful!");
+watch(editsuccess, () => {
+  if (editsuccess.value) {
+    message.success("Request update successful!");
     router.push("/services");
   }
+});
+watch(request, () => {
+  formState.productId = request.value.productId;
+  formState.facilityAmount = request.value.facilityAmount;
+  formState.useOfFunds = request.value.useOfFunds;
+  formState.businessName = request.value.businessName;
+  formState.businessAddress = request.value.businessAddress;
+  formState.residentialAddress = request.value.residentialAddress;
+  formState.businessType = request.value.businessType;
+  formState.bvn = request.value.bvn;
+  formState.cacDocumentUrl = request.value.cacDocumentUrl;
+  formState.statementUrl = request.value.statementUrl;
+  formState.identificationUrl = request.value.identificationUrl;
+  formState.utilityBillUrl = request.value.utilityBillUrl;
+  formState.alumniCode = request.value.alumniCode;
 });
 </script>

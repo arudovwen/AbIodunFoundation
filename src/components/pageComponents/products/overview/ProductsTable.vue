@@ -17,20 +17,25 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <div class="table-actions">
+            <div class="flex gap-x-3 items-center justify-end">
               <router-link
                 :to="`product-management/product/${record.productid}`"
               >
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="eye" width="16"></unicon>
-                </sdButton>
+                <button class="text-xs bg-gray-200 rounded-full py-1 px-2">
+                  View
+                </button>
               </router-link>
               <router-link
                 :to="`product-management/edit-product/${record.productid}`"
               >
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="edit" width="16"></unicon>
-                </sdButton>
+                <button
+                  class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
+                  type="default"
+                  to="#"
+                  shape="circle"
+                >
+                  Edit
+                </button>
               </router-link>
               <sdButton
                 @click="openDelete(record)"

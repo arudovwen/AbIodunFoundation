@@ -124,6 +124,7 @@ const NewProducts = defineComponent({
 
     const newProductData = computed(() =>
       state.products.data.map((user) => {
+      
         const {
           id,
 

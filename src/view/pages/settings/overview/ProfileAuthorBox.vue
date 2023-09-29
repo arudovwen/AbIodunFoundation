@@ -3,7 +3,7 @@
     <div class="author-info">
       <figure>
         <img :src="avatar || imageUrl" alt="avatar" class="h-32 w-32 object-cover" />
-        <a-upload :before-upload="handleFileUpload">
+        <a-upload  :max-count="1" :before-upload="handleFileUpload">
           <a to="#">
             <loading-outlined v-if="loading"></loading-outlined>
             <unicon v-else name="camera" width="16"></unicon>

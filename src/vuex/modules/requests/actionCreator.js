@@ -5,7 +5,7 @@ import { urls } from "@/helpers/apI_urls";
 const state = () => ({
   data: [],
   total: 0,
-  transaction: null,
+  request: null,
   loading: false,
   success: false,
   addloading: false,
@@ -22,14 +22,14 @@ const state = () => ({
 });
 
 const actions = {
-  async getRequests({ commit }, { pageNumber, description, pageSize }) {
+  async getRequests({ commit }, { pageNumber, name, pageSize }) {
     try {
       commit("fetchBegin");
       const response = await DataService.get(
-        `${urls.GET_ALL_REQUESTS}?pageNumber=${pageNumber}&pageSize=${pageSize}&description=${description}`
+        `${urls.GET_ALL_USER_PRODUCT_REQUIREMENT}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}`
       );
       if (response.status === 200) {
-        commit("fetchSuccess", response.data.data);
+        commit("fetchSuccess", response.data);
       }
     } catch (err) {
       commit("fetchErr", err);
@@ -37,22 +37,34 @@ const actions = {
   },
   async getRequestById({ commit }, id) {
     try {
-      commit("profileBegin");
+      commit("getBegin");
       const response = await DataService.get(
-        `${urls.GET_REQUEST_BY_ID}?RequestId=${id}`
+        `${urls.GET_USER_PRODUCT_REQUIREMENT_BY_ID}?id=${id}`
       );
       if (response.status === 200) {
-        commit("profileSuccess", response.data.data);
+        commit("getSuccess", response.data.data);
       }
     } catch (err) {
-      commit("profileErr", err);
+      commit("getErr", err);
     }
   },
-
+  async updateRequestBy({ commit }) {
+    try {
+      commit("editBegin");
+      const response = await DataService.get(
+        `${urls.UPDATE_USER_PRODUCT_REQUIREMENT}`
+      );
+      if (response.status === 200) {
+        commit("editSuccess", response.data.data);
+      }
+    } catch (err) {
+      commit("editErr", err);
+    }
+  },
   async addRequest({ commit }, data) {
     try {
       commit("addBegin");
-      const response = await DataService.post(urls.CREATE_REQUEST, data);
+      const response = await DataService.post(urls.CREATE_USER_PRODUCT_REQUIREMENT, data);
       if (response.status === 200) {
         commit("addSuccess", response.data.data);
       }

@@ -18,9 +18,10 @@ export default {
     state.error = null;
     state.getsuccess = false;
   },
-  getSuccess(state) {
+  getSuccess(state, data) {
     state.getloading = false;
     state.getsuccess = true;
+    state.request = data;
   },
   getErr(state, err) {
     state.getloading = false;

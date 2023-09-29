@@ -182,26 +182,32 @@ export const productDetailTableHeader = [
 ];
 
 export const userProductTableHeader = [
-  // {
-  //   title: "User Id",
-  //   dataIndex: "userId",
-  //   key: "userId",
-  // },
-  // {
-  //   title: "Product Id",
-  //   dataIndex: "productId",
-  //   key: "productId",
-  // },
+  {
+    title: "Request Date",
+    dataIndex: "createdAt",
+    key: "createdAt",
+  },
+   {
+    title: "Business name",
+    dataIndex: "businessName",
+    key: "businessName",
+  },
+  {
+    title: "Business type",
+    dataIndex: "businessType",
+    key: "businessType",
+  },
   {
     title: "Amount",
     dataIndex: "amount",
     key: "amount",
   },
-  {
-    title: "Request Date",
-    dataIndex: "requestDate",
-    key: "requestDate",
-  },
+    // {
+  //   title: "Product",
+  //   dataIndex: "productName",
+  //   key: "productName",
+  // },
+ 
   {
     title: "Equity Contribution",
     dataIndex: "equityContribution",
@@ -223,9 +229,9 @@ export const userProductTableHeader = [
     key: "DueDate",
   },
   {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
+    title: "Use of funds",
+    dataIndex: "useOfFunds",
+    key: "useOfFunds",
   },
   {
     title: "Actions",

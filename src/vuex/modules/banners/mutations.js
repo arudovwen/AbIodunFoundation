@@ -27,21 +27,21 @@ export default {
     state.error = err;
     state.getsuccess = false;
   },
-  fetchBegin(state) {
-    state.fetchloading = true;
+  bannerBegin(state) {
+    state.bannerloading = true;
     state.error = null;
-    state.fetchsuccess = false;
+    state.bannersuccess = false;
   },
-  fetchSuccess(state, { data, totalCount }) {
-    state.fetchloading = false;
-    state.fetchsuccess = true;
+  bannerSuccess(state, { data, totalCount }) {
+    state.bannerloading = false;
+    state.bannersuccess = true;
     state.data = data;
     state.total = totalCount;
   },
-  fetchErr(state, err) {
-    state.fetchloading = false;
+  bannerErr(state, err) {
+    state.bannerloading = false;
     state.error = err;
-    state.fetchsuccess = false;
+    state.bannersuccess = false;
   },
   deleteBegin(state) {
     state.deleteloading = true;

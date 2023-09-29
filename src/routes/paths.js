@@ -55,11 +55,19 @@ export const paths = [
       import(/* webpackChunkName: "transfers" */ "@/view/pages/Transfers.vue"),
   },
   {
-    name: "request-service",
+    name: "request service",
     path: "/service/request",
     component: () =>
       import(
-        /* webpackChunkName: "transfers" */ "@/view/pages/RequestProduct.vue"
+        /* webpackChunkName: "request" */ "@/view/pages/RequestProduct.vue"
+      ),
+  },
+  {
+    name: "edit request service",
+    path: "/service/request-edit/:id",
+    component: () =>
+      import(
+        /* webpackChunkName: "editrequest" */ "@/view/pages/EditRequestProduct.vue"
       ),
   },
   {

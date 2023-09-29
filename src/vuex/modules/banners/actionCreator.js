@@ -10,8 +10,8 @@ const state = () => ({
   addsuccess: false,
   getloading: false,
   getsuccess: false,
-  fetchsuccess: false,
-  fetchloading: false,
+  bannersuccess: false,
+  bannerloading: false,
   editsuccess: false,
   editloading: false,
   deletesuccess: false,
@@ -53,15 +53,15 @@ const actions = {
   },
   async getBanners({ commit }, { pageNumber, pageSize, status, description }) {
     try {
-      commit("fetchBegin");
+      commit("bannerBegin");
       const response = await DataService.get(
         `${urls.GET_ALL_BANNERS}?pageNumber=${pageNumber}&pageSize=${pageSize}&description=${description}&status=${status}`
       );
       if (response.status === 200) {
-        commit("fetchSuccess", response.data);
+        commit("bannerSuccess", response.data);
       }
     } catch (err) {
-      commit("fetchErr", err);
+      commit("bannerErr", err);
     }
   },
   async getBanner({ commit }, data) {

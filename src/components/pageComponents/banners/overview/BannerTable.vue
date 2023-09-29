@@ -172,7 +172,7 @@ const UserListTable = defineComponent({
               <figure>
                 <img
                   src={base64ToImage(bannerUrl)}
-                  className="bg-gray-100 w-[100px] h-10 rounded-lg"
+                  className="bg-gray-100 w-[100px] h-10 rounded-lg object-contain"
                   alt=""
                 />
               </figure>

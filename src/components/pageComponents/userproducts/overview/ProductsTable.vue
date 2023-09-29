@@ -2,87 +2,182 @@
   <UserTableStyleWrapper>
     <TableWrapper class="table-responsive">
       <a-table
-        :rowSelection="rowSelection"
-        :dataSource="usersTableData"
+        :loading="loading"
+        :dataSource="usersData"
         :columns="userProductTableHeader"
         :pagination="{
-          defaultPageSize: 5,
-          total: usersTableData.length,
+          defaultPageSize: query.pageSize,
+          total: total,
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
+          onChange: (page) => {
+            fetchRecords(page);
+          },
         }"
-      />
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'action'">
+            <div class="flex gap-x-4">
+              <button
+                @click="openModal(record)"
+                class="text-xs bg-gray-200 rounded-full py-1 px-2"
+              >
+                View
+              </button>
+              <router-link :to="`/service/request-edit/${record.id}`">
+                <button
+                  class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
+                  type="default"
+                  to="#"
+                  shape="circle"
+                >
+                  Edit
+                </button>
+              </router-link>
+            </div>
+          </template>
+        </template></a-table
+      >
     </TableWrapper>
+    <Modal :open="visible" @close="visible = false">
+      <Detail />
+    </Modal>
   </UserTableStyleWrapper>
 </template>
 <script>
 import { UserTableStyleWrapper } from "../style";
 import { TableWrapper } from "../../../styled";
-import users from "@/demoData/usersData.json";
-import { computed, defineComponent } from "vue";
+import moment from "moment";
+import { useStore } from "vuex";
+import { debounce } from "lodash";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  watch,
+  reactive,
+  inject,
+  ref,
+} from "vue";
+import { userTableHeader } from "@/utility/constant";
+import { message } from "ant-design-vue";
 import { userProductTableHeader } from "@/utility/constant";
-
-
+import { formatCurrency } from "@/utility/formatCurrency";
+import Modal from "components/Modal";
+import Detail from "../Detail";
 
 const UserListTable = defineComponent({
   name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper },
+  components: { UserTableStyleWrapper, TableWrapper, Modal, Detail },
   setup() {
-    const usersTableData = computed(() =>
-      users.map((user) => {
-        const { id, name, designation, img, status } = user;
+    const detail = ref("");
+    const visible = ref(false);
+    const type = ref("");
+    const search = inject("search");
+    const query = reactive({
+      pageNumber: 1,
+      pageSize: 10,
+      name: "",
+      email: "",
+      mobileNo: "",
+    });
+    const { state, dispatch } = useStore();
+    onMounted(() => {
+      dispatch("getRequests", query);
+    });
+    function fetchRecords(page) {
+      dispatch("getRequests", { ...query, pageNumber: page });
+    }
+    const loading = computed(() => state.requests.loading);
+    const total = computed(() => state.requests.total);
+    const addsuccess = computed(() => state.requests.addsuccess);
+    const deleteloading = computed(() => state.requests.deleteloading);
+    const deletesuccess = computed(() => state.requests.deletesuccess);
+    const usersData = computed(() =>
+      state.requests.data.map((user) => {
+        const {
+          id,
+          facilityAmount,
+          useOfFunds,
+          businessAddress,
+          businessName,
+          residentialAddress,
+          businessType,
+          bvn,
+          alumni,
+          createdAt,
+        } = user;
 
         return {
           key: id,
-          user: (
+          id: id,
+          businessName: (
             <div class="user-info">
-              <figure>
-                <img
-                  style={{ width: "40px" }}
-                  src={require(`@/${img}`)}
-                  alt=""
-                />
-              </figure>
               <figcaption>
                 <sdHeading class="user-name" as="h6">
-                  {name}
+                  {businessName}
                 </sdHeading>
-                <span class="user-designation">San Francisco, CA</span>
               </figcaption>
             </div>
           ),
-          email: "john@gmail.com",
-          company: "Business Development",
-          position: designation,
-          joinDate: "January 20, 2021",
-          status: <span class={`status-text ${status}`}>{status}</span>,
-          action: (
-            <div class="table-actions">
-              <>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="eye" width="16"></unicon>
-                </sdButton>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="edit" width="16"></unicon>
-                </sdButton>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="trash-alt" width="16"></unicon>
-                </sdButton>
-              </>
-            </div>
+          amount: (
+            <span class="capitalize">{formatCurrency(facilityAmount)}</span>
           ),
+          useOfFunds,
+          businessAddress,
+          residentialAddress,
+          businessType,
+          bvn,
+          alumni: alumni ? "Yes" : "No",
+          createdAt: moment(createdAt).format("ll"),
+
+          action: "",
         };
       })
     );
+    function openModal(data) {
+      visible.value = true;
+      detail.value = data;
+    }
 
-    const rowSelection = {
-      getCheckboxProps: (record) => ({
-        disabled: record.name === "Disabled User", // Column configuration not to be checked
-        name: record.name,
-      }),
+    function handleDelete() {
+      if (type.value === "disable") {
+        dispatch("disableUser", detail.value.userId);
+      } else {
+        dispatch("enableUser", detail.value.userId);
+      }
+    }
+    // Define a debounce delay (e.g., 500 milliseconds)
+    const debounceDelay = 800;
+    const debouncedSearch = debounce((searchValue) => {
+      dispatch("getRequests", { ...query, name: searchValue });
+    }, debounceDelay);
+    watch(addsuccess, () => {
+      addsuccess.value && dispatch("getRequests", query);
+    });
+    watch(deletesuccess, () => {
+      if (deletesuccess.value) {
+        dispatch("getRequests", query);
+        message.success("User disabled!");
+      }
+    });
+
+    watch(search, () => {
+      debouncedSearch(search.value);
+    });
+    return {
+      userProductTableHeader,
+      handleDelete,
+      openModal,
+      usersData,
+      query,
+      total,
+      fetchRecords,
+      userTableHeader,
+      loading,
+      deleteloading,
+      visible
     };
-
-    return { userProductTableHeader, usersTableData, rowSelection };
   },
 });
 
