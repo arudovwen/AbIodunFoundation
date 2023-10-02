@@ -43,7 +43,6 @@ export const userTableHeader = [
     title: "Actions",
     dataIndex: "action",
     key: "action",
-   
   },
 ];
 export const adminTableHeader = [
@@ -184,30 +183,25 @@ export const productDetailTableHeader = [
 export const userProductTableHeader = [
   {
     title: "Request Date",
-    dataIndex: "createdAt",
-    key: "createdAt",
-  },
-   {
-    title: "Business name",
-    dataIndex: "businessName",
-    key: "businessName",
+    dataIndex: "requestDate",
+    key: "requestDate",
   },
   {
-    title: "Business type",
-    dataIndex: "businessType",
-    key: "businessType",
+    title: "Due Date",
+    dataIndex: "dueDate",
+    key: "dueDate",
   },
   {
     title: "Amount",
     dataIndex: "amount",
     key: "amount",
   },
-    // {
+  // {
   //   title: "Product",
   //   dataIndex: "productName",
   //   key: "productName",
   // },
- 
+
   {
     title: "Equity Contribution",
     dataIndex: "equityContribution",
@@ -220,18 +214,8 @@ export const userProductTableHeader = [
   },
   {
     title: "Interest Rate",
-    dataIndex: "InterestRate",
-    key: "InterestRate",
-  },
-  {
-    title: "Due Date",
-    dataIndex: "DueDate",
-    key: "DueDate",
-  },
-  {
-    title: "Use of funds",
-    dataIndex: "useOfFunds",
-    key: "useOfFunds",
+    dataIndex: "interestRate",
+    key: "interestRate",
   },
   {
     title: "Actions",
@@ -244,34 +228,33 @@ export const userProductTableHeader = [
 export const transactionTableHeader = [
   {
     title: "Transaction Date",
-    dataIndex: "TransactionDate",
-    key: "TransactionDate",
+    dataIndex: "transactionDate",
+    key: "transactionDate",
   },
-  // {
-  //   title: "Product Id",
-  //   dataIndex: "ProductId",
-  //   key: "ProductId",
-  // },
-  // {
-  //   title: "User Id",
-  //   dataIndex: "UserId",
-  //   key: "UserId",
-  // },
- 
+
   {
     title: "Transaction Type",
-    dataIndex: "TransactionType",
-    key: "TransactionType",
+    dataIndex: "transactionType",
+    key: "transactionType",
   },
+
   {
+    title: "Amount",
+    dataIndex: "amount",
+    key: "amount",
+  },{
     title: "Description",
     dataIndex: "description",
     key: "description",
   },
   {
-    title: "Amount",
-    dataIndex: "Amount",
-    key: "Amount",
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+  }, {
+    title: "",
+    dataIndex: "",
+    key: "",
   },
 ];
 

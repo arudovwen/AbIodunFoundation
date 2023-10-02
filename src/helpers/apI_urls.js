@@ -60,4 +60,10 @@ export const urls = {
     "/UserProductRequirement/GetAllUserProductRequirement",
   UPDATE_USER_PRODUCT_REQUIREMENT:
     "/UserProductRequirement/UpdateUserProductRequirement",
+
+  // UserProduct
+  CREATE_USER_PRODUCT: "/UserProduct/CreateUserProduct",
+  GET_USER_PRODUCT_BY_ID: "/UserProduct/GetUserProductById",
+  GET_ALL_USER_PRODUCT: "/UserProduct/GetAllUserProduct",
+  UPDATE_USER_PRODUCT: "/UserProduct/UpdateUserProductR",
 };

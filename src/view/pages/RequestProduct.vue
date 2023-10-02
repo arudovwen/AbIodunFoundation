@@ -19,6 +19,7 @@
                 class="md:grid grid-cols-1 md:grid-cols-2 md:gap-y-0 md:gap-x-8"
               >
                 <a-form-item
+                  class="col-span-2 mb-10"
                   name="productId"
                   label="Choose a product"
                   :rules="[
@@ -42,6 +43,126 @@
                     >
                   </a-select>
                 </a-form-item>
+
+                <h2 class="font-bold mb-7">Product detail</h2>
+                <BasicFormWrapper
+                  class="ninjadash-authentication-content col-span-2 mb-10"
+                >
+                  <div class="col-span-2 grid md:grid-cols-2 md:gap-x-8 mb-8">
+                    <a-form-item
+                      label="Amount"
+                      name="amount"
+                      :rules="[
+                        { required: true, message: 'Please input an amount!' },
+                      ]"
+                    >
+                      <CurrencyInput
+                        v-model="formState.amount"
+                        placeholder="Provide an amount"
+                        :options="{ currency: 'ngn' }"
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      label="Request date"
+                      name="requestDate"
+                      class="w-full"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please select a date!',
+                        },
+                      ]"
+                    >
+                      <a-date-picker
+                        class="w-full"
+                        v-model:value="formState.requestDate"
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      label="Due date"
+                      name="dueDate"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please select a date!',
+                        },
+                      ]"
+                    >
+                      <a-date-picker
+                        :disabled-date="disabledDate"
+                        class="w-full"
+                        v-model:value="formState.dueDate"
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      label="Interest rate"
+                      name="interestRate"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please input an Interest rate!',
+                        },
+                      ]"
+                    >
+                      <a-input-number
+                        v-model:value="formState.interestRate"
+                        placeholder=""
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      label="Equity Contribution"
+                      name="equityContribution"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please input a value!',
+                        },
+                      ]"
+                    >
+                      <a-input-number
+                        v-model:value="formState.equityContribution"
+                        placeholder=""
+                      />
+                    </a-form-item>
+
+                    <a-form-item
+                      label="Lock-in Period"
+                      name="lockInPeriod"
+                      :rules="[
+                        { required: true, message: 'Please select a value!' },
+                      ]"
+                    >
+                      <a-select
+                        size="large"
+                        v-model:value="formState.lockInPeriod"
+                      >
+                        <a-select-option value=""
+                          >Please Select</a-select-option
+                        >
+                        <a-select-option value="6 months"
+                          >6 months</a-select-option
+                        >
+                        <a-select-option value="12 months"
+                          >12 months</a-select-option
+                        >
+                      </a-select>
+                    </a-form-item>
+                    <a-form-item
+                      class="col-span-2"
+                      label="Description"
+                      name="description"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please provide a description!',
+                        },
+                      ]"
+                    >
+                      <a-textarea v-model:value="formState.description" />
+                    </a-form-item>
+                  </div>
+                </BasicFormWrapper>
+                <h2 class="font-bold mb-7 col-span-2">Product Requirements</h2>
 
                 <a-form-item
                   label="Facility amount"
@@ -285,6 +406,8 @@ import { onMounted, computed, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
 import CurrencyInput from "components/currency/CurrencyInput";
 import { useRouter } from "vue-router";
+import { BasicFormWrapper } from "../styled";
+import dayjs from "dayjs";
 
 const router = useRouter();
 onMounted(() => {
@@ -301,7 +424,10 @@ const products = computed(() => state.products.data);
 const isLoading = computed(() => state.requests.addloading);
 const addsuccess = computed(() => state.requests.addsuccess);
 const userData = computed(() => state.auth.userData);
+const uploadsuccess = computed(() => state.file.success);
 const values = ref(null);
+const uploadtype = ref("");
+const fileId = computed(() => state.file.data);
 
 // function getBase64(file) {
 //   return new Promise((resolve, reject) => {
@@ -311,9 +437,13 @@ const values = ref(null);
 //     reader.onerror = (error) => reject(error);
 //   });
 // }
+
 const handleSubmit = (value) => {
   values.value = value;
-  dispatch("addRequest", {...formState, facilityAmount: formState.facilityAmount.toString()});
+  dispatch("addUserProduct", {
+    ...formState,
+    facilityAmount: formState.facilityAmount.toString(),
+  });
 };
 const onChange = (e) => {
   formState.alumni = e.target.checked;
@@ -332,11 +462,19 @@ const formState = reactive({
   residentialAddress: "",
   businessType: "",
   bvn: "",
-  cacDocumentUrl: "null", // This will hold the CAC file data
-  statementUrl: "null", // This will hold the account statement file data
-  identificationUrl: "null", // This will hold the means of identification file data
-  utilityBillUrl: "null", // This will hold the utility bill file data
-  alumniCode: "", // Alumni code
+  cacDocumentUrl: "null",
+  statementUrl: "null",
+  identificationUrl: "null",
+  utilityBillUrl: "null",
+  alumniCode: "",
+  alumni: false,
+  amount: null,
+  requestDate: null,
+  equityContribution: null,
+  lockInPeriod: "",
+  interestRate: null,
+  dueDate: null,
+  description: "",
 });
 
 const breadcrumbs = [
@@ -370,26 +508,39 @@ const handleChange = (file, type) => {
     );
   }
 
-  // await getBase64(file.originFileObj)
+  const formData = new FormData();
+  formData.append("file", file);
+  uploadtype.value = type;
+  dispatch("uploadFile", {
+    userId: userData.value.id,
+    fileType: "product",
+    formData,
+  });
 
-  if (type === "cac") {
-    formState.cacDocumentUrl = file;
-  }
-  if (type === "id") {
-    formState.identificationUrl = file;
-  }
-  if (type === "utility") {
-    formState.utilityBillUrl = file;
-  }
-  if (type === "statement") {
-    formState.statementUrl = file;
-  }
   return false;
+};
+const disabledDate = (current) => {
+  // Can not select days before today and today
+  return current && current < dayjs().endOf("day");
 };
 watch(addsuccess, () => {
   if (addsuccess.value) {
     message.success("Request creation successful!");
     router.push("/services");
+  }
+});
+watch(uploadsuccess, () => {
+  if (uploadtype.value === "cac") {
+    formState.cacDocumentUrl = fileId.value.toString();
+  }
+  if (uploadtype.value === "id") {
+    formState.identificationUrl = fileId.value.toString();
+  }
+  if (uploadtype.value === "utility") {
+    formState.utilityBillUrl = fileId.value.toString();
+  }
+  if (uploadtype.value === "statement") {
+    formState.statementUrl = fileId.value.toString();
   }
 });
 </script>

@@ -28,8 +28,10 @@ const actions = {
       const response = await DataService.get(
         `${urls.GET_ALL_TRANSACTIONS}?pageNumber=${pageNumber}&pageSize=${pageSize}&description=${description}`
       );
+     
       if (response.status === 200) {
-        commit("fetchSuccess", response.data.data);
+        commit("fetchSuccess", response.data);
+      
       }
     } catch (err) {
       commit("fetchErr", err);

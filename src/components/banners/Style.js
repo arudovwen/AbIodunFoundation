@@ -401,7 +401,7 @@ const BannerCarouselWrap = Styled.div`
         align-items: center;
         .banner-single__content{
             margin-top: 28px;
-            text-align: center;
+          width:100%;
             h3{
                 font-size: 24px;
                 font-weight: 600;

@@ -3,7 +3,7 @@
     <TableWrapper class="table-responsive">
       <a-table
         :loading="loading"
-        :dataSource="usersData"
+        :dataSource="productsData"
         :columns="userProductTableHeader"
         :pagination="{
           defaultPageSize: query.pageSize,
@@ -83,52 +83,42 @@ const UserListTable = defineComponent({
     });
     const { state, dispatch } = useStore();
     onMounted(() => {
-      dispatch("getRequests", query);
+      dispatch("getUserProducts", query);
     });
     function fetchRecords(page) {
-      dispatch("getRequests", { ...query, pageNumber: page });
+      dispatch("getUserProducts", { ...query, pageNumber: page });
     }
     const loading = computed(() => state.requests.loading);
     const total = computed(() => state.requests.total);
     const addsuccess = computed(() => state.requests.addsuccess);
     const deleteloading = computed(() => state.requests.deleteloading);
     const deletesuccess = computed(() => state.requests.deletesuccess);
-    const usersData = computed(() =>
-      state.requests.data.map((user) => {
+    const productsData = computed(() =>
+      state.requests.data.map((product) => {
         const {
           id,
-          facilityAmount,
-          useOfFunds,
-          businessAddress,
-          businessName,
-          residentialAddress,
-          businessType,
-          bvn,
-          alumni,
+          amount,
+          equityContribution,
+          description,
+          dueDate,
+          requestDate,
+          interestRate,
+          lockInPeriod,
+
           createdAt,
-        } = user;
+        } = product;
 
         return {
           key: id,
           id: id,
-          businessName: (
-            <div class="user-info">
-              <figcaption>
-                <sdHeading class="user-name" as="h6">
-                  {businessName}
-                </sdHeading>
-              </figcaption>
-            </div>
-          ),
-          amount: (
-            <span class="capitalize">{formatCurrency(facilityAmount)}</span>
-          ),
-          useOfFunds,
-          businessAddress,
-          residentialAddress,
-          businessType,
-          bvn,
-          alumni: alumni ? "Yes" : "No",
+          lockInPeriod,
+          description: <span class="truncate block max-w-[180px]">{{description}}</span>,
+          amount: <span class="capitalize">{formatCurrency(amount)}</span>,
+          interestRate: <span class="capitalize">{formatCurrency(interestRate)}</span>,
+          equityContribution: <span class="capitalize">{formatCurrency(equityContribution)}</span>,
+          dueDate: moment(dueDate).format("ll"),
+          requestDate: moment(requestDate).format("ll"),
+
           createdAt: moment(createdAt).format("ll"),
 
           action: "",
@@ -150,14 +140,14 @@ const UserListTable = defineComponent({
     // Define a debounce delay (e.g., 500 milliseconds)
     const debounceDelay = 800;
     const debouncedSearch = debounce((searchValue) => {
-      dispatch("getRequests", { ...query, name: searchValue });
+      dispatch("getUserProducts", { ...query, name: searchValue });
     }, debounceDelay);
     watch(addsuccess, () => {
-      addsuccess.value && dispatch("getRequests", query);
+      addsuccess.value && dispatch("getUserProducts", query);
     });
     watch(deletesuccess, () => {
       if (deletesuccess.value) {
-        dispatch("getRequests", query);
+        dispatch("getUserProducts", query);
         message.success("User disabled!");
       }
     });
@@ -169,14 +159,14 @@ const UserListTable = defineComponent({
       userProductTableHeader,
       handleDelete,
       openModal,
-      usersData,
+      productsData,
       query,
       total,
       fetchRecords,
       userTableHeader,
       loading,
       deleteloading,
-      visible
+      visible,
     };
   },
 });

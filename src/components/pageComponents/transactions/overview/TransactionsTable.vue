@@ -45,7 +45,6 @@ const UserListTable = defineComponent({
       pageNumber: 1,
       pageSize: 10,
       description: "",
-      
     });
     const { state, dispatch } = useStore();
     onMounted(() => {
@@ -65,8 +64,8 @@ const UserListTable = defineComponent({
           id,
           amount,
           transactionType,
-          createdOn,
-          description,
+          transactionDate,
+          transactionStatus,description
         } = transaction;
 
         return {
@@ -74,31 +73,31 @@ const UserListTable = defineComponent({
           id: id,
           amount: <span class="capitalize">{formatCurrency(amount)}</span>,
           description,
-          transactionType,
-          createdOn: moment(createdOn).format("ll"),
+          transactionType: <span class="capitalize">{transactionType}</span>,
+          transactionDate: moment(transactionDate).format("lll"),
 
-          // status: (
-          //   <span class={`status-text `}>
-          //     {status === 0 && (
-          //       <span class="bg-orange-50 text-orange-500 px-3 py-[2px] rounded-full">
-          //         {" "}
-          //         Pending Activation
-          //       </span>
-          //     )}
-          //     {status === 1 && (
-          //       <span class="bg-green-50 text-green-500 px-3 py-[2px] rounded-full">
-          //         {" "}
-          //         Active
-          //       </span>
-          //     )}
-          //     {status === 5 && (
-          //       <span class="bg-green-50 text-red-500 px-3 py-[2px] rounded-full">
-          //         {" "}
-          //         Inactive
-          //       </span>
-          //     )}
-          //   </span>
-          // ),
+          status: (
+            <span class={`status-text !px-0`}>
+              {transactionStatus === "pending" && (
+                <span class="bg-orange-50 text-orange-500 px-3 py-[2px] rounded-full">
+                  {" "}
+                  Pending
+                </span>
+              )}
+              {status === "success" && (
+                <span class="bg-green-50 text-green-500 px-3 py-[2px] rounded-full">
+                  {" "}
+                  Success
+                </span>
+              )}
+              {status === 5 && (
+                <span class="bg-green-50 text-red-500 px-3 py-[2px] rounded-full">
+                  {" "}
+                  Inactive
+                </span>
+              )}
+            </span>
+          ),
           action: "",
         };
       })

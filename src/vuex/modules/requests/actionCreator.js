@@ -22,7 +22,20 @@ const state = () => ({
 });
 
 const actions = {
-  async getRequests({ commit }, { pageNumber, name, pageSize }) {
+  async getUserProducts({ commit }, { pageNumber, name, pageSize }) {
+    try {
+      commit("fetchBegin");
+      const response = await DataService.get(
+        `${urls.GET_ALL_USER_PRODUCT}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}`
+      );
+      if (response.status === 200) {
+        commit("fetchSuccess", response.data);
+      }
+    } catch (err) {
+      commit("fetchErr", err);
+    }
+  },
+  async getUserProductRequirements({ commit }, { pageNumber, name, pageSize }) {
     try {
       commit("fetchBegin");
       const response = await DataService.get(
@@ -35,7 +48,20 @@ const actions = {
       commit("fetchErr", err);
     }
   },
-  async getRequestById({ commit }, id) {
+  async getUserProductById({ commit }, id) {
+    try {
+      commit("getBegin");
+      const response = await DataService.get(
+        `${urls.GET_USER_PRODUCT_BY_ID}?id=${id}`
+      );
+      if (response.status === 200) {
+        commit("getSuccess", response.data.data);
+      }
+    } catch (err) {
+      commit("getErr", err);
+    }
+  },
+  async getUserProductRequirementById({ commit }, id) {
     try {
       commit("getBegin");
       const response = await DataService.get(
@@ -48,7 +74,20 @@ const actions = {
       commit("getErr", err);
     }
   },
-  async updateRequestBy({ commit }) {
+  async updateUserProduct({ commit }) {
+    try {
+      commit("editBegin");
+      const response = await DataService.get(
+        `${urls.UPDATE_USER_PRODUCT}`
+      );
+      if (response.status === 200) {
+        commit("editSuccess", response.data.data);
+      }
+    } catch (err) {
+      commit("editErr", err);
+    }
+  },
+  async updateUserProductRequirement({ commit }) {
     try {
       commit("editBegin");
       const response = await DataService.get(
@@ -61,12 +100,32 @@ const actions = {
       commit("editErr", err);
     }
   },
-  async addRequest({ commit }, data) {
+  async addUserProductRequirement({ commit }, data) {
     try {
       commit("addBegin");
-      const response = await DataService.post(urls.CREATE_USER_PRODUCT_REQUIREMENT, data);
+      const response = await DataService.post(
+        urls.CREATE_USER_PRODUCT_REQUIREMENT,
+        data
+      );
       if (response.status === 200) {
         commit("addSuccess", response.data.data);
+      }
+    } catch (err) {
+      commit("addErr", err);
+    }
+  },
+  async addUserProduct({ commit }, data) {
+    try {
+      commit("addBegin");
+      const response = await DataService.post(urls.CREATE_USER_PRODUCT, data);
+      if (response.status === 200) {
+        const response = await DataService.post(
+          urls.CREATE_USER_PRODUCT_REQUIREMENT,
+          data
+        );
+        if (response.status === 200) {
+          commit("addSuccess", response.data.data);
+        }
       }
     } catch (err) {
       commit("addErr", err);
