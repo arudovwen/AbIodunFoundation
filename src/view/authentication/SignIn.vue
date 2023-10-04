@@ -3,9 +3,7 @@
     <a-col :xxl="6" :xl="8" :md="12" :sm="18">
       <AuthWrapper>
         <div class="ninjadash-authentication-top">
-          <h2 class="ninjadash-authentication-top__title">
-            Sign in
-          </h2>
+          <h2 class="ninjadash-authentication-top__title">Sign in</h2>
         </div>
 
         <div class="ninjadash-authentication-content">
@@ -27,7 +25,12 @@
               </router-link>
             </div>
             <a-form-item>
-              <sdButton :disabled="isLoading" class="btn-signin" htmlType="submit" type="primary">
+              <sdButton
+                :disabled="isLoading"
+                class="btn-signin"
+                htmlType="submit"
+                type="primary"
+              >
                 {{ isLoading ? "Loading..." : "Sign In" }}
               </sdButton>
             </a-form-item>
@@ -72,7 +75,8 @@
   </a-row>
 </template>
 <script>
-import { computed, reactive, ref, defineComponent } from "vue";
+import { computed, reactive, ref, defineComponent, watch } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { AuthWrapper } from "./style";
 
@@ -85,8 +89,10 @@ const SignIn = defineComponent({
     // , InlineSvg
   },
   setup() {
+    const route = useRoute();
     const { state, dispatch } = useStore();
     const isLoading = computed(() => state.auth.loading);
+    const success = computed(() => state.auth.loginsuccess);
     const error = computed(() => state.auth.error);
     const checked = ref(null);
 
@@ -102,7 +108,13 @@ const SignIn = defineComponent({
       password: "",
       grantType: "password",
     });
-
+    watch(success, () => {
+      if (route.query.redirect_from) {
+        window.location.replace(route.query.redirect_from);
+      } else {
+        window.location.replace("/dashboard");
+      }
+    });
     return {
       isLoading,
       checked,

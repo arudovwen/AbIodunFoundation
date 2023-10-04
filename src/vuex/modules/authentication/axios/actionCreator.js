@@ -52,7 +52,7 @@ const actions = {
         Notification.success({
           description: "Login successful",
         });
-        window.location.replace("/");
+        // window.location.replace("/");
       }
     } catch (err) {
       commit("loginErr", err);
