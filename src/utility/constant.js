@@ -1,9 +1,5 @@
 export const userTableHeader = [
-  // {
-  //   title: "Id",
-  //   dataIndex: "userId",
-  //   key: "userId",
-  // },
+ 
   {
     title: "Name",
     dataIndex: "fullName",
@@ -35,10 +31,16 @@ export const userTableHeader = [
     key: "role",
   },
   {
+    title: "Last Login",
+    dataIndex: "lastLogin",
+    key: "lastLogin",
+  },
+  {
     title: "Status",
     dataIndex: "status",
     key: "status",
   },
+
   {
     title: "Actions",
     dataIndex: "action",

@@ -22,7 +22,6 @@
                 v-if="record.statusInt !== 5"
                 @click="openDelete(record, 'disable')"
                 class="text-xs bg-gray-200 rounded-full py-1 px-2"
-               
               >
                 Disable
               </button>
@@ -125,6 +124,7 @@ const UserListTable = defineComponent({
           mobileNo,
           status,
           createdOn,
+          lastLogin,
         } = user;
 
         return {
@@ -151,7 +151,11 @@ const UserListTable = defineComponent({
           role: roleName == "admin" ? "Administrator" : "Customer",
           emailValidated: status !== 0 ? "Yes" : "No",
           createdOn: moment(createdOn).format("ll"),
-          statusInt:status,
+          lastLogin:
+            lastLogin && lastLogin !== "n/a"
+              ? moment(lastLogin).format("lll")
+              : "-",
+          statusInt: status,
           status: (
             <span class={`status-text `}>
               {status === 0 && (
@@ -161,10 +165,16 @@ const UserListTable = defineComponent({
                 </span>
               )}
               {status === 1 && (
-                <span class="bg-green-50 text-green-500 px-3 py-[2px] rounded-full"> Active</span>
+                <span class="bg-green-50 text-green-500 px-3 py-[2px] rounded-full">
+                  {" "}
+                  Active
+                </span>
               )}
               {status === 5 && (
-                <span class="bg-green-50 text-red-500 px-3 py-[2px] rounded-full"> Inactive</span>
+                <span class="bg-green-50 text-red-500 px-3 py-[2px] rounded-full">
+                  {" "}
+                  Inactive
+                </span>
               )}
             </span>
           ),
@@ -173,7 +183,6 @@ const UserListTable = defineComponent({
       })
     );
     function openDelete(data, value) {
-   
       type.value = value;
       visible.value = true;
       detail.value = data;
