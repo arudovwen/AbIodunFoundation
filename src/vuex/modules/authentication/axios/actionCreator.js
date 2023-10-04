@@ -3,6 +3,24 @@ import { DataService } from "@/config/dataService/dataService";
 import mutations from "./mutations";
 import { urls } from "@/helpers/apI_urls";
 
+function getRedirectFrom(url) {
+  try {
+    // Create a URL object from the input URL
+    const parsedUrl = new URL(url);
+
+    // Get the query parameters as a URLSearchParams object
+    const queryParams = parsedUrl.searchParams;
+
+    // Get the value of the 'redirect_from' parameter
+    const redirectFrom = queryParams.get('redirect_from');
+
+    return redirectFrom;
+  } catch (error) {
+    // Handle invalid URL or other errors
+    console.error('Error parsing URL:', error);
+    return null;
+  }
+}
 const state = () => ({
   accessToken: localStorage.getItem("accessToken") || null,
   avatar: localStorage.getItem("avatar") || null,
@@ -44,7 +62,12 @@ const actions = {
     try {
       commit("logoutBegin");
       localStorage.clear();
-      window.location.href = "/auth/login";
+
+      if (getRedirectFrom(window.location.search)) {
+        window.location.href = getRedirectFrom(window.location.search);
+      } else {
+        window.location.href = "/auth/login";
+      }
     } catch (err) {
       console.error("Logout Error:", err);
       commit("logoutErr", err.response.data.message);
@@ -115,7 +138,6 @@ const actions = {
       );
 
       if (response.status === 200) {
-        console.log("🚀 ~ file: actionCreator.js:118 ~ resetPassword ~ response:", response)
         commit("resetSuccess");
       }
     } catch (err) {

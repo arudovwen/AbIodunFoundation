@@ -23,14 +23,14 @@
                 >
                   <img
                     :src="require(`../static/img/logo-icon.png`)"
-                    class="mx-auto !w-[24px] !h-auto md:hidden"
+                    class="mx-auto !w-[24px] !h-auto"
                     alt="logo"
                   />
-                  <img
-                    :src="require(`../static/img/logo.png`)"
+                  <!-- <img
+                    :src="require(`../static/img/logo-icon.png`)"
                     class="mx-auto !w-[150px] !h-auto hidden md:inline-flex"
                     alt="logo"
-                  />
+                  /> -->
                 </router-link>
               </div>
               <sdButton

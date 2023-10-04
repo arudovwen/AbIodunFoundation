@@ -48,7 +48,7 @@
                     :disabled="loading"
                   />
                 </a-form-item>
-                <a-form-item
+                <!-- <a-form-item
                   label="Rate"
                   name="rate"
                   :rules="[
@@ -63,7 +63,7 @@
                     placeholder="Enter product rate"
                     :disabled="loading"
                   />
-                </a-form-item>
+                </a-form-item> -->
                 <a-form-item
                   label="Upfront Fees"
                   name="upfrontFees"
@@ -74,10 +74,9 @@
                     },
                   ]"
                 >
-                  <CurrencyInput
-                    v-model="formState.upfrontFees"
+                  <a-input-number
+                    v-model.value="formState.upfrontFees"
                     placeholder="Provide an upfront fee"
-                    :options="{ currency: 'ngn' }"
                     :disabled="loading"
                   />
                 </a-form-item>

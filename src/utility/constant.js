@@ -182,6 +182,11 @@ export const productDetailTableHeader = [
 
 export const userProductTableHeader = [
   {
+    title: "Product",
+    dataIndex: "productName",
+    key: "productName",
+  },
+  {
     title: "Request Date",
     dataIndex: "requestDate",
     key: "requestDate",
@@ -196,11 +201,6 @@ export const userProductTableHeader = [
     dataIndex: "amount",
     key: "amount",
   },
-  // {
-  //   title: "Product",
-  //   dataIndex: "productName",
-  //   key: "productName",
-  // },
 
   {
     title: "Equity Contribution",
@@ -216,6 +216,11 @@ export const userProductTableHeader = [
     title: "Interest Rate",
     dataIndex: "interestRate",
     key: "interestRate",
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
   },
   {
     title: "Actions",
@@ -242,7 +247,8 @@ export const transactionTableHeader = [
     title: "Amount",
     dataIndex: "amount",
     key: "amount",
-  },{
+  },
+  {
     title: "Description",
     dataIndex: "description",
     key: "description",
@@ -251,10 +257,12 @@ export const transactionTableHeader = [
     title: "Status",
     dataIndex: "status",
     key: "status",
-  }, {
-    title: "",
-    dataIndex: "",
-    key: "",
+  },
+  {
+    title: "Actions",
+    dataIndex: "action",
+    key: "action",
+    width: "90px",
   },
 ];
 
@@ -311,4 +319,31 @@ export const bannerTableHeader = [
     key: "action",
     width: "90px",
   },
+];
+
+
+export const businessTypesInNigeria = [
+  "Agriculture",
+  "Retail",
+  "Food and Beverage",
+  "Fashion",
+  "Real Estate",
+  "Technology",
+  "Healthcare",
+  "Education",
+  "Construction",
+  "Transportation",
+  "Manufacturing",
+  "Financial Services",
+  "Hospitality",
+  "Entertainment",
+  "Legal Services",
+  "Consulting",
+  "E-commerce",
+  "Beauty and Cosmetics",
+  "Media and Advertising",
+  "Automotive",
+  "Energy",
+  "Mining",
+  "Tourism",
 ];

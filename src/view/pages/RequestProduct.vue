@@ -139,6 +139,9 @@
                         <a-select-option value=""
                           >Please Select</a-select-option
                         >
+                        <a-select-option value="3 months"
+                          >3 months</a-select-option
+                        >
                         <a-select-option value="6 months"
                           >6 months</a-select-option
                         >
@@ -241,14 +244,19 @@
                   :rules="[
                     {
                       required: true,
-                      message: 'Please input your buiness type!',
+                      message: 'Please select your buiness type!',
                     },
                   ]"
                 >
-                  <a-input
-                    v-model:value="formState.businessType"
-                    placeholder="Business Type"
-                  />
+                  <a-select size="large" v-model:value="formState.businessType">
+                    <a-select-option value="">Please Select</a-select-option>
+                    <a-select-option
+                      v-for="it in businessTypesInNigeria"
+                      :key="it"
+                      :value="it"
+                      >{{ it }}</a-select-option
+                    >
+                  </a-select>
                 </a-form-item>
                 <a-form-item
                   label="Enter your BVN"
@@ -408,6 +416,7 @@ import CurrencyInput from "components/currency/CurrencyInput";
 import { useRouter } from "vue-router";
 import { BasicFormWrapper } from "../styled";
 import dayjs from "dayjs";
+import { businessTypesInNigeria } from "@/utility/constant";
 
 const router = useRouter();
 onMounted(() => {
@@ -428,15 +437,6 @@ const uploadsuccess = computed(() => state.file.success);
 const values = ref(null);
 const uploadtype = ref("");
 const fileId = computed(() => state.file.data);
-
-// function getBase64(file) {
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.onload = () => resolve(reader.result);
-//     reader.onerror = (error) => reject(error);
-//   });
-// }
 
 const handleSubmit = (value) => {
   values.value = value;

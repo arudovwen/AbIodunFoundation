@@ -10,7 +10,20 @@
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
         }"
-      />
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'action'">
+            <div class="flex gap-x-4">
+              <router-link :to="`/transaction/${record.id}`">
+                <button class="text-xs bg-gray-200 rounded-full py-1 px-2">
+                  View
+                </button>
+              </router-link>
+          
+            </div>
+          </template>
+        </template>
+      </a-table>
     </TableWrapper>
   </UserTableStyleWrapper>
 </template>
@@ -65,7 +78,8 @@ const UserListTable = defineComponent({
           amount,
           transactionType,
           transactionDate,
-          transactionStatus,description
+          transactionStatus,
+          description,
         } = transaction;
 
         return {

@@ -82,13 +82,9 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
   (response) => response,
   (error) => {
-    /**
-     * Do something in case the response returns an error code [3**, 4**, 5**] etc
-     * For example, on token expiration retrieve a new access token, retry a failed request etc
-     */
     const { response } = error;
-
     const originalRequest = error.config;
+
     if (response) {
       if (response.status === 500) {
         Notification.error({
@@ -100,8 +96,9 @@ client.interceptors.response.use(
           message: "Error",
           description: "Token expired",
         });
+
         localStorage.clear();
-        window.location.href = "/auth/login";
+        window.location.href = `/auth/login?redirect_from=${window.location.href}`;
       } else if (response.status > 399 && response.status < 500) {
         Notification.error({
           message: "Error",

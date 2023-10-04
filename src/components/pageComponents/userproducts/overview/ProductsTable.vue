@@ -18,12 +18,11 @@
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
             <div class="flex gap-x-4">
-              <button
-                @click="openModal(record)"
-                class="text-xs bg-gray-200 rounded-full py-1 px-2"
-              >
-                View
-              </button>
+              <router-link :to="`/service/${record.id}`">
+                <button class="text-xs bg-gray-200 rounded-full py-1 px-2">
+                  View
+                </button>
+              </router-link>
               <router-link :to="`/service/request-edit/${record.id}`">
                 <button
                   class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
@@ -36,7 +35,8 @@
               </router-link>
             </div>
           </template>
-        </template></a-table
+        </template>
+        </a-table
       >
     </TableWrapper>
     <Modal :open="visible" @close="visible = false">
@@ -104,7 +104,7 @@ const UserListTable = defineComponent({
           requestDate,
           interestRate,
           lockInPeriod,
-
+          productName,
           createdAt,
         } = product;
 
@@ -112,10 +112,21 @@ const UserListTable = defineComponent({
           key: id,
           id: id,
           lockInPeriod,
-          description: <span class="truncate block max-w-[180px]">{{description}}</span>,
+          productName: (
+            <span class="truncate block max-w-[180px]">
+              {productName || "-"}
+            </span>
+          ),
+          description: (
+            <span class="truncate block max-w-[180px]">{description}</span>
+          ),
           amount: <span class="capitalize">{formatCurrency(amount)}</span>,
-          interestRate: <span class="capitalize">{formatCurrency(interestRate)}</span>,
-          equityContribution: <span class="capitalize">{formatCurrency(equityContribution)}</span>,
+          interestRate: (
+            <span class="capitalize">{formatCurrency(interestRate)}</span>
+          ),
+          equityContribution: (
+            <span class="capitalize">{formatCurrency(equityContribution)}</span>
+          ),
           dueDate: moment(dueDate).format("ll"),
           requestDate: moment(requestDate).format("ll"),
 

@@ -46,7 +46,7 @@
                     :options="{ currency: 'ngn' }"
                   />
                 </a-form-item>
-                <a-form-item
+                <!-- <a-form-item
                   label="Rate"
                   name="rate"
                   :rules="[
@@ -60,7 +60,7 @@
                     v-model:value="formState.rate"
                     placeholder="Enter product rate"
                   />
-                </a-form-item>
+                </a-form-item> -->
                 <a-form-item
                   label="Upfront Fees"
                   name="upfrontFees"
@@ -71,10 +71,10 @@
                     },
                   ]"
                 >
-                  <CurrencyInput
-                    v-model="formState.upfrontFees"
+                  <a-input-number
+                    v-model.value="formState.upfrontFees"
                     placeholder="Provide an upfront fee"
-                    :options="{ currency: 'ngn' }"
+                  
                   />
                 </a-form-item>
                 <a-form-item
@@ -117,6 +117,7 @@
                 >
                   <a-select size="large" v-model:value="formState.lockInPeriod">
                     <a-select-option value="">Please Select</a-select-option>
+                    <a-select-option value="3 months">3 months</a-select-option>
                     <a-select-option value="6 months">6 months</a-select-option>
                     <a-select-option value="12 months"
                       >12 months</a-select-option
@@ -172,6 +173,7 @@ const formState = reactive({
   lockInPeriod: null, // Update property to match the "Due date" input field
   equityContribution: "", // Update property to match the "Description" input field
 });
+
 
 watch(addsuccess, () => {
   if (addsuccess.value) {

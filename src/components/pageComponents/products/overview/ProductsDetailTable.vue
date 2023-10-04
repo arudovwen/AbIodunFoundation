@@ -121,7 +121,7 @@ const UserListTable = defineComponent({
           maxAmount,
           minAmount,
           upfrontFees,
-          rate,
+          // rate,
           equityContribution,
           lockInPeriod,
           interestRate,
@@ -138,13 +138,13 @@ const UserListTable = defineComponent({
             <span class="capitalize">{formatCurrency(minAmount)}</span>
           ),
           upfrontFees: (
-            <span class="capitalize">{formatCurrency(upfrontFees)}</span>
+            <span class="capitalize">{upfrontFees}%</span>
           ),
           equityContribution: (
             <span class="capitalize">{equityContribution}%</span>
           ),
           lockInPeriod: <span class="capitalize">{lockInPeriod}</span>,
-          rate: <span class="capitalize">{rate}%</span>,
+          // rate: <span class="capitalize">{rate}%</span>,
 
           action: "",
         };

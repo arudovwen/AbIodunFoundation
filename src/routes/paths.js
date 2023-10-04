@@ -16,6 +16,14 @@ export const paths = [
       ),
   },
   {
+    name: "service",
+    path: "/service/:id",
+    component: () =>
+      import(
+        /* webpackChunkName: "service" */ "@/view/pages/UserProductDetailPage.vue"
+      ),
+  },
+  {
     name: "product",
     path: "/product/:id",
     component: () =>
@@ -31,7 +39,14 @@ export const paths = [
         /* webpackChunkName: "transactions" */ "@/view/pages/TransactionsPage.vue"
       ),
   },
-
+  {
+    name: "transaction",
+    path: "/transaction/:id",
+    component: () =>
+      import(
+        /* webpackChunkName: "transaction" */ "@/view/pages/TransactionDetailPage.vue"
+      ),
+  },
   {
     name: "airtime & data",
     path: "/airtime-and-data",

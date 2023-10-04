@@ -28,6 +28,21 @@ export default {
     state.error = err;
     state.getsuccess = false;
   },
+  getReqBegin(state) {
+    state.getreqloading = true;
+    state.error = null;
+    state.getreqsuccess = false;
+  },
+  getReqSuccess(state, data) {
+    state.getreqloading = false;
+    state.getreqsuccess = true;
+    state.requestReq = data;
+  },
+  getReqErr(state, err) {
+    state.getreqloading = false;
+    state.error = err;
+    state.getreqsuccess = false;
+  },
   fetchBegin(state) {
     state.fetchloading = true;
     state.error = null;

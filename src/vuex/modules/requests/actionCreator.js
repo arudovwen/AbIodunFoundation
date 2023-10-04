@@ -6,12 +6,15 @@ const state = () => ({
   data: [],
   total: 0,
   request: null,
+  requestReq: null,
   loading: false,
   success: false,
   addloading: false,
   addsuccess: false,
   getloading: false,
   getsuccess: false,
+  getreqloading: false,
+  getreqsuccess: false,
   fetchsuccess: false,
   fetchloading: false,
   editsuccess: false,
@@ -63,23 +66,21 @@ const actions = {
   },
   async getUserProductRequirementById({ commit }, id) {
     try {
-      commit("getBegin");
+      commit("getReqBegin");
       const response = await DataService.get(
         `${urls.GET_USER_PRODUCT_REQUIREMENT_BY_ID}?id=${id}`
       );
       if (response.status === 200) {
-        commit("getSuccess", response.data.data);
+        commit("getReqSuccess", response.data.data);
       }
     } catch (err) {
-      commit("getErr", err);
+      commit("getReqErr", err);
     }
   },
   async updateUserProduct({ commit }) {
     try {
       commit("editBegin");
-      const response = await DataService.get(
-        `${urls.UPDATE_USER_PRODUCT}`
-      );
+      const response = await DataService.get(`${urls.UPDATE_USER_PRODUCT}`);
       if (response.status === 200) {
         commit("editSuccess", response.data.data);
       }
@@ -119,12 +120,12 @@ const actions = {
       commit("addBegin");
       const response = await DataService.post(urls.CREATE_USER_PRODUCT, data);
       if (response.status === 200) {
-        const response = await DataService.post(
+        const res = await DataService.post(
           urls.CREATE_USER_PRODUCT_REQUIREMENT,
-          data
+          { ...data, userProductId: response.data.data }
         );
-        if (response.status === 200) {
-          commit("addSuccess", response.data.data);
+        if (res.status === 200) {
+          commit("addSuccess", res.data.data);
         }
       }
     } catch (err) {

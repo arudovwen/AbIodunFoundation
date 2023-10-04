@@ -4,7 +4,7 @@
       <AuthWrapper>
         <div class="ninjadash-authentication-top">
           <h2 class="ninjadash-authentication-top__title">
-            Sign Up Biodun & Ibikunle Foundation
+            Sign Up
           </h2>
         </div>
         <div class="ninjadash-authentication-content">

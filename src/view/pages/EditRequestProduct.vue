@@ -19,6 +19,7 @@
                 class="md:grid grid-cols-1 md:grid-cols-2 md:gap-y-0 md:gap-x-8"
               >
                 <a-form-item
+                  class="col-span-2 mb-10"
                   name="productId"
                   label="Choose a product"
                   :rules="[
@@ -42,6 +43,129 @@
                     >
                   </a-select>
                 </a-form-item>
+
+                <h2 class="font-bold mb-7">Product detail</h2>
+                <BasicFormWrapper
+                  class="ninjadash-authentication-content col-span-2 mb-10"
+                >
+                  <div class="col-span-2 grid md:grid-cols-2 md:gap-x-8 mb-8">
+                    <a-form-item
+                      label="Amount"
+                      name="amount"
+                      :rules="[
+                        { required: true, message: 'Please input an amount!' },
+                      ]"
+                    >
+                      <CurrencyInput
+                        v-model="formState.amount"
+                        placeholder="Provide an amount"
+                        :options="{ currency: 'ngn' }"
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      label="Request date"
+                      name="requestDate"
+                      class="w-full"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please select a date!',
+                        },
+                      ]"
+                    >
+                      <a-date-picker
+                        class="w-full"
+                        v-model:value="formState.requestDate"
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      label="Due date"
+                      name="dueDate"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please select a date!',
+                        },
+                      ]"
+                    >
+                      <a-date-picker
+                        :disabled-date="disabledDate"
+                        class="w-full"
+                        v-model:value="formState.dueDate"
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      label="Interest rate"
+                      name="interestRate"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please input an Interest rate!',
+                        },
+                      ]"
+                    >
+                      <a-input-number
+                        v-model:value="formState.interestRate"
+                        placeholder=""
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      label="Equity Contribution"
+                      name="equityContribution"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please input a value!',
+                        },
+                      ]"
+                    >
+                      <a-input-number
+                        v-model:value="formState.equityContribution"
+                        placeholder=""
+                      />
+                    </a-form-item>
+
+                    <a-form-item
+                      label="Lock-in Period"
+                      name="lockInPeriod"
+                      :rules="[
+                        { required: true, message: 'Please select a value!' },
+                      ]"
+                    >
+                      <a-select
+                        size="large"
+                        v-model:value="formState.lockInPeriod"
+                      >
+                        <a-select-option value=""
+                          >Please Select</a-select-option
+                        >
+                        <a-select-option value="3 months"
+                          >3 months</a-select-option
+                        >
+                        <a-select-option value="6 months"
+                          >6 months</a-select-option
+                        >
+                        <a-select-option value="12 months"
+                          >12 months</a-select-option
+                        >
+                      </a-select>
+                    </a-form-item>
+                    <a-form-item
+                      class="col-span-2"
+                      label="Description"
+                      name="description"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please provide a description!',
+                        },
+                      ]"
+                    >
+                      <a-textarea v-model:value="formState.description" />
+                    </a-form-item>
+                  </div>
+                </BasicFormWrapper>
+                <h2 class="font-bold mb-7 col-span-2">Product Requirements</h2>
 
                 <a-form-item
                   label="Facility amount"
@@ -120,14 +244,19 @@
                   :rules="[
                     {
                       required: true,
-                      message: 'Please input your buiness type!',
+                      message: 'Please select your buiness type!',
                     },
                   ]"
                 >
-                  <a-input
-                    v-model:value="formState.businessType"
-                    placeholder="Business Type"
-                  />
+                  <a-select size="large" v-model:value="formState.businessType">
+                    <a-select-option value="">Please Select</a-select-option>
+                    <a-select-option
+                      v-for="it in businessTypesInNigeria"
+                      :key="it"
+                      :value="it"
+                      >{{ it }}</a-select-option
+                    >
+                  </a-select>
                 </a-form-item>
                 <a-form-item
                   label="Enter your BVN"
@@ -266,7 +395,7 @@
                     size="lg"
                     :disabled="isLoading"
                   >
-                    {{ isLoading ? "Processing..." : "Update request" }}
+                    {{ isLoading ? "Processing" : "Submit request" }}
                   </sdButton>
                 </div>
               </a-form>
@@ -285,38 +414,40 @@ import { onMounted, computed, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import CurrencyInput from "components/currency/CurrencyInput";
+import { BasicFormWrapper } from "../styled";
+import dayjs from "dayjs";
+import { businessTypesInNigeria } from "@/utility/constant";
 
-const route = useRoute();
 const router = useRouter();
-onMounted(() => {
-  dispatch("getProducts", query);
-  dispatch("getRequestById", route.params.id);
-});
-
+const route = useRoute();
 const query = reactive({
   pageNumber: 1,
   pageSize: 100000000,
   name: "",
 });
 const { state, dispatch } = useStore();
+onMounted(() => {
+  dispatch("getProducts", query);
+  dispatch("getRequestById", route.params.id);
+});
+
 const products = computed(() => state.products.data);
 const request = computed(() => state.requests.request);
+const requestReq = computed(() => state.requests.requestReq);
 const isLoading = computed(() => state.requests.editloading);
 const editsuccess = computed(() => state.requests.editsuccess);
 const userData = computed(() => state.auth.userData);
+const uploadsuccess = computed(() => state.file.success);
 const values = ref(null);
+const uploadtype = ref("");
+const fileId = computed(() => state.file.data);
 
-// function getBase64(file) {
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.onload = () => resolve(reader.result);
-//     reader.onerror = (error) => reject(error);
-//   });
-// }
 const handleSubmit = (value) => {
   values.value = value;
-  dispatch("addRequest", formState);
+  dispatch("addUserProduct", {
+    ...formState,
+    facilityAmount: formState.facilityAmount.toString(),
+  });
 };
 const onChange = (e) => {
   formState.alumni = e.target.checked;
@@ -335,11 +466,19 @@ const formState = reactive({
   residentialAddress: "",
   businessType: "",
   bvn: "",
-  cacDocumentUrl: null, // This will hold the CAC file data
-  statementUrl: null, // This will hold the account statement file data
-  identificationUrl: null, // This will hold the means of identification file data
-  utilityBillUrl: null, // This will hold the utility bill file data
-  alumniCode: "", // Alumni code
+  cacDocumentUrl: "null",
+  statementUrl: "null",
+  identificationUrl: "null",
+  utilityBillUrl: "null",
+  alumniCode: "",
+  alumni: false,
+  amount: null,
+  requestDate: null,
+  equityContribution: null,
+  lockInPeriod: "",
+  interestRate: null,
+  dueDate: null,
+  description: "",
 });
 
 const breadcrumbs = [
@@ -353,11 +492,10 @@ const breadcrumbs = [
   },
   {
     path: "#",
-    breadcrumbName: "Edit Request service",
+    breadcrumbName: "Request service",
   },
 ];
 const handleChange = (file, type) => {
- 
   const allowedTypes = [
     "image/svg+xml",
     "image/jpeg",
@@ -373,41 +511,63 @@ const handleChange = (file, type) => {
     );
   }
 
-  // await getBase64(file.originFileObj)
+  const formData = new FormData();
+  formData.append("file", file);
+  uploadtype.value = type;
+  dispatch("uploadFile", {
+    userId: userData.value.id,
+    fileType: "product",
+    formData,
+  });
 
-  if (type === "cac") {
-    formState.cacDocumentUrl = file;
-  }
-  if (type === "id") {
-    formState.identificationUrl = file;
-  }
-  if (type === "utility") {
-    formState.utilityBillUrl = file;
-  }
-  if (type === "statement") {
-    formState.statementUrl = file;
-  }
   return false;
+};
+const disabledDate = (current) => {
+  // Can not select days before today and today
+  return current && current < dayjs().endOf("day");
 };
 watch(editsuccess, () => {
   if (editsuccess.value) {
-    message.success("Request update successful!");
+    message.success("Service update successful!");
     router.push("/services");
   }
 });
+watch(uploadsuccess, () => {
+  if (uploadtype.value === "cac") {
+    formState.cacDocumentUrl = fileId.value.toString();
+  }
+  if (uploadtype.value === "id") {
+    formState.identificationUrl = fileId.value.toString();
+  }
+  if (uploadtype.value === "utility") {
+    formState.utilityBillUrl = fileId.value.toString();
+  }
+  if (uploadtype.value === "statement") {
+    formState.statementUrl = fileId.value.toString();
+  }
+});
 watch(request, () => {
-  formState.productId = request.value.productId;
-  formState.facilityAmount = request.value.facilityAmount;
-  formState.useOfFunds = request.value.useOfFunds;
-  formState.businessName = request.value.businessName;
-  formState.businessAddress = request.value.businessAddress;
-  formState.residentialAddress = request.value.residentialAddress;
-  formState.businessType = request.value.businessType;
-  formState.bvn = request.value.bvn;
-  formState.cacDocumentUrl = request.value.cacDocumentUrl;
-  formState.statementUrl = request.value.statementUrl;
-  formState.identificationUrl = request.value.identificationUrl;
-  formState.utilityBillUrl = request.value.utilityBillUrl;
-  formState.alumniCode = request.value.alumniCode;
+  formState.productId = requestReq.value.productId;
+  formState.facilityAmount = requestReq.value.facilityAmount;
+  formState.useOfFunds = requestReq.value.useOfFunds;
+  formState.businessName = requestReq.value.businessName;
+  formState.businessAddress = requestReq.value.businessAddress;
+  formState.residentialAddress = requestReq.value.residentialAddress;
+  formState.businessType = requestReq.value.businessType;
+  formState.bvn = requestReq.value.bvn;
+  formState.cacDocumentUrl = requestReq.value.cacDocumentUrl;
+  formState.statementUrl = requestReq.value.statementUrl;
+  formState.identificationUrl = requestReq.value.identificationUrl;
+  formState.utilityBillUrl = requestReq.value.utilityBillUrl;
+  formState.alumniCode = requestReq.value.alumniCode;
+  formState.alumni = requestReq.value.alumni;
+  formState.amount = request.value.amount;
+  formState.requestDate = request.value.requestDate;
+  formState.equityContribution = request.value.equityContribution;
+  formState.lockInPeriod = request.value.lockInPeriod;
+  formState.interestRate = request.value.interestRate;
+  formState.dueDate = request.value.dueDate;
+  formState.description = request.value.description;
+  formState.userProductId = requestReq.value.userProductId;
 });
 </script>
