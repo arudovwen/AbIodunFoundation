@@ -43,13 +43,13 @@
                   </a-upload-dragger>
                 </a-form-item>
 
-                <div class="flex gap-x-2 items-center">
+                <!-- <div class="flex gap-x-2 items-center">
                   <a-switch
                     v-model:checked="checked"
                     :class="checked ? 'bg-blue-600' : ' bg-gray-400'"
                   />
                   <span class="font-medium">Active</span>
-                </div>
+                </div> -->
 
                 <div class="col-span-2 flex justify-center mt-7">
                   <sdButton
@@ -103,13 +103,13 @@ const previewTitle = ref("");
 const formState = reactive({
   description: "",
   bannerUrl: "",
-  status: "",
+  // status: "",
 });
 
 onMounted(() => {
   formState.description = props.detail.description;
-  formState.status = checked.value = props.detail.stat;
-
+  formState.status = props.detail.stat;
+  // checked.value = formState.status === "active" ? true : false;
   formState.bannerUrl = props.detail.bannerUrl;
   formState.id = props.detail.id;
 });
@@ -122,21 +122,27 @@ const handleChange = (info) => {
     "image/jpg",
     "image/png",
   ];
+  
+  // Check if the file type is allowed
   if (!allowedTypes.includes(file.type)) {
     message.error(
       `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG allowed)`
     );
     return false; // Prevent the upload
   }
+
+  // Check if the file size is within the allowed limit (800KB)
+  if (file.size > 800 * 1024) { // 800KB = 800 * 1024 bytes
+    message.error(`${file.name} exceeds the maximum file size (800KB)`);
+    return false; // Prevent the upload
+  }
+
+  fileList.value = [file];
   myfile.value = file;
-  // dispatch("uploadFile", {
-  //   userId: state.auth.userData.id,
-  //   fileType: "banner",
-  //   formData,
-  // });
 
   return false; // Prevent default behavior
 };
+
 function handleDrop(e) {
   console.log(e);
 }

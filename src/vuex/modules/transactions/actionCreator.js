@@ -39,15 +39,16 @@ const actions = {
   },
   async getTransactionById({ commit }, id) {
     try {
-      commit("profileBegin");
+      commit("transactionBegin");
       const response = await DataService.get(
-        `${urls.GET_TRANSACTION_BY_ID}?TransactionId=${id}`
+        `${urls.GET_TRANSACTION_BY_ID}?id=${id}`
       );
+   
       if (response.status === 200) {
-        commit("profileSuccess", response.data.data);
+        commit("transactionSuccess", response.data.data);
       }
     } catch (err) {
-      commit("profileErr", err);
+      commit("transactionErr", err);
     }
   },
 

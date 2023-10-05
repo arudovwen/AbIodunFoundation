@@ -88,7 +88,7 @@ const UserListTable = defineComponent({
     function fetchRecords(page) {
       dispatch("getUserProducts", { ...query, pageNumber: page });
     }
-    const loading = computed(() => state.requests.loading);
+    const loading = computed(() => state.requests.fetchloading);
     const total = computed(() => state.requests.total);
     const addsuccess = computed(() => state.requests.addsuccess);
     const deleteloading = computed(() => state.requests.deleteloading);
@@ -125,7 +125,7 @@ const UserListTable = defineComponent({
             <span class="capitalize">{formatCurrency(interestRate)}</span>
           ),
           equityContribution: (
-            <span class="capitalize">{formatCurrency(equityContribution)}</span>
+            <span class="capitalize">{equityContribution}%</span>
           ),
           dueDate: moment(dueDate).format("ll"),
           requestDate: moment(requestDate).format("ll"),

@@ -3,7 +3,7 @@
     <a-carousel autoplay>
       <div class="banner-signle" v-for="ban in banners" :key="ban.id">
         <div class="banner-single__img w-full h-[300px]">
-          <img class="h-full w-full object-cover" :src="ban.bannerUrl" alt="" />
+          <img class="h-full w-full object-cover object-top" :src="ban.bannerUrl" alt="" />
         </div>
         <div v-if="ban.description" class="banner-single__content text-left px-6">
           <h3 class="text-left">{{ ban.description }}</h3>
@@ -24,7 +24,7 @@ const query = reactive({
   pageNumber: 1,
   pageSize: 10,
   description: "",
-  status: "active",
+  status: "true",
 });
 const carouselRef = ref(null);
 const { state, dispatch } = useStore();

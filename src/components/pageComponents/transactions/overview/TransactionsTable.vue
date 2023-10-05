@@ -4,6 +4,7 @@
       <a-table
         :dataSource="transactionsData"
         :columns="transactionTableHeader"
+        :loading="loading || deleteloading"
         :pagination="{
           defaultPageSize: query.pageSize,
           total: total,
@@ -66,7 +67,7 @@ const UserListTable = defineComponent({
     function fetchRecords(page) {
       dispatch("getTransactions", { ...query, pageNumber: page });
     }
-    const loading = computed(() => state.transactions.loading);
+    const loading = computed(() => state.transactions.fetchloading);
     const total = computed(() => state.transactions.total);
     const addsuccess = computed(() => state.transactions.addsuccess);
     const deleteloading = computed(() => state.transactions.deleteloading);

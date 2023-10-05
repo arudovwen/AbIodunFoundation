@@ -18,7 +18,7 @@
         key="1"
         type="primary"
       >
-        <unicon name="plus" width="14"></unicon> Add New Administrator
+     Add Administrator
       </sdButton>
     </div>
   </div>

@@ -112,6 +112,8 @@ const handleChange = (info) => {
     "image/jpg",
     "image/png",
   ];
+
+  // Check if the file type is allowed
   if (!allowedTypes.includes(file.type)) {
     message.error(
       `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG allowed)`
@@ -119,16 +121,19 @@ const handleChange = (info) => {
     return false; // Prevent the upload
   }
 
+  // Check if the file size is within the allowed limit (800KB)
+  if (file.size > 800 * 1024) {
+    // 800KB = 800 * 1024 bytes
+    message.error(`${file.name} exceeds the maximum file size (800KB)`);
+    return false; // Prevent the upload
+  }
+
   fileList.value = [file];
   myfile.value = file;
-  // dispatch("uploadFile", {
-  //   userId: state.auth.userData.id,
-  //   fileType: "banner",
-  //   formData,
-  // });
 
   return false; // Prevent default behavior
 };
+
 function handleDrop(e) {
   console.log(e);
 }

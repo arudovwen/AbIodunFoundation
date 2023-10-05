@@ -1,4 +1,19 @@
 export default {
+  
+  updateStatusBegin(state) {
+    state.updatestatusloading = true;
+    state.error = null;
+    state.updatestatussuccess = false;
+  },
+  updateStatusSuccess(state) {
+    state.updatestatusloading = false;
+    state.updatestatussuccess = true;
+  },
+  updateStatusErr(state, err) {
+    state.updatestatusloading = false;
+    state.error = err;
+    state.updatestatussuccess = false;
+  },
   addBegin(state) {
     state.addloading = true;
     state.error = null;

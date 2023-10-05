@@ -13,16 +13,18 @@ export default {
     state.error = err;
     state.addsuccess = false;
   },
-  getBegin(state) {
+  transactionBegin(state) {
     state.getloading = true;
     state.error = null;
     state.getsuccess = false;
   },
-  getSuccess(state) {
+  transactionSuccess(state, data) {
+   
     state.getloading = false;
     state.getsuccess = true;
+    state.transaction = data
   },
-  getErr(state, err) {
+  transactionErr(state, err) {
     state.getloading = false;
     state.error = err;
     state.getsuccess = false;

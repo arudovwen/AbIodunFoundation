@@ -2,8 +2,12 @@
   <sdCards headless>
     <div class="author-info">
       <figure>
-        <img :src="avatar || imageUrl" alt="avatar" class="h-32 w-32 object-cover" />
-        <a-upload  :max-count="1" :before-upload="handleFileUpload">
+        <img
+          :src="avatar || imageUrl"
+          alt="avatar"
+          class="h-32 w-32 object-cover"
+        />
+        <a-upload :max-count="1" :before-upload="handleFileUpload">
           <a to="#">
             <loading-outlined v-if="loading"></loading-outlined>
             <unicon v-else name="camera" width="16"></unicon>
@@ -75,6 +79,11 @@ export default {
         );
         return false; // Prevent the upload
       }
+      if (file.size > 800 * 1024) {
+        // 800KB = 800 * 1024 bytes
+        message.error(`${file.name} exceeds the maximum file size (800KB)`);
+        return false; // Prevent the upload
+      }
 
       const formData = new FormData();
       formData.append("file", file);
@@ -128,7 +137,7 @@ export default {
     avatarsuccess(newValue) {
       if (newValue) {
         localStorage.setItem("avatar", this.avatar);
-        this.$store.dispatch("updateAvatar", this.avatar)
+        this.$store.dispatch("updateAvatar", this.avatar);
       }
     },
   },

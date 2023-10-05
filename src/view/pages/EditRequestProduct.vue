@@ -428,12 +428,12 @@ const query = reactive({
 const { state, dispatch } = useStore();
 onMounted(() => {
   dispatch("getProducts", query);
-  dispatch("getRequestById", route.params.id);
+  dispatch("getUserProductById", route.params.id);
 });
 
 const products = computed(() => state.products.data);
 const request = computed(() => state.requests.request);
-const requestReq = computed(() => state.requests.requestReq);
+// const requestReq = computed(() => state.requests.requestReq);
 const isLoading = computed(() => state.requests.editloading);
 const editsuccess = computed(() => state.requests.editsuccess);
 const userData = computed(() => state.auth.userData);
@@ -510,6 +510,10 @@ const handleChange = (file, type) => {
       `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG allowed)`
     );
   }
+  if (file.size > 800 * 1024) { // 800KB = 800 * 1024 bytes
+    message.error(`${file.name} exceeds the maximum file size (800KB)`);
+    return false; // Prevent the upload
+  }
 
   const formData = new FormData();
   formData.append("file", file);
@@ -547,27 +551,27 @@ watch(uploadsuccess, () => {
   }
 });
 watch(request, () => {
-  formState.productId = requestReq.value.productId;
-  formState.facilityAmount = requestReq.value.facilityAmount;
-  formState.useOfFunds = requestReq.value.useOfFunds;
-  formState.businessName = requestReq.value.businessName;
-  formState.businessAddress = requestReq.value.businessAddress;
-  formState.residentialAddress = requestReq.value.residentialAddress;
-  formState.businessType = requestReq.value.businessType;
-  formState.bvn = requestReq.value.bvn;
-  formState.cacDocumentUrl = requestReq.value.cacDocumentUrl;
-  formState.statementUrl = requestReq.value.statementUrl;
-  formState.identificationUrl = requestReq.value.identificationUrl;
-  formState.utilityBillUrl = requestReq.value.utilityBillUrl;
-  formState.alumniCode = requestReq.value.alumniCode;
-  formState.alumni = requestReq.value.alumni;
+  formState.productId = request.value.productId.toString();
+  // formState.facilityAmount = requestReq.value.facilityAmount;
+  // formState.useOfFunds = requestReq.value.useOfFunds;
+  // formState.businessName = requestReq.value.businessName;
+  // formState.businessAddress = requestReq.value.businessAddress;
+  // formState.residentialAddress = requestReq.value.residentialAddress;
+  // formState.businessType = requestReq.value.businessType;
+  // formState.bvn = requestReq.value.bvn;
+  // formState.cacDocumentUrl = requestReq.value.cacDocumentUrl;
+  // formState.statementUrl = requestReq.value.statementUrl;
+  // formState.identificationUrl = requestReq.value.identificationUrl;
+  // formState.utilityBillUrl = requestReq.value.utilityBillUrl;
+  // formState.alumniCode = requestReq.value.alumniCode;
+  // formState.alumni = requestReq.value.alumni;
   formState.amount = request.value.amount;
-  formState.requestDate = request.value.requestDate;
+  formState.requestDate = dayjs(request.value.requestDate);
   formState.equityContribution = request.value.equityContribution;
   formState.lockInPeriod = request.value.lockInPeriod;
   formState.interestRate = request.value.interestRate;
-  formState.dueDate = request.value.dueDate;
+  formState.dueDate = dayjs(request.value.dueDate);
   formState.description = request.value.description;
-  formState.userProductId = requestReq.value.userProductId;
+  formState.userProductId = request.value.userProductId;
 });
 </script>

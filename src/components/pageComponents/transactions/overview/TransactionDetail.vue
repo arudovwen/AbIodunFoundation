@@ -1,135 +1,150 @@
 <template>
   <div>
- 
-    <div v-if="product && !loading" class="grid grid-cols-2 gap-10 mb-10">
+    <div v-if="product && !loading && !reqloading" class="grid grid-cols-2 gap-6 mb-10">
       <div>
-        <span class="block text-sm font-medium">Product name</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Transaction type</span>
+        <span class="text-base font-medium capitalize">{{
+          transaction.transactionType || "-"
+        }}</span>
+      </div>
+      <div>
+        <span class="block text-sm font-medium  text-gray-500">Transaction status</span>
+        <span class="text-base font-medium capitalize">{{
+          transaction.transactionStatus || "-"
+        }}</span>
+      </div>
+      <div>
+        <span class="block text-sm font-medium  text-gray-500">Product name</span>
+        <span class="text-base font-medium capitalize">{{
           product.productName || "-"
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Amount</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Amount</span>
+        <span class="text-base font-medium capitalize">{{
           formatCurrency(product.amount) || "-"
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Request date</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Request date</span>
+        <span class="text-base font-medium capitalize">{{
           moment(product.requestDate).format("lll") || "-"
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Due date</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Due date</span>
+        <span class="text-base font-medium capitalize">{{
           moment(product.dueDate).format("lll") || "-"
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Lock-in period</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Lock-in period</span>
+        <span class="text-base font-medium capitalize">{{
           product.lockInPeriod || "-"
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Interest rate</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Interest rate</span>
+        <span class="text-base font-medium capitalize">{{
           formatCurrency(product.interestRate) || "-"
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Equity contribution</span>
-        <span class="text-base font-bold capitalize">{{
-          formatCurrency(product.equityContribution) || "-"
-        }}</span>
+        <span class="block text-sm font-medium  text-gray-500">Equity contribution</span>
+        <span class="text-base font-medium capitalize">{{
+          product.equityContribution
+        }}%</span>
       </div>
       <div class="col-span-2">
-        <span class="block text-sm font-medium">Description</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Description</span>
+        <span class="text-base font-medium capitalize">{{
           product.description || "-"
         }}</span>
       </div>
     </div>
-    <div v-if="productReq && !loadingReq" class="grid grid-cols-2 gap-10 mb-10">
-      <h4 class="col-span-2 font-bold mb-8">Requirements</h4>
+    <div v-if="productReq && !loadingReq && !reqloading" class="grid grid-cols-2 gap-10 mb-10">
+      <h4 class="col-span-2 text-lg font-bold mb-8">Requirements</h4>
       <div>
-        <span class="block text-sm font-medium">Business name</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Business name</span>
+        <span class="text-base font-medium capitalize">{{
           product.businessName || "-"
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Business address</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Business address</span>
+        <span class="text-base font-medium capitalize">{{
           product.businessAddress || "-"
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Residential address</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Residential address</span>
+        <span class="text-base font-medium capitalize">{{
           product.residentialAddress || "-"
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Use of Funds</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Use of Funds</span>
+        <span class="text-base font-medium capitalize">{{
           product.useOfFunds
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Facility amount</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Facility amount</span>
+        <span class="text-base font-medium capitalize">{{
           formatCurrency(product.facilityAmount) || "-"
         }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Business type </span>
-        <span class="text-base font-bold capitalize"
+        <span class="block text-sm font-medium  text-gray-500">Business type </span>
+        <span class="text-base font-medium capitalize"
           >{{ product.businessTypeCode }} - {{ product.businessType }}</span
         >
       </div>
       <div>
-        <span class="block text-sm font-medium">BVN</span>
-        <span class="text-base font-bold capitalize">{{ productReq.bvn }}</span>
+        <span class="block text-sm font-medium  text-gray-500">BVN</span>
+        <span class="text-base font-medium capitalize">{{ productReq.bvn }}</span>
       </div>
       <div>
-        <span class="block text-sm font-medium">Lock-in period</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Lock-in period</span>
+        <span class="text-base font-medium capitalize">{{
           product.lockInPeriod || "-"
         }}</span>
       </div>
 
       <div class="col-span-2">
-        <span class="block text-sm font-medium">CAC Document</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">CAC Document</span>
+        <span class="text-base font-medium capitalize">{{
           product.description || "-"
         }}</span>
       </div>
       <div class="col-span-2">
-        <span class="block text-sm font-medium">Business statement</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Business statement</span>
+        <span class="text-base font-medium capitalize">{{
           product.description || "-"
         }}</span>
       </div>
       <div class="col-span-2">
-        <span class="block text-sm font-medium">Utility Bill</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Utility Bill</span>
+        <span class="text-base font-medium capitalize">{{
           product.description || "-"
         }}</span>
       </div>
       <div class="col-span-2">
-        <span class="block text-sm font-medium">Identification Document</span>
-        <span class="text-base font-bold capitalize">{{
+        <span class="block text-sm font-medium  text-gray-500">Identification Document</span>
+        <span class="text-base font-medium capitalize">{{
           product.description || "-"
         }}</span>
       </div>
     </div>
+   
+   <div v-if="loading || loadingReq || reqloading" class="flex items-center justify-center h-[500px] w-full">
+    <a-spin size="large" />
+   </div>
   </div>
 </template>
 <script setup>
 import { useStore } from "vuex";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import moment from "moment";
 import { formatCurrency } from "@/utility/formatCurrency";
@@ -138,14 +153,26 @@ const route = useRoute();
 const { state, dispatch } = useStore();
 const product = computed(() => state.requests.request);
 const productReq = computed(() => state.requests.requestReq);
+const transaction = computed(() => state.transactions.transaction);
 
-const loading = computed(() => state.requests.getloading);
+const success = computed(() => state.transactions.getsuccess);
+
+const loading = computed(() => state.transactions.getloading);
+const reqloading = computed(() => state.requests.getloading);
 const loadingReq = computed(() => state.requests.getreqloading);
 
 onMounted(() => {
   if (route.params.id) {
-    dispatch("getUserProductById", route.params.id);
-    // dispatch("getUserProductRequirementById", route.params.id);
+    dispatch("getTransactionById", route.params.id);
   }
+});
+watch(success, () => {
+  transaction.value.userProductId &&
+    dispatch("getUserProductById", transaction.value.userProductId);
+  transaction.value.userProductRequirementId &&
+    dispatch(
+      "getUserProductRequirementById",
+      transaction.value.userProductRequirementId
+    );
 });
 </script>

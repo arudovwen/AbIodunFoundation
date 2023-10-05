@@ -507,6 +507,10 @@ const handleChange = (file, type) => {
       `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG allowed)`
     );
   }
+  if (file.size > 800 * 1024) { // 800KB = 800 * 1024 bytes
+    message.error(`${file.name} exceeds the maximum file size (800KB)`);
+    return false; // Prevent the upload
+  }
 
   const formData = new FormData();
   formData.append("file", file);

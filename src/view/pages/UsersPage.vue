@@ -24,7 +24,7 @@
             key="1"
             type="primary"
           >
-            <unicon name="plus" width="14"></unicon> Add New Administrator
+          Add Administrator
           </sdButton>
         </div>
       </div>
@@ -46,8 +46,9 @@ import { Main } from "../styled";
 import { ref, provide } from "vue";
 import Users from "components/pageComponents/users/overview/UserTable";
 import AddUser from "components/pageComponents/users/AddUsers";
+// import AddRole from "components/pageComponents/users/AddRole";
 
-const visible = ref(false);
+const visible = ref(true);
 const search = ref("");
 const breadcrumbs = [
   {

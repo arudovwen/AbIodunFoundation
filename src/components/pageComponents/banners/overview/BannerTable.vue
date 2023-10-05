@@ -49,6 +49,7 @@
       <a-table
         :dataSource="bannersData"
         :columns="bannerTableHeader"
+        :loading="loading"
         :pagination="{
           defaultPageSize: query.pageSize,
           total: total,
@@ -63,14 +64,14 @@
           <template v-if="column.key === 'action'">
             <div class="flex gap-x-4 items-center">
               <button
-                v-if="status.toLowerCase() == 'true'"
+                v-if="record.stat.toLowerCase() == 'true'"
                 class="text-xs"
                 @click="openModal(record, 'disable')"
               >
                 Disable
               </button>
               <button
-                v-if="status.toLowerCase() == 'false'"
+                v-if="record.stat.toLowerCase() == 'false'"
                 class="text-xs"
                 @click="openModal(record, 'enable')"
               >
