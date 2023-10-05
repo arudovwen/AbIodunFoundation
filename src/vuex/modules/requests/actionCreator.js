@@ -38,11 +38,11 @@ const actions = {
       commit("fetchErr", err);
     }
   },
-  async getUserProductRequirements({ commit }, { pageNumber, name, pageSize }) {
+  async getUserProductRequirements({ commit }, { pageNumber, name, pageSize,userproductId }) {
     try {
       commit("fetchBegin");
       const response = await DataService.get(
-        `${urls.GET_ALL_USER_PRODUCT_REQUIREMENT}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}`
+        `${urls.GET_ALL_USER_PRODUCT_REQUIREMENT}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}&userproductId=${userproductId}`
       );
       if (response.status === 200) {
         commit("fetchSuccess", response.data);
