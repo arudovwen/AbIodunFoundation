@@ -2,6 +2,7 @@ export default {
   uploadBegin(state) {
     state.loading = true;
     state.success = false;
+    state.data = [];
   },
 
   uploadSuccess(state, data) {

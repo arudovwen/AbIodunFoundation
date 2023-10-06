@@ -3,6 +3,7 @@ export default {
     state.loading = true;
     state.error = null;
     state.success = false;
+    state.data = [];
   },
   fetchSuccess(state, { data, totalCount }) {
     state.loading = false;

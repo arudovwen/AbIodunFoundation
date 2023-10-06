@@ -48,7 +48,7 @@ import Users from "components/pageComponents/users/overview/UserTable";
 import AddUser from "components/pageComponents/users/AddUsers";
 // import AddRole from "components/pageComponents/users/AddRole";
 
-const visible = ref(true);
+const visible = ref(false);
 const search = ref("");
 const breadcrumbs = [
   {

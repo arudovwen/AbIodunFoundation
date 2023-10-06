@@ -2,7 +2,7 @@
   <UserTableStyleWrapper>
     <TableWrapper class="table-responsive">
       <a-table
-        :loading="loading"
+        :loading="loading || forgotLoading"
         :dataSource="usersData"
         :columns="userTableHeader"
         :pagination="{
@@ -17,7 +17,7 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <div class="">
+            <div class="flex gap-x-4 justify-end">
               <button
                 v-if="record.statusInt !== 5"
                 @click="openDelete(record, 'disable')"
@@ -34,6 +34,15 @@
                 shape="circle"
               >
                 Enable
+              </button>
+              <button
+                @click="openDelete(record, 'password')"
+                class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
+                type="default"
+                to="#"
+                shape="circle"
+              >
+                Reset Password
               </button>
             </div>
           </template>
@@ -56,13 +65,13 @@
           Cancel
         </sdButton>
         <sdButton
-          :disabled="deleteloading"
+          :disabled="deleteloading || forgotLoading"
           class=""
           size="sm"
           key="1"
           type="error"
           @click="handleDelete"
-          >{{ deleteloading ? "Processing..." : "Confirm" }}
+          >{{ deleteloading || forgotLoading ? "Processing..." : "Confirm" }}
         </sdButton>
       </div>
     </div>
@@ -114,6 +123,8 @@ const UserListTable = defineComponent({
     const addsuccess = computed(() => state.users.addsuccess);
     const deleteloading = computed(() => state.users.deleteloading);
     const deletesuccess = computed(() => state.users.deletesuccess);
+    const forgotLoading = computed(() => state.auth.loading);
+    const forgotSuccess = computed(() => state.auth.forgotsuccess);
     const usersData = computed(() =>
       state.users.data.map((user) => {
         const {
@@ -191,8 +202,12 @@ const UserListTable = defineComponent({
     function handleDelete() {
       if (type.value === "disable") {
         dispatch("disableUser", detail.value.userId);
-      } else {
+      }
+      if (type.value === "enable") {
         dispatch("enableUser", detail.value.userId);
+      }
+      if (type.value === "password") {
+        dispatch("forgotPassword", { emailAddress: detail.value.emailAddress });
       }
     }
     // Define a debounce delay (e.g., 500 milliseconds)
@@ -202,6 +217,14 @@ const UserListTable = defineComponent({
     }, debounceDelay);
     watch(addsuccess, () => {
       addsuccess.value && dispatch("getUsers", query);
+    });
+    watch(forgotSuccess, () => {
+      if(forgotSuccess.value){
+        visible.value = false;
+        message.success("Reset link sent!");
+        
+      }
+     
     });
     watch(deletesuccess, () => {
       if (deletesuccess.value) {
@@ -226,6 +249,7 @@ const UserListTable = defineComponent({
       userTableHeader,
       loading,
       deleteloading,
+      forgotLoading
     };
   },
 });

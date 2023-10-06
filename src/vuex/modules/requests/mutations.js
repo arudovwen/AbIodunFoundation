@@ -47,6 +47,7 @@ export default {
     state.fetchloading = true;
     state.error = null;
     state.fetchsuccess = false;
+    state.data = [];
   },
   fetchSuccess(state, { data, totalCount }) {
     state.fetchloading = false;

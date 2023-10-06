@@ -25,7 +25,7 @@
           >Product name</span
         >
         <span class="text-base font-medium capitalize">{{
-          product.productName || "-"
+          product?.productName || "-"
         }}</span>
       </div>
       <div>
@@ -53,7 +53,7 @@
           >Lock-in period</span
         >
         <span class="text-base font-medium capitalize">{{
-          product.lockInPeriod || "-"
+          product?.lockInPeriod || "-"
         }}</span>
       </div>
       <div>
@@ -69,13 +69,13 @@
           >Equity contribution</span
         >
         <span class="text-base font-medium capitalize"
-          >{{ product.equityContribution }}%</span
+          >{{ product?.equityContribution   || "-"}}%</span
         >
       </div>
       <div class="col-span-2">
         <span class="block text-sm font-medium text-gray-500">Description</span>
         <span class="text-base font-medium capitalize">{{
-          product.description || "-"
+          product?.description || "-"
         }}</span>
       </div>
     </div>
@@ -90,7 +90,7 @@
             >Business name</span
           >
           <span class="text-base font-medium capitalize">{{
-            productReq.businessName || "-"
+            productReq?.businessName || "-"
           }}</span>
         </div>
         <div>
@@ -98,7 +98,7 @@
             >Business address</span
           >
           <span class="text-base font-medium capitalize">{{
-            productReq.businessAddress || "-"
+            productReq?.businessAddress || "-"
           }}</span>
         </div>
         <div>
@@ -106,7 +106,7 @@
             >Residential address</span
           >
           <span class="text-base font-medium capitalize">{{
-            productReq.residentialAddress || "-"
+            productReq?.residentialAddress || "-"
           }}</span>
         </div>
         <div>
@@ -114,7 +114,7 @@
             >Use of Funds</span
           >
           <span class="text-base font-medium capitalize">{{
-            productReq.useOfFunds
+            productReq?.useOfFunds  || "-"
           }}</span>
         </div>
         <div>
@@ -122,7 +122,7 @@
             >Facility amount</span
           >
           <span class="text-base font-medium capitalize">{{
-            formatCurrency(productReq.facilityAmount) || "-"
+            formatCurrency(productReq?.facilityAmount) || "-"
           }}</span>
         </div>
         <div>
@@ -130,13 +130,13 @@
             >Business type
           </span>
           <span class="text-base font-medium capitalize">{{
-            productReq.businessType
+            productReq?.businessType || "-"
           }}</span>
-        </div>q2Q
+        </div>
         <div>
           <span class="block text-sm font-medium text-gray-500">BVN</span>
           <span class="text-base font-medium capitalize">{{
-            productReq.bvn
+            productReq?.bvn || "-"
           }}</span>
         </div>
 
@@ -145,7 +145,7 @@
             >CAC Document</span
           >
           <span class="text-base font-medium capitalize">{{
-            product.description || "-"
+            product?.description || "-"
           }}</span>
         </div>
         <div class="">
@@ -153,7 +153,7 @@
             >Business statement</span
           >
           <span class="text-base font-medium capitalize">{{
-            product.description || "-"
+            product?.description || "-"
           }}</span>
         </div>
         <div class="">
@@ -161,7 +161,7 @@
             >Utility Bill</span
           >
           <span class="text-base font-medium capitalize">{{
-            product.description || "-"
+            product?.description || "-"
           }}</span>
         </div>
         <div class="">
@@ -169,7 +169,7 @@
             >Identification Document</span
           >
           <span class="text-base font-medium capitalize">{{
-            product.description || "-"
+            product?.description || "-"
           }}</span>
         </div>
       </div>

@@ -46,6 +46,7 @@ export default {
     state.bannerloading = true;
     state.error = null;
     state.bannersuccess = false;
+    state.data = [];
   },
   bannerSuccess(state, { data, totalCount }) {
     state.bannerloading = false;
