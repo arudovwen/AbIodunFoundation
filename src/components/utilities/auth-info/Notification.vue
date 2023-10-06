@@ -126,11 +126,16 @@
           </router-link>
         </NinjadashTopDropdown>
       </template>
-      <a-badge dot :offset="[-8, -5]">
+      <a-badge :offset="[-8, -5]">
         <a to="#" class="ninjadash-nav-action-link">
           <img :src="require('@/static/img/icon/alarm.svg')" />
         </a>
       </a-badge>
+      <!-- <a-badge dot :offset="[-8, -5]">
+        <a to="#" class="ninjadash-nav-action-link">
+          <img :src="require('@/static/img/icon/alarm.svg')" />
+        </a>
+      </a-badge> -->
     </sdPopover>
   </div>
 </template>
