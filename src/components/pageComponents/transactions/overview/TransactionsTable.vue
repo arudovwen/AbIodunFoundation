@@ -20,7 +20,6 @@
                   View
                 </button>
               </router-link>
-          
             </div>
           </template>
         </template>
@@ -72,6 +71,14 @@ const UserListTable = defineComponent({
     const addsuccess = computed(() => state.transactions.addsuccess);
     const deleteloading = computed(() => state.transactions.deleteloading);
     const deletesuccess = computed(() => state.transactions.deletesuccess);
+    const profile = computed(() => state.auth.userData);
+    const header = computed(() =>
+      profile?.value?.userRole?.toLowerCase() === "customer"
+        ? transactionTableHeader.filter(
+            (i) => i.title.toLowerCase() !== "actions"
+          )
+        : transactionTableHeader
+    );
     const transactionsData = computed(() =>
       state.transactions.data.map((transaction) => {
         const {
@@ -92,26 +99,12 @@ const UserListTable = defineComponent({
           transactionDate: moment(transactionDate).format("lll"),
 
           status: (
-            <span class={`status-text !px-0`}>
-              {transactionStatus === "pending" && (
-                <span class="bg-orange-50 text-orange-500 px-3 py-[2px] rounded-full">
-                  {" "}
-                  Pending
-                </span>
-              )}
-              {status === "success" && (
-                <span class="bg-green-50 text-green-500 px-3 py-[2px] rounded-full">
-                  {" "}
-                  Success
-                </span>
-              )}
-              {status === 5 && (
-                <span class="bg-green-50 text-red-500 px-3 py-[2px] rounded-full">
-                  {" "}
-                  Inactive
-                </span>
-              )}
-            </span>
+            <div class="">
+              <span class="bg-gray-50 text-gray-600 px-3 py-[2px] rounded-full capitalize">
+                {" "}
+                {transactionStatus}
+              </span>
+            </div>
           ),
           action: "",
         };
@@ -161,6 +154,8 @@ const UserListTable = defineComponent({
       transactionTableHeader,
       loading,
       deleteloading,
+      header,
+      profile,
     };
   },
 });

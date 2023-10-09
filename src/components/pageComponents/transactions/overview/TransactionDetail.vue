@@ -1,12 +1,17 @@
 <template>
   <div>
-    <div class="flex justify-end mb-6">
+    <div class="flex justify-end mb-6" v-if="profile !== 'customer'">
       <sdButton
-        v-if="handleStatus(transaction?.transactionStatus?.toLowerCase())"
+        v-if="
+          handleDisplay(
+            profile.userRole,
+            transaction?.transactionStatus?.toLowerCase()
+          )
+        "
         class=""
         htmlType="button"
         type="primary"
-        size="lg"
+        size="small"
         :disabled="updateloading"
         @click="visible = true"
       >
@@ -261,7 +266,7 @@ const { state, dispatch } = useStore();
 const product = computed(() => state.requests.request);
 const productReq = computed(() => state.requests.reqData[0]);
 const transaction = computed(() => state.transactions.transaction);
-
+const profile = computed(() => state.auth.userData);
 const success = computed(() => state.transactions.getsuccess);
 const updatesuccess = computed(() => state.transactions.updatesuccess);
 const updateloading = computed(() => state.transactions.updateloading);
@@ -293,5 +298,18 @@ function handleUpdate() {
     transactionId: parseInt(route.params.id),
     status: handleStatus(transaction?.value?.transactionStatus?.toLowerCase()),
   });
+}
+
+function handleDisplay(role, status) {
+  if (role?.toLowerCase() === "reviewer" && status === "pending") {
+    return true;
+  }
+  if (role?.toLowerCase() === "approver" && status === "reviewed") {
+    return true;
+  }
+  if (role?.toLowerCase() === "underwritter" && status === "approved") {
+    return true;
+  }
+  return false;
 }
 </script>
