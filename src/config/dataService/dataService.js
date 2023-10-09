@@ -90,11 +90,13 @@ client.interceptors.response.use(
         Notification.error({
           message: "Error",
           description: response.data.message,
+          duration: 5000,
         });
       } else if (response.status === 401) {
         Notification.error({
           message: "Error",
           description: "Token expired",
+         
         });
 
         localStorage.clear();
@@ -103,6 +105,7 @@ client.interceptors.response.use(
         Notification.error({
           message: "Error",
           description: response.data.message,
+          duration: 5000,
         });
       } else {
         return originalRequest;

@@ -452,7 +452,7 @@ const fileId = computed(() => state.file.data);
 
 const handleSubmit = (value) => {
   values.value = value;
-  dispatch("updateUserProductRequirement", {
+  dispatch("updateUserProduct", {
     ...formState,
     facilityAmount: formState.facilityAmount.toString(),
   });
@@ -466,6 +466,8 @@ const idList = ref([]);
 const statementList = ref([]);
 const formState = reactive({
   userProductId: route.params.id,
+  prodId:"",
+  reqId:"",
   userId: userData.value.id,
   productId: "",
   facilityAmount: null,
@@ -564,9 +566,9 @@ watch(uploadsuccess, () => {
 });
 watch(request, () => {
   formState.userProductId = route.params.id;
-  formState.productId = request.value.productId.toString();
-  formState.facilityAmount = parseInt(productReq?.value?.facilityAmount);
-  formState.amount = parseInt(request.value.amount);
+  formState.prodId = request?.value?.id;
+  formState.productId = request?.value?.productId.toString();
+  formState.amount = request?.value?.amount;
   formState.requestDate = dayjs(request.value.requestDate);
   formState.equityContribution = request.value.equityContribution;
   formState.lockInPeriod = request.value.lockInPeriod;
@@ -579,6 +581,7 @@ watch(request, () => {
 watch(productReq, () => {
   formState.userProductId = route.params.id;
   formState.facilityAmount = parseInt(productReq?.value?.facilityAmount || 0);
+  formState.reqId = productReq?.value?.id;
   formState.useOfFunds = productReq?.value?.useOfFunds;
   formState.businessName = productReq?.value?.businessName;
   formState.businessAddress = productReq?.value?.businessAddress;

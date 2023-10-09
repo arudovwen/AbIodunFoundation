@@ -67,5 +67,5 @@ export const urls = {
   CREATE_USER_PRODUCT: "/UserProduct/CreateUserProduct",
   GET_USER_PRODUCT_BY_ID: "/UserProduct/GetUserProductById",
   GET_ALL_USER_PRODUCT: "/UserProduct/GetAllUserProduct",
-  UPDATE_USER_PRODUCT: "/UserProduct/UpdateUserProductRequirement",
+  UPDATE_USER_PRODUCT: "/UserProduct/UpdateUserProduct",
 };

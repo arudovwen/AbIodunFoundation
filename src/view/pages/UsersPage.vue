@@ -24,7 +24,7 @@
             key="1"
             type="primary"
           >
-          Add Administrator
+          Add User
           </sdButton>
         </div>
       </div>

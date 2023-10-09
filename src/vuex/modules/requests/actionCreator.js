@@ -4,7 +4,7 @@ import { urls } from "@/helpers/apI_urls";
 
 const state = () => ({
   data: [],
-  reqData:[],
+  reqData: [],
   total: 0,
   request: null,
   requestReq: null,
@@ -86,16 +86,17 @@ const actions = {
   async updateUserProduct({ commit }, data) {
     try {
       commit("editBegin");
-      const response = await DataService.put(
-        `${urls.UPDATE_USER_PRODUCT}, ${data}`
-      );
+      const response = await DataService.put(`${urls.UPDATE_USER_PRODUCT}`, {
+        ...data,
+        id: data.prodId,
+      });
       if (response.status === 200) {
         const res = await DataService.put(
           urls.UPDATE_USER_PRODUCT_REQUIREMENT,
-          { ...data, userProductId: response.data.data }
+          { ...data, id: data.reqId }
         );
         if (res.status === 200) {
-          commit("addSuccess", res.data.data);
+          commit("editSuccess", res.data.data);
         }
       }
     } catch (err) {
