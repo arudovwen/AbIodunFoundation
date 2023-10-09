@@ -4,6 +4,7 @@ import { urls } from "@/helpers/apI_urls";
 
 const state = () => ({
   data: [],
+  reqData:[],
   total: 0,
   request: null,
   requestReq: null,
@@ -17,6 +18,8 @@ const state = () => ({
   getreqsuccess: false,
   fetchsuccess: false,
   fetchloading: false,
+  fetchreqsuccess: false,
+  fetchreqloading: false,
   editsuccess: false,
   editloading: false,
   deletesuccess: false,
@@ -43,15 +46,15 @@ const actions = {
     { pageNumber, name, pageSize, userproductId }
   ) {
     try {
-      commit("fetchBegin");
+      commit("fetchReqBegin");
       const response = await DataService.get(
         `${urls.GET_ALL_USER_PRODUCT_REQUIREMENT}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}&userproductId=${userproductId}`
       );
       if (response.status === 200) {
-        commit("fetchSuccess", response.data);
+        commit("fetchReqSuccess", response.data);
       }
     } catch (err) {
-      commit("fetchErr", err);
+      commit("fetchReqErr", err);
     }
   },
   async getUserProductById({ commit }, id) {

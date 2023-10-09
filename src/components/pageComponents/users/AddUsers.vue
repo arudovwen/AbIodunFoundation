@@ -8,6 +8,7 @@
         @finish="handleSubmit"
         layout="vertical"
       >
+      <div class="md:grid grid-cols-2 gap-x-4">
         <a-form-item
           label="First Name"
           name="firstName"
@@ -26,7 +27,7 @@
           :rules="[{ required: true, message: 'Please input your Last name!' }]"
         >
           <a-input v-model:value="formState.lastName" placeholder="Last name" />
-        </a-form-item>
+        </a-form-item></div>
         <a-form-item
           name="emailAddress"
           label="Email Address"
@@ -45,17 +46,36 @@
           />
         </a-form-item>
 
-        <a-form-item
-          name="gender"
-          label="Gender"
-          :rules="[{ required: true, message: 'Please select your gender!' }]"
-        >
-          <a-select size="large" v-model:value="formState.gender">
-            <a-select-option value="">Please Select</a-select-option>
-            <a-select-option value="male">Male</a-select-option>
-            <a-select-option value="female">Female</a-select-option>
-          </a-select>
-        </a-form-item>
+        <div class="md:grid grid-cols-2 gap-x-4">
+          <a-form-item
+            name="userRole"
+            label="Role"
+            :rules="[{ required: true, message: 'Please select a role!' }]"
+          >
+            <a-select
+              class="capitalize"
+              size="large"
+              v-model:value="formState.userRole"
+            >
+              <a-select-option value="">Please Select</a-select-option>
+              <a-select-option v-for="role in roles" :value="role" :key="role">
+                {{ role }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+
+          <a-form-item
+            name="gender"
+            label="Gender"
+            :rules="[{ required: true, message: 'Please select your gender!' }]"
+          >
+            <a-select size="large" v-model:value="formState.gender">
+              <a-select-option value="">Please Select</a-select-option>
+              <a-select-option value="male">Male</a-select-option>
+              <a-select-option value="female">Female</a-select-option>
+            </a-select>
+          </a-form-item>
+        </div>
         <a-form-item
           label="Phone Number"
           name="phoneNumber"
@@ -112,7 +132,15 @@
 </template>
 <script>
 import { message } from "ant-design-vue";
-import { computed, inject, reactive, ref, defineComponent, watch } from "vue";
+import {
+  computed,
+  inject,
+  reactive,
+  ref,
+  defineComponent,
+  watch,
+  onMounted,
+} from "vue";
 import { useStore } from "vuex";
 
 const SignUp = defineComponent({
@@ -125,12 +153,14 @@ const SignUp = defineComponent({
     const addsuccess = computed(() => state.users.addsuccess);
     const error = computed(() => state.users.error);
     const values = ref(null);
-
+    const roles = computed(() => state.users.roles);
     const handleSubmit = (value) => {
       values.value = value;
       dispatch("addUser", formState);
     };
-
+    onMounted(() => {
+      dispatch("getRoles");
+    });
     const validatePassword = (rule, value, callback) => {
       // Check if the password is at least 8 characters long
       if (value.length >= 8) {
@@ -184,18 +214,17 @@ const SignUp = defineComponent({
       password: "",
       emailAddress: "",
       phoneNumber: "",
-      userRole: "admin",
+      userRole: "",
     });
     watch(addsuccess, () => {
-    
       if (addsuccess.value) {
-        message.success("Admin creation successful!")
+        message.success("Admin creation successful!");
         visible.value = false;
       }
     });
     return {
       validatePassword,
-
+      roles,
       handleSubmit,
       formState,
       validatePhoneNumber,

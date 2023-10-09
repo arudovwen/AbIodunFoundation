@@ -1,5 +1,19 @@
 <template>
   <div>
+    <div class="flex justify-end mb-6">
+      <sdButton
+        v-if="handleStatus(transaction?.transactionStatus?.toLowerCase())"
+        class=""
+        htmlType="button"
+        type="primary"
+        size="lg"
+        :disabled="updateloading"
+        @click="visible = true"
+      >
+        Mark as
+        {{ handleStatus(transaction?.transactionStatus?.toLowerCase()) }}
+      </sdButton>
+    </div>
     <div
       v-if="product && !loading && !reqloading"
       class="grid grid-cols-2 gap-6 mb-10"
@@ -69,7 +83,7 @@
           >Equity contribution</span
         >
         <span class="text-base font-medium capitalize"
-          >{{ product?.equityContribution   || "-"}}%</span
+          >{{ product?.equityContribution || "-" }}%</span
         >
       </div>
       <div class="col-span-2">
@@ -114,7 +128,7 @@
             >Use of Funds</span
           >
           <span class="text-base font-medium capitalize">{{
-            productReq?.useOfFunds  || "-"
+            productReq?.useOfFunds || "-"
           }}</span>
         </div>
         <div>
@@ -182,14 +196,61 @@
       <a-spin size="large" />
     </div>
   </div>
+  <Modal :open="visible" @close="visible = false">
+    <div class="bg-white rounded-lg w-[250px]">
+      <h3 class="text-xl font-bold mb-6">Confirm this action</h3>
+      <p class="mb-8">
+        Are you sure about changing the status to
+        <span class="uppercase">{{
+          handleStatus(transaction?.transactionStatus?.toLowerCase())
+        }}</span
+        >?
+      </p>
+      <div class="flex justify-between">
+        <sdButton
+          :disabled="updateloading"
+          @click="visible = false"
+          size="sm"
+          key="1"
+          type="light"
+        >
+          Cancel
+        </sdButton>
+        <sdButton
+          class=""
+          size="sm"
+          key="1"
+          type="success"
+          @click="handleUpdate"
+          >{{ updateloading ? "Processing..." : "Confirm" }}
+        </sdButton>
+      </div>
+    </div>
+  </Modal>
 </template>
 <script setup>
+import Modal from "components/Modal";
 import { useStore } from "vuex";
-import { computed, onMounted, watch } from "vue";
+import { computed, onMounted, watch, ref } from "vue";
 import { useRoute } from "vue-router";
 import moment from "moment";
 import { formatCurrency } from "@/utility/formatCurrency";
+import { message } from "ant-design-vue";
 
+function handleStatus(status) {
+  if (status === "pending") {
+    return "reviewed";
+  }
+  if (status === "reviewed") {
+    return "approved";
+  }
+  if (status === "approved") {
+    return "underwritten";
+  }
+  return "";
+}
+
+const visible = ref(false);
 const route = useRoute();
 const query = {
   pageNumber: 1,
@@ -198,11 +259,12 @@ const query = {
 };
 const { state, dispatch } = useStore();
 const product = computed(() => state.requests.request);
-const productReq = computed(() => state.requests.data[0]);
+const productReq = computed(() => state.requests.reqData[0]);
 const transaction = computed(() => state.transactions.transaction);
 
 const success = computed(() => state.transactions.getsuccess);
-
+const updatesuccess = computed(() => state.transactions.updatesuccess);
+const updateloading = computed(() => state.transactions.updateloading);
 const loading = computed(() => state.transactions.getloading);
 const reqloading = computed(() => state.requests.getloading);
 const loadingReq = computed(() => state.requests.getreqloading);
@@ -221,4 +283,15 @@ watch(success, () => {
       userproductId: transaction.value.userProductId,
     });
 });
+watch(updatesuccess, () => {
+  dispatch("getTransactionById", route.params.id);
+  visible.value = false;
+  message.success("Status update successful");
+});
+function handleUpdate() {
+  dispatch("updateTransaction", {
+    transactionId: parseInt(route.params.id),
+    status: handleStatus(transaction?.value?.transactionStatus?.toLowerCase()),
+  });
+}
 </script>

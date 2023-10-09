@@ -12,6 +12,7 @@ export const urls = {
   DISABLE_USER: "/Admin/DisableUser",
   ENABLE_USER: "/Admin/EnableUser",
   ADMIM_GET_ALL_USERS: "/Admin/GetAllUsers",
+  ADMIM_GET_ALL_ROLES: "/Admin/GetUserRoles",
 
   //- Banner
   CREATE_BANNER: "/Banner/CreateBanner",
@@ -41,6 +42,7 @@ export const urls = {
   CREATE_TRANSACTION: "/Transaction/CreateTransaction",
   GET_TRANSACTION_BY_ID: "/Transaction/GetTransactionById",
   GET_ALL_TRANSACTIONS: "/Transaction/GetAllTransactions",
+  UPDATE_TRANSACTION: "/Transaction/SetTransactionStatus",
 
   // UserManagement
   GET_USER_PROFILE: "/UserManagement/GetUserProfile",

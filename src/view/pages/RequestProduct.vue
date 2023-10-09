@@ -48,7 +48,9 @@
                 <BasicFormWrapper
                   class="ninjadash-authentication-content col-span-2 mb-10"
                 >
-                  <div class="col-span-2 md:grid grid-cols-1 md:grid-cols-2 md:gap-x-8 mb-8">
+                  <div
+                    class="col-span-2 md:grid grid-cols-1 md:grid-cols-2 md:gap-x-8 mb-8"
+                  >
                     <a-form-item
                       label="Amount"
                       name="amount"
@@ -166,110 +168,113 @@
                   </div>
                 </BasicFormWrapper>
                 <h2 class="font-bold mb-7 col-span-2">Product Requirements</h2>
+                <div class="mb-8 col-span-2 md:grid grid-cols-1 md:grid-cols-2 md:gap-x-8">
+                  <a-form-item
+                    label="Facility amount"
+                    name="facilityAmount"
+                    :rules="[
+                      { required: true, message: 'Please input an amount!' },
+                    ]"
+                  >
+                    <CurrencyInput
+                      v-model="formState.facilityAmount"
+                      placeholder="Provide Facility amount"
+                      :options="{ currency: 'ngn' }"
+                    />
+                  </a-form-item>
+                  <a-form-item
+                    label="Use of funds"
+                    name="useOfFunds"
+                    :rules="[
+                      { required: true, message: 'Please input a value!' },
+                    ]"
+                  >
+                    <a-input
+                      v-model:value="formState.useOfFunds"
+                      placeholder="Use of funds"
+                    />
+                  </a-form-item>
 
-                <a-form-item
-                  label="Facility amount"
-                  name="facilityAmount"
-                  :rules="[
-                    { required: true, message: 'Please input an amount!' },
-                  ]"
-                >
-                  <CurrencyInput
-                    v-model="formState.facilityAmount"
-                    placeholder="Provide Facility amount"
-                    :options="{ currency: 'ngn' }"
-                  />
-                </a-form-item>
-                <a-form-item
-                  label="Use of funds"
-                  name="useOfFunds"
-                  :rules="[
-                    { required: true, message: 'Please input a value!' },
-                  ]"
-                >
-                  <a-input
-                    v-model:value="formState.useOfFunds"
-                    placeholder="Use of funds"
-                  />
-                </a-form-item>
-
-                <a-form-item
-                  label="Business Name"
-                  name="businessName"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'Please input your business name!',
-                    },
-                  ]"
-                >
-                  <a-input
-                    v-model:value="formState.businessName"
-                    placeholder="Business name"
-                  />
-                </a-form-item>
-                <a-form-item
-                  label="Business address"
-                  name="businessAddress"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'Please input your business address!',
-                    },
-                  ]"
-                >
-                  <a-input
-                    v-model:value="formState.businessAddress"
-                    placeholder="Business address"
-                  />
-                </a-form-item>
-                <a-form-item
-                  label="Residential address"
-                  name="residentialAddress"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'Please input your Residential address!',
-                    },
-                  ]"
-                >
-                  <a-input
-                    v-model:value="formState.residentialAddress"
-                    placeholder="Residential Address"
-                  />
-                </a-form-item>
-                <a-form-item
-                  label="What type of Business are you into?"
-                  name="businessType"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'Please select your buiness type!',
-                    },
-                  ]"
-                >
-                  <a-select size="large" v-model:value="formState.businessType">
-                    <a-select-option value="">Please Select</a-select-option>
-                    <a-select-option
-                      v-for="it in businessTypesInNigeria"
-                      :key="it"
-                      :value="it"
-                      >{{ it }}</a-select-option
+                  <a-form-item
+                    label="Business Name"
+                    name="businessName"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Please input your business name!',
+                      },
+                    ]"
+                  >
+                    <a-input
+                      v-model:value="formState.businessName"
+                      placeholder="Business name"
+                    />
+                  </a-form-item>
+                  <a-form-item
+                    label="Business address"
+                    name="businessAddress"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Please input your business address!',
+                      },
+                    ]"
+                  >
+                    <a-input
+                      v-model:value="formState.businessAddress"
+                      placeholder="Business address"
+                    />
+                  </a-form-item>
+                  <a-form-item
+                    label="Residential address"
+                    name="residentialAddress"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Please input your Residential address!',
+                      },
+                    ]"
+                  >
+                    <a-input
+                      v-model:value="formState.residentialAddress"
+                      placeholder="Residential Address"
+                    />
+                  </a-form-item>
+                  <a-form-item
+                    label="What type of Business are you into?"
+                    name="businessType"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Please select your buiness type!',
+                      },
+                    ]"
+                  >
+                    <a-select
+                      size="large"
+                      v-model:value="formState.businessType"
                     >
-                  </a-select>
-                </a-form-item>
-                <a-form-item
-                  label="Enter your BVN"
-                  name="bvn"
-                  :rules="[
-                    { required: true, message: 'Please input your BVN!' },
-                    { max: 11 },
-                    { min: 11 },
-                  ]"
-                >
-                  <a-input v-model:value="formState.bvn" placeholder="" />
-                </a-form-item>
-
+                      <a-select-option value="">Please Select</a-select-option>
+                      <a-select-option
+                        v-for="it in businessTypesInNigeria"
+                        :key="it"
+                        :value="it"
+                        >{{ it }}</a-select-option
+                      >
+                    </a-select>
+                  </a-form-item>
+                  <a-form-item
+                    label="Enter your BVN"
+                    name="bvn"
+                    :rules="[
+                      { required: true, message: 'Please input your BVN!' },
+                      { max: 11 },
+                      { min: 11 },
+                    ]"
+                  >
+                    <a-input v-model:value="formState.bvn" placeholder="" />
+                  </a-form-item>
+                </div>
                 <div class="col-span-2">
                   <h4 class="font-medium mb-3">Document uploads</h4>
                   <div
@@ -285,7 +290,8 @@
                         :max-count="1"
                         v-model:file-list="cacList"
                         name="cacDocumentUrl"
-                        :before-upload="(e) => handleChange(e, 'cac')"
+                        :before-upload="() => false"
+                        @change="(e) => handleChange(e, 'cac')"
                       >
                         <a-button>
                           <upload-outlined class="mt-0"></upload-outlined>
@@ -308,7 +314,8 @@
                         :max-count="1"
                         v-model:file-list="statementList"
                         name="statementUrl"
-                        :before-upload="(e) => handleChange(e, 'statement')"
+                        :before-upload="() => false"
+                        @change="(e) => handleChange(e, 'statement')"
                       >
                         <a-button>
                           <upload-outlined></upload-outlined>
@@ -330,7 +337,8 @@
                         :max-count="1"
                         name="identificationUrl"
                         v-model:file-list="idList"
-                        :before-upload="(e) => handleChange(e, 'id')"
+                        :before-upload="() => false"
+                        @change="(e) => handleChange(e, 'id')"
                       >
                         <a-button>
                           <upload-outlined></upload-outlined>
@@ -351,7 +359,8 @@
                         :max-count="1"
                         v-model:file-list="utilityList"
                         name="utilityBillUrl"
-                        :before-upload="(e) => handleChange(e, 'utility')"
+                        :before-upload="() => false"
+                        @change="(e) => handleChange(e, 'utility')"
                       >
                         <a-button>
                           <upload-outlined></upload-outlined>
@@ -491,8 +500,9 @@ const breadcrumbs = [
     breadcrumbName: "Request service",
   },
 ];
-const handleChange = (file, type) => {
-  console.log("🚀 ~ file: RequestProduct.vue:352 ~ handleChange ~ file:", file);
+const handleChange = (data, type) => {
+  const file = data?.file;
+
   const allowedTypes = [
     "image/svg+xml",
     "image/jpeg",
@@ -507,7 +517,8 @@ const handleChange = (file, type) => {
       `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG allowed)`
     );
   }
-  if (file.size > 800 * 1024) { // 800KB = 800 * 1024 bytes
+  if (file.size > 800 * 1024) {
+    // 800KB = 800 * 1024 bytes
     message.error(`${file.name} exceeds the maximum file size (800KB)`);
     return false; // Prevent the upload
   }
@@ -536,15 +547,19 @@ watch(addsuccess, () => {
 watch(uploadsuccess, () => {
   if (uploadtype.value === "cac") {
     formState.cacDocumentUrl = fileId.value.toString();
+    return;
   }
   if (uploadtype.value === "id") {
     formState.identificationUrl = fileId.value.toString();
+    return;
   }
   if (uploadtype.value === "utility") {
     formState.utilityBillUrl = fileId.value.toString();
+    return;
   }
   if (uploadtype.value === "statement") {
     formState.statementUrl = fileId.value.toString();
+    return;
   }
 });
 </script>

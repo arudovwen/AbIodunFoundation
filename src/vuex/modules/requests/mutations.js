@@ -60,6 +60,23 @@ export default {
     state.error = err;
     state.fetchsuccess = false;
   },
+  fetchReqBegin(state) {
+    state.fetchreqloading = true;
+    state.error = null;
+    state.fetchreqsuccess = false;
+    state.reqData = [];
+  },
+  fetchReqSuccess(state, { data, totalCount }) {
+    state.fetchreqloading = false;
+    state.fetchreqsuccess = true;
+    state.reqData = data;
+    state.total = totalCount;
+  },
+  fetchReqErr(state, err) {
+    state.fetchreqloading = false;
+    state.error = err;
+    state.fetchreqsuccess = false;
+  },
   deleteBegin(state) {
     state.deleteloading = true;
     state.error = null;

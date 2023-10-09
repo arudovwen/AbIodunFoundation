@@ -18,6 +18,8 @@ const state = () => ({
   editloading: false,
   deletesuccess: false,
   deleteloading: false,
+  updateloading: false,
+  updatesuccess: false,
   error: null,
 });
 
@@ -63,6 +65,18 @@ const actions = {
       commit("addErr", err);
     }
   },
+  async updateTransaction({ commit }, data) {
+    try {
+      commit("updateBegin");
+      const response = await DataService.put(urls.UPDATE_TRANSACTION, data);
+      if (response.status === 200) {
+        commit("updateSuccess", response.data.data);
+      }
+    } catch (err) {
+      commit("updateErr", err);
+    }
+  },
+  
 };
 
 export default {

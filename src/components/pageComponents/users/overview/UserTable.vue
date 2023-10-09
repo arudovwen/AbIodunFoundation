@@ -114,12 +114,14 @@ const UserListTable = defineComponent({
     const { state, dispatch } = useStore();
     onMounted(() => {
       dispatch("getUsers", query);
+      dispatch("getRoles");
     });
     function fetchRecords(page) {
       dispatch("getUsers", { ...query, pageNumber: page });
     }
     const loading = computed(() => state.users.loading);
     const total = computed(() => state.users.total);
+    const roles = computed(() => state.users.roles);
     const addsuccess = computed(() => state.users.addsuccess);
     const deleteloading = computed(() => state.users.deleteloading);
     const deletesuccess = computed(() => state.users.deletesuccess);
@@ -249,7 +251,8 @@ const UserListTable = defineComponent({
       userTableHeader,
       loading,
       deleteloading,
-      forgotLoading
+      forgotLoading,
+      roles
     };
   },
 });

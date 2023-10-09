@@ -1,5 +1,7 @@
 export default {
- 
+  rolesSuccess(state, data) {
+    state.roles = data;
+  },
   profileBegin(state) {
     state.profileloading = true;
     state.profilesuccess = false;

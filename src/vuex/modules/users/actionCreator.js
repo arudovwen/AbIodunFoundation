@@ -4,6 +4,7 @@ import { urls } from "@/helpers/apI_urls";
 
 const state = () => ({
   data: [],
+  roles:[],
   total: 0,
   avatar: null,
   user: null,
@@ -24,6 +25,17 @@ const state = () => ({
 });
 
 const actions = {
+  async getRoles({ commit }) {
+   
+     
+      const response = await DataService.get(
+        `${urls.ADMIM_GET_ALL_ROLES}`
+      );
+      if (response.status === 200) {
+        commit("rolesSuccess", response.data);
+      }
+     
+  },
   async getUsers({ commit }, { pageNumber, pageSize, name, email, mobileNo }) {
     try {
       commit("fetchBegin");

@@ -285,7 +285,8 @@
                         :max-count="1"
                         v-model:file-list="cacList"
                         name="cacDocumentUrl"
-                        :before-upload="(e) => handleChange(e, 'cac')"
+                        :before-upload="() => false"
+                        @change="(e) => handleChange(e, 'cac')"
                       >
                         <a-button>
                           <upload-outlined class="mt-0"></upload-outlined>
@@ -308,7 +309,8 @@
                         :max-count="1"
                         v-model:file-list="statementList"
                         name="statementUrl"
-                        :before-upload="(e) => handleChange(e, 'statement')"
+                        :before-upload="() => false"
+                        @change="(e) => handleChange(e, 'statement')"
                       >
                         <a-button>
                           <upload-outlined></upload-outlined>
@@ -330,7 +332,8 @@
                         :max-count="1"
                         name="identificationUrl"
                         v-model:file-list="idList"
-                        :before-upload="(e) => handleChange(e, 'id')"
+                        :before-upload="() => false"
+                        @change="(e) => handleChange(e, 'id')"
                       >
                         <a-button>
                           <upload-outlined></upload-outlined>
@@ -351,7 +354,8 @@
                         :max-count="1"
                         v-model:file-list="utilityList"
                         name="utilityBillUrl"
-                        :before-upload="(e) => handleChange(e, 'utility')"
+                        :before-upload="() => false"
+                        @change="(e) => handleChange(e, 'utility')"
                       >
                         <a-button>
                           <upload-outlined></upload-outlined>
@@ -437,7 +441,7 @@ onMounted(() => {
 
 const products = computed(() => state.products.data);
 const request = computed(() => state.requests.request);
-const productReq = computed(() => state.requests.data[0]);
+const productReq = computed(() => state.requests.reqData[0]);
 const isLoading = computed(() => state.requests.editloading);
 const editsuccess = computed(() => state.requests.editsuccess);
 const userData = computed(() => state.auth.userData);
@@ -500,7 +504,9 @@ const breadcrumbs = [
     breadcrumbName: "Request service",
   },
 ];
-const handleChange = (file, type) => {
+const handleChange = (data, type) => {
+  const file = data?.file;
+
   const allowedTypes = [
     "image/svg+xml",
     "image/jpeg",
@@ -556,11 +562,23 @@ watch(uploadsuccess, () => {
     formState.statementUrl = fileId.value.toString();
   }
 });
-watch([request, productReq], () => {
-  console.log("🚀 ~ file: EditRequestProduct.vue:560 ~ watch ~ productReq:", productReq)
+watch(request, () => {
   formState.userProductId = route.params.id;
   formState.productId = request.value.productId.toString();
   formState.facilityAmount = parseInt(productReq?.value?.facilityAmount);
+  formState.amount = parseInt(request.value.amount);
+  formState.requestDate = dayjs(request.value.requestDate);
+  formState.equityContribution = request.value.equityContribution;
+  formState.lockInPeriod = request.value.lockInPeriod;
+  formState.interestRate = request.value.interestRate;
+  formState.dueDate = dayjs(request.value.dueDate);
+  formState.description = request.value.description;
+  formState.userProductId = request.value.userProductId;
+});
+
+watch(productReq, () => {
+  formState.userProductId = route.params.id;
+  formState.facilityAmount = parseInt(productReq?.value?.facilityAmount || 0);
   formState.useOfFunds = productReq?.value?.useOfFunds;
   formState.businessName = productReq?.value?.businessName;
   formState.businessAddress = productReq?.value?.businessAddress;
@@ -573,13 +591,5 @@ watch([request, productReq], () => {
   formState.utilityBillUrl = productReq?.value?.utilityBillUrl;
   formState.alumniCode = productReq?.value?.alumniCode;
   formState.alumni = productReq?.value?.alumni;
-  formState.amount = parseInt(request.value.amount);
-  formState.requestDate = dayjs(request.value.requestDate);
-  formState.equityContribution = request.value.equityContribution;
-  formState.lockInPeriod = request.value.lockInPeriod;
-  formState.interestRate = request.value.interestRate;
-  formState.dueDate = dayjs(request.value.dueDate);
-  formState.description = request.value.description;
-  formState.userProductId = request.value.userProductId;
 });
 </script>
