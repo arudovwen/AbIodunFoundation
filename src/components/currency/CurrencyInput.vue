@@ -14,25 +14,19 @@ export default {
   name: "CurrencyInput",
   props: {
     modelValue: Number, // Vue 2: value
+    value: Number,
     options: {
       currency: "NGN",
     },
     placeholder: String,
   },
   setup(props) {
-    const { inputRef, setOptions, setValue } = useCurrencyInput(props.options);
+    const { inputRef, setValue } = useCurrencyInput(props.options);
 
     watch(
-      () => props.modelValue, // Vue 2: props.value
-      (value) => {
-        setValue(value);
-      }
-    );
-
-    watch(
-      () => props.options,
-      (options) => {
-        setOptions(options);
+      () => props.value, // Vue 2: props.value
+      () => {
+        setValue(props.value);
       }
     );
 

@@ -58,6 +58,7 @@
                     >
                       <CurrencyInput
                         v-model="formState.amount"
+                        :value="formState.amount"
                         placeholder="Provide an amount"
                         :options="{ currency: 'ngn' }"
                       />
@@ -176,12 +177,14 @@
                 >
                   <CurrencyInput
                     v-model="formState.facilityAmount"
+                    :value="formState.facilityAmount"
                     placeholder="Provide Facility amount"
                     :options="{ currency: 'ngn' }"
                   />
                 </a-form-item>
                 <a-form-item
                   label="Use of funds"
+
                   name="useOfFunds"
                   :rules="[
                     { required: true, message: 'Please input a value!' },
@@ -466,8 +469,8 @@ const idList = ref([]);
 const statementList = ref([]);
 const formState = reactive({
   userProductId: route.params.id,
-  prodId:"",
-  reqId:"",
+  prodId: "",
+  reqId: "",
   userId: userData.value.id,
   productId: "",
   facilityAmount: null,
@@ -569,6 +572,10 @@ watch(request, () => {
   formState.prodId = request?.value?.id;
   formState.productId = request?.value?.productId.toString();
   formState.amount = request?.value?.amount;
+  console.log(
+    "🚀 ~ file: EditRequestProduct.vue:572 ~ watch ~ request?.value?.amount:",
+    request?.value?.amount
+  );
   formState.requestDate = dayjs(request.value.requestDate);
   formState.equityContribution = request.value.equityContribution;
   formState.lockInPeriod = request.value.lockInPeriod;
