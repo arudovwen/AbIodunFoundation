@@ -199,7 +199,6 @@ const query = {
 const { state, dispatch } = useStore();
 const product = computed(() => state.requests.request);
 const productReq = computed(() => state.requests.data[0]);
-console.log("🚀 ~ file: TransactionDetail.vue:208 ~ productReq:", productReq);
 const transaction = computed(() => state.transactions.transaction);
 
 const success = computed(() => state.transactions.getsuccess);

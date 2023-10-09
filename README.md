@@ -1,4 +1,4 @@
-# Biodun & Ibikunle Foundation
+# Biodun and Ibikunle Limited
 
 ## Project setup
 ```

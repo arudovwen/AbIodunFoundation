@@ -364,7 +364,7 @@
 
                 <div class="my-4 col-span-2">
                   <a-checkbox @change="onChange">
-                    Are you a Biodun and Ibikunle Foundation alumni?
+                    Are you a Biodun and Ibikunle Limited alumni?
                   </a-checkbox>
                 </div>
                 <a-form-item
@@ -429,11 +429,15 @@ const { state, dispatch } = useStore();
 onMounted(() => {
   dispatch("getProducts", query);
   dispatch("getUserProductById", route.params.id);
+  dispatch("getUserProductRequirements", {
+    ...query,
+    userproductId: route.params.id,
+  });
 });
 
 const products = computed(() => state.products.data);
 const request = computed(() => state.requests.request);
-// const requestReq = computed(() => state.requests.requestReq);
+const productReq = computed(() => state.requests.data[0]);
 const isLoading = computed(() => state.requests.editloading);
 const editsuccess = computed(() => state.requests.editsuccess);
 const userData = computed(() => state.auth.userData);
@@ -444,7 +448,7 @@ const fileId = computed(() => state.file.data);
 
 const handleSubmit = (value) => {
   values.value = value;
-  dispatch("addUserProduct", {
+  dispatch("updateUserProductRequirement", {
     ...formState,
     facilityAmount: formState.facilityAmount.toString(),
   });
@@ -457,6 +461,7 @@ const cacList = ref([]);
 const idList = ref([]);
 const statementList = ref([]);
 const formState = reactive({
+  userProductId: route.params.id,
   userId: userData.value.id,
   productId: "",
   facilityAmount: null,
@@ -510,7 +515,8 @@ const handleChange = (file, type) => {
       `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG allowed)`
     );
   }
-  if (file.size > 800 * 1024) { // 800KB = 800 * 1024 bytes
+  if (file.size > 800 * 1024) {
+    // 800KB = 800 * 1024 bytes
     message.error(`${file.name} exceeds the maximum file size (800KB)`);
     return false; // Prevent the upload
   }
@@ -550,22 +556,24 @@ watch(uploadsuccess, () => {
     formState.statementUrl = fileId.value.toString();
   }
 });
-watch(request, () => {
+watch([request, productReq], () => {
+  console.log("🚀 ~ file: EditRequestProduct.vue:560 ~ watch ~ productReq:", productReq)
+  formState.userProductId = route.params.id;
   formState.productId = request.value.productId.toString();
-  // formState.facilityAmount = requestReq.value.facilityAmount;
-  // formState.useOfFunds = requestReq.value.useOfFunds;
-  // formState.businessName = requestReq.value.businessName;
-  // formState.businessAddress = requestReq.value.businessAddress;
-  // formState.residentialAddress = requestReq.value.residentialAddress;
-  // formState.businessType = requestReq.value.businessType;
-  // formState.bvn = requestReq.value.bvn;
-  // formState.cacDocumentUrl = requestReq.value.cacDocumentUrl;
-  // formState.statementUrl = requestReq.value.statementUrl;
-  // formState.identificationUrl = requestReq.value.identificationUrl;
-  // formState.utilityBillUrl = requestReq.value.utilityBillUrl;
-  // formState.alumniCode = requestReq.value.alumniCode;
-  // formState.alumni = requestReq.value.alumni;
-  formState.amount = request.value.amount;
+  formState.facilityAmount = parseInt(productReq?.value?.facilityAmount);
+  formState.useOfFunds = productReq?.value?.useOfFunds;
+  formState.businessName = productReq?.value?.businessName;
+  formState.businessAddress = productReq?.value?.businessAddress;
+  formState.residentialAddress = productReq?.value?.residentialAddress;
+  formState.businessType = productReq?.value?.businessType;
+  formState.bvn = productReq?.value?.bvn;
+  formState.cacDocumentUrl = productReq?.value?.cacDocumentUrl;
+  formState.statementUrl = productReq?.value?.statementUrl;
+  formState.identificationUrl = productReq?.value?.identificationUrl;
+  formState.utilityBillUrl = productReq?.value?.utilityBillUrl;
+  formState.alumniCode = productReq?.value?.alumniCode;
+  formState.alumni = productReq?.value?.alumni;
+  formState.amount = parseInt(request.value.amount);
   formState.requestDate = dayjs(request.value.requestDate);
   formState.equityContribution = request.value.equityContribution;
   formState.lockInPeriod = request.value.lockInPeriod;

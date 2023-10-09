@@ -48,7 +48,7 @@
                 <BasicFormWrapper
                   class="ninjadash-authentication-content col-span-2 mb-10"
                 >
-                  <div class="col-span-2 grid md:grid-cols-2 md:gap-x-8 mb-8">
+                  <div class="col-span-2 md:grid grid-cols-1 md:grid-cols-2 md:gap-x-8 mb-8">
                     <a-form-item
                       label="Amount"
                       name="amount"
@@ -364,7 +364,7 @@
 
                 <div class="my-4 col-span-2">
                   <a-checkbox @change="onChange">
-                    Are you a Biodun and Ibikunle Foundation alumni?
+                    Are you a Biodun and Ibikunle Limited alumni?
                   </a-checkbox>
                 </div>
                 <a-form-item

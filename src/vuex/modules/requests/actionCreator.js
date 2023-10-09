@@ -38,7 +38,10 @@ const actions = {
       commit("fetchErr", err);
     }
   },
-  async getUserProductRequirements({ commit }, { pageNumber, name, pageSize,userproductId }) {
+  async getUserProductRequirements(
+    { commit },
+    { pageNumber, name, pageSize, userproductId }
+  ) {
     try {
       commit("fetchBegin");
       const response = await DataService.get(
@@ -77,22 +80,30 @@ const actions = {
       commit("getReqErr", err);
     }
   },
-  async updateUserProduct({ commit }) {
+  async updateUserProduct({ commit }, data) {
     try {
       commit("editBegin");
-      const response = await DataService.get(`${urls.UPDATE_USER_PRODUCT}`);
+      const response = await DataService.put(
+        `${urls.UPDATE_USER_PRODUCT}, ${data}`
+      );
       if (response.status === 200) {
-        commit("editSuccess", response.data.data);
+        const res = await DataService.put(
+          urls.UPDATE_USER_PRODUCT_REQUIREMENT,
+          { ...data, userProductId: response.data.data }
+        );
+        if (res.status === 200) {
+          commit("addSuccess", res.data.data);
+        }
       }
     } catch (err) {
       commit("editErr", err);
     }
   },
-  async updateUserProductRequirement({ commit }) {
+  async updateUserProductRequirement({ commit }, data) {
     try {
       commit("editBegin");
-      const response = await DataService.get(
-        `${urls.UPDATE_USER_PRODUCT_REQUIREMENT}`
+      const response = await DataService.put(
+        `${urls.UPDATE_USER_PRODUCT_REQUIREMENT}, ${data}`
       );
       if (response.status === 200) {
         commit("editSuccess", response.data.data);

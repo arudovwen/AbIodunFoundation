@@ -171,7 +171,7 @@
                 <a-col :md="12" :xs="24">
                   <span class="admin-footer__copyright"
                     >{{ new Date().getFullYear() }} ©
-                    <a href="/" style="">Biodun & Ibikunle Foundation</a>
+                    <a href="/" style="">Biodun and Ibikunle Limited</a>
                   </span>
                 </a-col>
                 <a-col :md="12" :xs="24">
