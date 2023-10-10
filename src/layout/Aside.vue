@@ -23,7 +23,7 @@
         {{ menu.title }}
       </router-link>
     </a-menu-item>
-    <a-menu-item v-if="role !== 'admin'">
+    <a-menu-item v-if="role === 'customer'">
       <template #icon>
         <unicon name="receipt"></unicon>
       </template>
@@ -97,7 +97,9 @@ export default defineComponent({
     } = events.value;
 
     const router = computed(() => useRoute());
-    const role = computed(()=> store.state.auth.userData.userRole.toLowerCase())
+    const role = computed(() =>
+      store.state.auth.userData.userRole.toLowerCase()
+    );
     const menus = [
       {
         title: "dashboard",
@@ -156,8 +158,6 @@ export default defineComponent({
         disable: true,
         role: "customer",
       },
-
-    
     ];
     const state = reactive({
       rootSubmenuKeys: ["sub1", "sub2", "sub4"],
@@ -203,9 +203,11 @@ export default defineComponent({
     );
 
     const filteredMenu = computed(() => {
-      return store.state.auth.userData.userRole.toLowerCase() !== "admin"
-        ? menus.filter((i) => i.role === "customer" ||  i.role === "all")
-        :  menus.filter((i) => i.role === "admin" ||  i.role === "all")
+      return store.state.auth.userData.userRole.toLowerCase() === "customer"
+        ? menus.filter((i) => i.role === "customer" || i.role === "all")
+        : store.state.auth.userData.userRole.toLowerCase() === "admin"
+        ? menus.filter((i) => i.role === "admin" || i.role === "all")
+        : menus.filter((i) => i.role === "all");
     });
 
     return {
@@ -223,7 +225,7 @@ export default defineComponent({
       t,
       menus,
       filteredMenu,
-      role
+      role,
     };
   },
 });

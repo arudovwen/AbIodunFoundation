@@ -26,17 +26,17 @@ const state = () => ({
 const actions = {
   async getTransactions({ commit }, { pageNumber, description, pageSize }) {
     try {
-      commit("fetchBegin");
+      commit("fetchTrxBegin");
       const response = await DataService.get(
         `${urls.GET_ALL_TRANSACTIONS}?pageNumber=${pageNumber}&pageSize=${pageSize}&description=${description}`
       );
      
       if (response.status === 200) {
-        commit("fetchSuccess", response.data);
+        commit("fetchTrxSuccess", response.data);
       
       }
     } catch (err) {
-      commit("fetchErr", err);
+      commit("fetchTrxErr", err);
     }
   },
   async getTransactionById({ commit }, id) {

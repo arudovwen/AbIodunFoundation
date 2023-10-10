@@ -77,17 +77,20 @@
             <div class="user-dropdown">
               <figure class="user-dropdown__info">
                 <img
-                  :src="avatar || require('../../../static/img/avatar/chat-auth.png')"
+                  :src="
+                    avatar ||
+                    require('../../../static/img/avatar/chat-auth.png')
+                  "
                   alt=""
                   class="w-10 h-10 object-cover"
                 />
                 <figcaption>
                   <sdHeading as="h5">{{ profile.fullName }}</sdHeading>
-                  <p>
+                  <p class="capitalize">
                     {{
                       profile.userRole === "admin"
                         ? "Administrator"
-                        : "Customer"
+                        : profile.userRole
                     }}
                   </p>
                 </figcaption>
@@ -104,8 +107,6 @@
                     Settings
                   </router-link>
                 </li>
-
-              
               </ul>
               <a @click="SignOut" class="user-dropdown__bottomAction" href="#">
                 <LogoutOutlined /> Sign Out
@@ -115,7 +116,7 @@
         </template>
         <a to="#" class="ninjadash-nav-action-link">
           <a-avatar
-          class="h-10 w-10 object-cover"
+            class="h-10 w-10 object-cover"
             :src="avatar || require('../../../static/img/avatar/chat-auth.png')"
           />
           <span class="ninjadash-nav-actions__author--name">{{

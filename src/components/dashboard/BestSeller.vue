@@ -4,7 +4,7 @@
       <Cards>
         <template #title>
           <div class="ninjadash-card-title-wrap">
-            <span class="ninjadash-card-title-text"> Recent Requests </span>
+            <span class="ninjadash-card-title-text"> Recent Transactions </span>
           </div>
         </template>
         <!-- <template #button>
@@ -55,8 +55,9 @@
           <div className="table-responsive">
             <a-table
               :columns="sellerColumns"
-              :dataSource="bestSellerData"
+              :dataSource="transactionsData"
               :pagination="false"
+              :loading="loading"
             />
           </div>
         </TableDefaultStyle>
@@ -65,11 +66,13 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, reactive, onMounted } from "vue";
 import Cards from "components/cards/frame/CardsFrame.vue";
 import { BorderLessHeading, TableDefaultStyle } from "../styled";
-
+import { useStore } from "vuex";
 import tableData from "../../demoData/table-data.json";
+import { formatCurrency } from "@/utility/formatCurrency";
+import moment from "moment";
 
 const BestSeller = defineComponent({
   name: "BestSeller",
@@ -79,27 +82,74 @@ const BestSeller = defineComponent({
     TableDefaultStyle,
   },
   setup() {
+    const query = reactive({
+      pageNumber: 1,
+      pageSize: 5,
+      description: "",
+    });
     const { bestSeller } = tableData;
+    const { state, dispatch } = useStore();
+    onMounted(() => {
+      dispatch("getTransactions", query);
+    });
+    const loading = computed(() => state.transactions.fetchloading);
+
+    const transactionsData = computed(() =>
+      state.transactions.data.map((transaction) => {
+        const {
+          id,
+          amount,
+          transactionType,
+          transactionDate,
+          transactionStatus,
+          description,
+        } = transaction;
+
+        return {
+          key: id,
+          id: id,
+          amount: <span class="capitalize">{formatCurrency(amount)}</span>,
+          description,
+          transactionType: <span class="capitalize">{transactionType}</span>,
+          transactionDate: moment(transactionDate).format("lll"),
+
+          status: (
+            <div class="">
+              <span class="bg-gray-50 text-gray-600 px-3 py-[2px] rounded-full capitalize text-center max-w-max">
+                {" "}
+                {transactionStatus}
+              </span>
+            </div>
+          ),
+          action: "",
+        };
+      })
+    );
     const sellerColumns = [
       {
         title: "Date",
-        dataIndex: "date",
-        key: "date",
+        dataIndex: "transactionDate",
+        key: "transactionDate",
       },
       {
         title: "Type",
-        dataIndex: "type",
-        key: "type",
+        dataIndex: "transactionType",
+        key: "transactionType",
       },
 
       {
-        title: "Description",
-        dataIndex: "description",
-        key: "description",
+        title: "Amount",
+        dataIndex: "amount",
+        key: "amount",
+      },
+      {
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
       },
     ];
     const sellerTab = ref("today");
-    const bestSellerData = computed(() => [] );
+    const bestSellerData = computed(() => []);
 
     const handleTabActivation = (event, value) => {
       event.preventDefault();
@@ -112,6 +162,8 @@ const BestSeller = defineComponent({
       sellerTab,
       bestSellerData,
       handleTabActivation,
+      transactionsData,
+      loading,
     };
   },
 });

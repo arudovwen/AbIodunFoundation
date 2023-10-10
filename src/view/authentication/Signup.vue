@@ -247,7 +247,7 @@ const SignUp = defineComponent({
       password: "",
       emailAddress: "",
       phoneNumber: "",
-      userRole: "cust",
+      userRole: "customer",
     });
     watch(isSuccess, () => {
       isSuccess.value &&

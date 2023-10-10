@@ -43,19 +43,19 @@ export default {
     state.error = err;
     state.getsuccess = false;
   },
-  fetchBegin(state) {
+  fetchTrxBegin(state) {
     state.fetchloading = true;
     state.error = null;
     state.fetchsuccess = false;
     state.data = [];
   },
-  fetchSuccess(state, { data, totalCount }) {
+  fetchTrxSuccess(state, { data, totalCount }) {
     state.fetchloading = false;
     state.fetchsuccess = true;
     state.data = data;
     state.total = totalCount;
   },
-  fetchErr(state, err) {
+  fetchTrxErr(state, err) {
     state.fetchloading = false;
     state.error = err;
     state.fetchsuccess = false;
