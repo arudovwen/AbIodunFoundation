@@ -10,6 +10,9 @@
           total: total,
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
+          onChange: (page) => {
+            fetchRecords(page);
+          },
         }"
       >
         <template #bodyCell="{ column, record }">
@@ -54,18 +57,7 @@ const UserListTable = defineComponent({
     const detail = ref("");
     const type = ref("");
     const search = inject("search");
-    const query = reactive({
-      pageNumber: 1,
-      pageSize: 10,
-      description: "",
-    });
     const { state, dispatch } = useStore();
-    onMounted(() => {
-      dispatch("getTransactions", query);
-    });
-    function fetchRecords(page) {
-      dispatch("getTransactions", { ...query, pageNumber: page });
-    }
     const loading = computed(() => state.transactions.fetchloading);
     const total = computed(() => state.transactions.total);
     const addsuccess = computed(() => state.transactions.addsuccess);
@@ -110,6 +102,22 @@ const UserListTable = defineComponent({
         };
       })
     );
+    const query = reactive({
+      pageNumber: 1,
+      pageSize: 10,
+      description: "",
+      userId:
+        profile.value.userRole.toLowerCase() === "customer"
+          ? profile.value.id
+          : "",
+    });
+
+    onMounted(() => {
+      dispatch("getTransactions", query);
+    });
+    function fetchRecords(page) {
+      dispatch("getTransactions", { ...query, pageNumber: page });
+    }
     function openDelete(data, value) {
       type.value = value;
       visible.value = true;

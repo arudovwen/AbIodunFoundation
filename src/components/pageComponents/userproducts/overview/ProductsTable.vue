@@ -17,13 +17,13 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <div class="flex gap-x-4">
+            <div class="flex gap-x-4 items-center">
               <router-link :to="`/service/${record.id}`">
                 <button class="text-xs bg-gray-200 rounded-full py-1 px-2">
                   View
                 </button>
               </router-link>
-              <router-link :to="`/service/request-edit/${record.id}`">
+              <!-- <router-link :to="`/service/request-edit/${record.id}`">
                 <button
                   class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
                   type="default"
@@ -32,15 +32,44 @@
                 >
                   Edit
                 </button>
-              </router-link>
+              </router-link> -->
+              <sdButton
+                @click="openModal(record)"
+              
+                to="#"
+                shape="circle"
+                class="h-auto"
+              >
+                <unicon name="trash-alt" width="16"></unicon>
+              </sdButton>
             </div>
           </template>
         </template>
-        </a-table
-      >
+      </a-table>
     </TableWrapper>
     <Modal :open="visible" @close="visible = false">
-      <Detail />
+      <!-- <Detail /> -->
+      <div class="bg-white rounded-lg">
+        <h3 class="text-xl font-bold mb-4">Confirm delete</h3>
+        <p class="mb-10">Are you sure about this action?</p>
+        <div class="flex justify-between">
+          <sdButton
+            :disabled="deleteloading"
+            @click="visible = false"
+            size="sm"
+            type="light"
+          >
+            Cancel
+          </sdButton>
+          <sdButton
+            :disabled="deleteloading"
+            size="sm"
+            type="error"
+            @click="handleDelete"
+            >{{ deleteloading ? "Deleting..." : "Delete" }}
+          </sdButton>
+        </div>
+      </div>
     </Modal>
   </UserTableStyleWrapper>
 </template>
@@ -64,15 +93,15 @@ import { message } from "ant-design-vue";
 import { userProductTableHeader } from "@/utility/constant";
 import { formatCurrency } from "@/utility/formatCurrency";
 import Modal from "components/Modal";
-import Detail from "../Detail";
+
 
 const UserListTable = defineComponent({
   name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper, Modal, Detail },
+  components: { UserTableStyleWrapper, TableWrapper, Modal },
   setup() {
     const detail = ref("");
     const visible = ref(false);
-    const type = ref("");
+
     const search = inject("search");
     const query = reactive({
       pageNumber: 1,
@@ -121,9 +150,7 @@ const UserListTable = defineComponent({
             <span class="truncate block max-w-[180px]">{description}</span>
           ),
           amount: <span class="capitalize">{formatCurrency(amount)}</span>,
-          interestRate: (
-            <span class="capitalize">{interestRate}%</span>
-          ),
+          interestRate: <span class="capitalize">{interestRate}%</span>,
           equityContribution: (
             <span class="capitalize">{equityContribution}%</span>
           ),
@@ -142,11 +169,7 @@ const UserListTable = defineComponent({
     }
 
     function handleDelete() {
-      if (type.value === "disable") {
-        dispatch("disableUser", detail.value.userId);
-      } else {
-        dispatch("enableUser", detail.value.userId);
-      }
+      dispatch("deleteUserProduct", detail.value.id);
     }
     // Define a debounce delay (e.g., 500 milliseconds)
     const debounceDelay = 800;
@@ -159,7 +182,8 @@ const UserListTable = defineComponent({
     watch(deletesuccess, () => {
       if (deletesuccess.value) {
         dispatch("getUserProducts", query);
-        message.success("User disabled!");
+        message.success("Service removed!");
+        visible.value = false
       }
     });
 

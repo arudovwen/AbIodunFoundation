@@ -82,17 +82,23 @@ const BestSeller = defineComponent({
     TableDefaultStyle,
   },
   setup() {
-    const query = reactive({
-      pageNumber: 1,
-      pageSize: 5,
-      description: "",
-    });
+    
     const { bestSeller } = tableData;
     const { state, dispatch } = useStore();
     onMounted(() => {
       dispatch("getTransactions", query);
     });
     const loading = computed(() => state.transactions.fetchloading);
+    const profile = computed(() => state.auth.userData);
+    const query = reactive({
+      pageNumber: 1,
+      pageSize: 5,
+      description: "",
+      userId:
+        profile.value.userRole.toLowerCase() === "customer"
+          ? profile.value.id
+          : "",
+    });
 
     const transactionsData = computed(() =>
       state.transactions.data.map((transaction) => {

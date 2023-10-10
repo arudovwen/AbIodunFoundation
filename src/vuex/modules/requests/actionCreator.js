@@ -147,6 +147,19 @@ const actions = {
       commit("addErr", err);
     }
   },
+  async deleteUserProduct({ commit }, data) {
+    try {
+      commit("deleteBegin");
+      const response = await DataService.delete(
+        `${urls.DELETE_USER_PRODUCT}?id=${data}`
+      );
+      if (response.status === 200) {
+        commit("deleteSuccess");
+      }
+    } catch (err) {
+      commit("deleteErr", err);
+    }
+  },
 };
 
 export default {
