@@ -8,7 +8,7 @@
             transaction?.transactionStatus?.toLowerCase()
           )
         "
-        class=""
+        class="capitalize"
         htmlType="button"
         type="primary"
         size="small"
