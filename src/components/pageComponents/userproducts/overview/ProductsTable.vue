@@ -122,7 +122,7 @@ const UserListTable = defineComponent({
           ),
           amount: <span class="capitalize">{formatCurrency(amount)}</span>,
           interestRate: (
-            <span class="capitalize">{formatCurrency(interestRate)}</span>
+            <span class="capitalize">{interestRate}%</span>
           ),
           equityContribution: (
             <span class="capitalize">{equityContribution}%</span>

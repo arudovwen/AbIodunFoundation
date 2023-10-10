@@ -8,7 +8,7 @@
           <input
             v-model="search"
             class="max-w-[300px] w-full border bordergray-300 rounded-lg px-3 py-2"
-            placeholder="Search transaction"
+            placeholder="Search description"
           />
         </div>
 

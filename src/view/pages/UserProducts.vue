@@ -11,7 +11,7 @@
       <div class="flex justify-between my-6">
         <input
           class="max-w-[300px] w-full border bordergray-300 rounded-lg px-3 py-2"
-          placeholder="Search"
+          placeholder="Search description"
           v-model="search"
         />
         <div>
@@ -23,7 +23,7 @@
               key="1"
               type="primary"
             >
-              <unicon name="plus" width="14"></unicon> Request service
+           Request service
             </sdButton>
           </router-link>
         </div>

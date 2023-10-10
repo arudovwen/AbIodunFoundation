@@ -41,9 +41,9 @@
         <span class="block text-sm font-medium text-gray-500"
           >Interest rate</span
         >
-        <span class="text-base font-medium capitalize">{{
-          formatCurrency(product.interestRate) || "-"
-        }}</span>
+        <span class="text-base font-medium capitalize"
+          >{{ product.interestRate || "-" }}%</span
+        >
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500"
@@ -60,12 +60,9 @@
         }}</span>
       </div>
     </div>
-    <div  v-if="productReq">
+    <div v-if="productReq">
       <h4 class="col-span-2 text-lg font-bold mb-8">Requirements</h4>
-      <div
-       
-        class="grid grid-cols-2 gap-10 mb-10"
-      >
+      <div class="grid grid-cols-2 gap-10 mb-10">
         <div>
           <span class="block text-sm font-medium text-gray-500"
             >Business name</span

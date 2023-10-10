@@ -184,7 +184,6 @@
                 </a-form-item>
                 <a-form-item
                   label="Use of funds"
-
                   name="useOfFunds"
                   :rules="[
                     { required: true, message: 'Please input a value!' },

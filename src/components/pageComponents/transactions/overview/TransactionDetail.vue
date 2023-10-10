@@ -80,8 +80,8 @@
           >Interest rate</span
         >
         <span class="text-base font-medium capitalize">{{
-          formatCurrency(product.interestRate) || "-"
-        }}</span>
+          product.interestRate || "-"
+        }}%</span>
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500"

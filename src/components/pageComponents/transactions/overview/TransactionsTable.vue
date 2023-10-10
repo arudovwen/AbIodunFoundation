@@ -100,7 +100,7 @@ const UserListTable = defineComponent({
 
           status: (
             <div class="">
-              <span class="bg-gray-50 text-gray-600 px-3 py-[2px] rounded-full capitalize">
+              <span class="bg-gray-50 text-gray-600 px-3 py-[2px] rounded-full capitalize text-center max-w-max">
                 {" "}
                 {transactionStatus}
               </span>
