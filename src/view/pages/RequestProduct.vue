@@ -1,7 +1,7 @@
 <template>
   <div>
     <sdPageHeader
-      title="Request service"
+      title="Check-Out our products"
       class="ninjadash-page-header-main"
       :routes="breadcrumbs"
     >
@@ -19,7 +19,31 @@
                 class="md:grid grid-cols-1 md:grid-cols-2 md:gap-y-0 md:gap-x-8"
               >
                 <a-form-item
-                  class="col-span-2 mb-10"
+                  class="mb-10"
+                  name="type"
+                  label="Choose a type"
+                  :rules="[
+                    { required: true, message: 'Please select a product!' },
+                  ]"
+                >
+                  <a-select
+                    class="capitalize"
+                    v-model:value="formState.type"
+                    size="large"
+                  >
+                    <a-select-option value="">Please Select</a-select-option>
+
+                    <a-select-option class="capitalize" value="loans"
+                      >Apply for credit</a-select-option
+                    >
+                    <a-select-option class="capitalize" value="savings"
+                      >Save</a-select-option
+                    >
+                  </a-select>
+                </a-form-item>
+
+                <a-form-item
+                  class="mb-10"
                   name="productId"
                   label="Choose a product"
                   :rules="[
@@ -30,17 +54,19 @@
                     class="capitalize"
                     v-model:value="formState.productId"
                     size="large"
+                    :disabled="formState.type === ''"
                   >
-                    <a-select-option value="">Please Select</a-select-option>
+                    <a-select-option value=""
+                      >Please Select one</a-select-option
+                    >
 
                     <a-select-option
                       class="capitalize"
                       v-for="p in products"
                       :key="p.id"
                       :value="p.id.toString()"
-                      >{{ p.productName }} -
-                      {{ p.productType }}</a-select-option
-                    >
+                      >{{ p.productName }}
+                    </a-select-option>
                   </a-select>
                 </a-form-item>
 
@@ -167,9 +193,11 @@
                     </a-form-item>
                   </div>
                 </BasicFormWrapper>
-                <h2 class="font-bold mb-7 col-span-2">Product Requirements</h2>
-                <div class="mb-8 col-span-2 md:grid grid-cols-1 md:grid-cols-2 md:gap-x-8">
-                  <a-form-item
+                <h2 class="font-bold mb-7 col-span-2">Requirements</h2>
+                <div
+                  class="mb-8 col-span-2 md:grid grid-cols-1 md:grid-cols-2 md:gap-x-8"
+                >
+                  <!-- <a-form-item
                     label="Facility amount"
                     name="facilityAmount"
                     :rules="[
@@ -181,7 +209,7 @@
                       placeholder="Provide Facility amount"
                       :options="{ currency: 'ngn' }"
                     />
-                  </a-form-item>
+                  </a-form-item> -->
                   <a-form-item
                     label="Use of funds"
                     name="useOfFunds"
@@ -371,31 +399,6 @@
                   </div>
                 </div>
 
-                <div class="my-4 col-span-2">
-                  <a-checkbox @change="onChange">
-                    Are you a Biodun and Ibikunle Limited alumni?
-                  </a-checkbox>
-                </div>
-                <a-form-item
-                  v-if="formState.alumni"
-                  label="If yes, enter your alumni code."
-                  name="alumniCode"
-                  :rules="[
-                    {
-                      required: formState.alumni,
-                      message: 'Please ente your alumni code!',
-                    },
-                    { max: 6 },
-                    { min: 6 },
-                  ]"
-                >
-                  <a-input
-                    :disabled="!formState.alumni"
-                    v-model:value="formState.alumniCode"
-                    placeholder="Alumni code"
-                  />
-                </a-form-item>
-
                 <div class="col-span-2 flex justify-center my-4">
                   <sdButton
                     class="btn-create w-full max-w-[250px] mx-auto"
@@ -438,7 +441,11 @@ const query = reactive({
   name: "",
 });
 const { state, dispatch } = useStore();
-const products = computed(() => state.products.data);
+const products = computed(() =>
+  state.products.data.filter((i) =>
+    i.productType.toLowerCase().includes(formState.type.toLowerCase())
+  )
+);
 const isLoading = computed(() => state.requests.addloading);
 const addsuccess = computed(() => state.requests.addsuccess);
 const userData = computed(() => state.auth.userData);
@@ -454,14 +461,13 @@ const handleSubmit = (value) => {
     facilityAmount: formState.facilityAmount.toString(),
   });
 };
-const onChange = (e) => {
-  formState.alumni = e.target.checked;
-};
+
 const utilityList = ref([]);
 const cacList = ref([]);
 const idList = ref([]);
 const statementList = ref([]);
 const formState = reactive({
+  type: "",
   userId: userData.value.id,
   productId: "",
   facilityAmount: null,
@@ -497,7 +503,7 @@ const breadcrumbs = [
   },
   {
     path: "#",
-    breadcrumbName: "Request service",
+    breadcrumbName: "Check-Out our products",
   },
 ];
 const handleChange = (data, type) => {

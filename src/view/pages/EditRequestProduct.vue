@@ -1,7 +1,7 @@
 <template>
   <div>
     <sdPageHeader
-      title="Edit Request service"
+      title="Edit Check-Out our products"
       class="ninjadash-page-header-main"
       :routes="breadcrumbs"
     >
@@ -166,7 +166,7 @@
                     </a-form-item>
                   </div>
                 </BasicFormWrapper>
-                <h2 class="font-bold mb-7 col-span-2">Product Requirements</h2>
+                <h2 class="font-bold mb-7 col-span-2">Requirements</h2>
 
                 <a-form-item
                   label="Facility amount"
@@ -370,7 +370,7 @@
 
                 <div class="my-4 col-span-2">
                   <a-checkbox @change="onChange">
-                    Are you a Biodun and Ibikunle Limited alumni?
+                    Are you a Biodun and Ibikunle alumni?
                   </a-checkbox>
                 </div>
                 <a-form-item
@@ -505,7 +505,7 @@ const breadcrumbs = [
   },
   {
     path: "#",
-    breadcrumbName: "Request service",
+    breadcrumbName: "Check-Out our products",
   },
 ];
 const handleChange = (data, type) => {

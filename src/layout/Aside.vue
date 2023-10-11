@@ -23,7 +23,7 @@
         {{ menu.title }}
       </router-link>
     </a-menu-item>
-    <a-menu-item v-if="role === 'customer'">
+    <!-- <a-menu-item v-if="role === 'customer'">
       <template #icon>
         <unicon name="receipt"></unicon>
       </template>
@@ -34,7 +34,32 @@
       >
         Apply for grant
       </a>
-    </a-menu-item>
+    </a-menu-item> -->
+    <a-sub-menu key="grant" v-if="role === 'customer'">
+      <template #icon>
+        <unicon name="fast-mail"></unicon>
+      </template>
+      <template #title>Apply for grant</template>
+
+      <a-menu-item @click="toggleCollapsed" key="seedinvest">
+        <a
+          target="_blank"
+          href="https://biodunandibikunle.org/seedinvest/"
+          class="capitalize"
+        >
+          SEEDINVEST
+        </a>
+      </a-menu-item>
+      <a-menu-item @click="toggleCollapsed" key="ueip">
+        <a
+          target="_blank"
+          href="https://docs.google.com/forms/d/e/1FAIpQLScsYa2QskBBbbKEgIi6xhFSyrjK5RoAByNrY_-Y126Pc2N13g/closedform"
+          class="capitalize"
+        >
+          UEIP
+        </a>
+      </a-menu-item>
+    </a-sub-menu>
 
     <a-sub-menu key="settings">
       <template #icon>
@@ -132,7 +157,7 @@ export default defineComponent({
       {
         title: "services",
         url: "/services",
-        icon: "archive",
+        icon: "box",
         disable: false,
         role: "customer",
       },

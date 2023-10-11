@@ -23,7 +23,7 @@
               key="1"
               type="primary"
             >
-              Request service
+              Check-Out our products
             </sdButton>
           </router-link>
         </div>
