@@ -169,6 +169,32 @@
                           :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                         />
                       </a-form-item>
+
+                      <a-form-item
+                        v-if="
+                          (productDetail?.length &&
+                            productDetail[0]?.productName?.toLowerCase() ===
+                              'asset finance') ||
+                          formState.type !== 'savings'
+                        "
+                        label="Equity Contribution"
+                        name="equityContribution"
+                        :rules="[
+                          {
+                            required: true,
+                            message: 'Please input a value!',
+                          },
+                        ]"
+                      >
+                        <a-input-number
+                          :value="equityAmount"
+                          :formatter="
+                            (value) =>
+                              `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                          "
+                          :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
+                        />
+                      </a-form-item>
                       <a-form-item
                         label="Request date"
                         name="requestDate"
@@ -206,25 +232,6 @@
                           v-model:value="formState.dueDate"
                           disabled
                         />
-                      </a-form-item>
-
-                      <a-form-item
-                        v-if="
-                          (productDetail?.length &&
-                            productDetail[0]?.productName?.toLowerCase() ===
-                              'asset finance') ||
-                          formState.type !== 'savings'
-                        "
-                        label="Equity Contribution"
-                        name="equityContribution"
-                        :rules="[
-                          {
-                            required: true,
-                            message: 'Please input a value!',
-                          },
-                        ]"
-                      >
-                        <a-input-number :value="equityAmount" placeholder="" />
                       </a-form-item>
 
                       <a-form-item
