@@ -24,10 +24,14 @@
                   ]"
                   validateTrigger="blur"
                 >
-                  <CurrencyInput
-                    v-model="formState.minAmount"
+                  <a-input-number
+                    v-model:value="formState.minAmount"
                     placeholder="Provide a Minimum amount"
-                    :options="{ currency: 'ngn' }"
+                    :formatter="
+                      (value) =>
+                        `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    "
+                    :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                   />
                 </a-form-item>
                 <a-form-item
@@ -40,10 +44,14 @@
                     },
                   ]"
                 >
-                  <CurrencyInput
-                    v-model="formState.maxAmount"
+                  <a-input-number
+                    v-model:value="formState.maxAmount"
                     placeholder="Provide a Maximum amount"
-                    :options="{ currency: 'ngn' }"
+                    :formatter="
+                      (value) =>
+                        `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    "
+                    :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                   />
                 </a-form-item>
                 <!-- <a-form-item
@@ -72,9 +80,8 @@
                   ]"
                 >
                   <a-input-number
-                    v-model.value="formState.upfrontFees"
+                    v-model:value="formState.upfrontFees"
                     placeholder="Provide an upfront fee"
-                  
                   />
                 </a-form-item>
                 <a-form-item
@@ -146,7 +153,6 @@
 </template>
 <script setup>
 import { BasicFormWrapper } from "../../styled";
-import CurrencyInput from "components/currency/CurrencyInput";
 import { message } from "ant-design-vue";
 import { computed, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
@@ -173,7 +179,6 @@ const formState = reactive({
   lockInPeriod: null, // Update property to match the "Due date" input field
   equityContribution: "", // Update property to match the "Description" input field
 });
-
 
 watch(addsuccess, () => {
   if (addsuccess.value) {

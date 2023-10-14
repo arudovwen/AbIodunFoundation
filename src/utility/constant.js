@@ -169,12 +169,6 @@ export const productDetailTableHeader = [
   },
 
   {
-    title: "Rate",
-    dataIndex: "rate",
-    key: "rate",
-  },
-
-  {
     title: "Actions",
     dataIndex: "action",
     key: "action",

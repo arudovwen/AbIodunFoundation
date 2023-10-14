@@ -24,11 +24,15 @@
                   ]"
                   validateTrigger="blur"
                 >
-                  <CurrencyInput
-                    v-model="formState.minAmount"
-                    placeholder="Provide a Minimum amount"
-                    :options="{ currency: 'ngn' }"
+                  <a-input-number
                     :disabled="loading"
+                    v-model:value="formState.minAmount"
+                    placeholder="Provide a Minimum amount"
+                    :formatter="
+                      (value) =>
+                        `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    "
+                    :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                   />
                 </a-form-item>
                 <a-form-item
@@ -41,11 +45,15 @@
                     },
                   ]"
                 >
-                  <CurrencyInput
-                    v-model="formState.maxAmount"
-                    placeholder="Provide a Maximum amount"
-                    :options="{ currency: 'ngn' }"
+                  <a-input-number
+                    v-model:value="formState.maxAmount"
                     :disabled="loading"
+                    placeholder="Provide a Maximum amount"
+                    :formatter="
+                      (value) =>
+                        `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    "
+                    :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                   />
                 </a-form-item>
                 <!-- <a-form-item
@@ -75,7 +83,7 @@
                   ]"
                 >
                   <a-input-number
-                    v-model.value="formState.upfrontFees"
+                    v-model:value="formState.upfrontFees"
                     placeholder="Provide an upfront fee"
                     :disabled="loading"
                   />
@@ -135,7 +143,7 @@
                     size="lg"
                     :disabled="isLoading"
                   >
-                    {{ isLoading ? "Processing..." : " Add Product Detail" }}
+                    {{ isLoading ? "Processing..." : " Update Product Detail" }}
                   </sdButton>
                 </div>
               </a-form>
@@ -148,7 +156,6 @@
 </template>
 <script setup>
 import { BasicFormWrapper } from "../../styled";
-import CurrencyInput from "components/currency/CurrencyInput";
 import { message } from "ant-design-vue";
 import { computed, reactive, ref, watch, onMounted } from "vue";
 import { useStore } from "vuex";
@@ -177,9 +184,15 @@ const formState = reactive({
   lockInPeriod: null, // Update property to match the "Due date" input field
   equityContribution: "", // Update property to match the "Description" input field
 });
+const query = reactive({
+  pageNumber: 1,
+  pageSize: 10,
+  name: "",
+  productId: route.params.id,
+});
 onMounted(() => {
   if (route.params.id) {
-    dispatch("getProductDetail", route.params.id);
+    dispatch("getProductDetails", query);
   }
 });
 
@@ -191,15 +204,19 @@ watch(editsuccess, () => {
 });
 
 watch(product, () => {
-  if (product.value) {
-    formState.id = product.value.id;
-    formState.minAmount = product.value.minAmount;
-    formState.maxAmount = product.value.maxAmount;
-    formState.rate = product.value.rate;
-    formState.upfrontFees = product.value.upfrontFees;
-    formState.interestRate = product.value.interestRate;
-    formState.lockInPeriod = product.value.lockInPeriod;
-    formState.equityContribution = product.value.equityContribution;
+  console.log(
+    "🚀 ~ file: EditProductDetail.vue:202 ~ watch ~ product:",
+    product
+  );
+  if (product.value.length) {
+    formState.id = product.value[0].id;
+    formState.minAmount = product.value[0].minAmount;
+    formState.maxAmount = product.value[0].maxAmount;
+    formState.rate = product.value[0].rate;
+    formState.upfrontFees = product.value[0].upfrontFees;
+    formState.interestRate = product.value[0].rate;
+    formState.lockInPeriod = product.value[0].lockInPeriod;
+    formState.equityContribution = product.value[0].equityContribution;
   }
 });
 </script>

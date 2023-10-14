@@ -85,7 +85,7 @@ import { useRouter, useRoute } from "vue-router";
 const { state, dispatch } = useStore();
 const isLoading = computed(() => state.products.editloading);
 const editsuccess = computed(() => state.products.editsuccess);
-const product = computed(() => state.products.product);
+const product = computed(() => state.products.productD);
 const loading = computed(() => state.products.loading);
 
 const router = useRouter();

@@ -56,11 +56,15 @@
                         { required: true, message: 'Please input an amount!' },
                       ]"
                     >
-                      <CurrencyInput
-                        v-model="formState.amount"
-                        :value="formState.amount"
+                    
+                      <a-input-number
+                        v-model:value="formState.amount"
                         placeholder="Provide an amount"
-                        :options="{ currency: 'ngn' }"
+                        :formatter="
+                          (value) =>
+                            `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        "
+                        :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                       />
                     </a-form-item>
                     <a-form-item
@@ -168,7 +172,7 @@
                 </BasicFormWrapper>
                 <h2 class="font-bold mb-7 col-span-2">Requirements</h2>
 
-                <a-form-item
+                <!-- <a-form-item
                   label="Facility amount"
                   name="facilityAmount"
                   :rules="[
@@ -181,7 +185,7 @@
                     placeholder="Provide Facility amount"
                     :options="{ currency: 'ngn' }"
                   />
-                </a-form-item>
+                </a-form-item> -->
                 <a-form-item
                   label="Use of funds"
                   name="useOfFunds"
@@ -419,7 +423,6 @@ import { UploadOutlined } from "@ant-design/icons-vue";
 import { onMounted, computed, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
-import CurrencyInput from "components/currency/CurrencyInput";
 import { BasicFormWrapper } from "../styled";
 import dayjs from "dayjs";
 import { businessTypesInNigeria } from "@/utility/constant";

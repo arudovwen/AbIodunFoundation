@@ -66,7 +66,6 @@
 <script>
 import Modal from "components/Modal";
 import { useStore } from "vuex";
-import { debounce } from "lodash";
 import { UserTableStyleWrapper } from "../style";
 import { TableWrapper } from "../../../styled";
 import {
@@ -75,7 +74,7 @@ import {
   onMounted,
   watch,
   reactive,
-  inject,
+ 
   ref,
   
 } from "vue";
@@ -91,7 +90,7 @@ const UserListTable = defineComponent({
     const route = useRoute();
     const visible = ref(false);
     const detail = ref("");
-    const search = inject("search");
+  
     const productId = ref(route.params.id);
   
     const query = reactive({
@@ -115,7 +114,7 @@ const UserListTable = defineComponent({
     const deleteloading = computed(() => state.products.deleteloading);
     const deletesuccess = computed(() => state.products.deletesuccess);
     const productsData = computed(() =>
-      state.products.data.map((user) => {
+      state?.products?.product?.map((user) => {
         const {
           id,
           maxAmount,
@@ -158,12 +157,7 @@ const UserListTable = defineComponent({
     function handleDelete() {
       dispatch("deleteProductDetail", detail.value.productId);
     }
-    // Define a debounce delay (e.g., 500 milliseconds)
-    const debounceDelay = 800;
-    const debouncedSearch = debounce((searchValue) => {
-      dispatch("getProductDetails", { ...query, name: searchValue });
-    }, debounceDelay);
-
+ 
     watch(addsuccess, () => {
       addsuccess.value && dispatch("getProductDetails", query);
     });
@@ -176,9 +170,6 @@ const UserListTable = defineComponent({
       }
     });
 
-    watch(search, () => {
-      debouncedSearch(search.value);
-    });
 
     return {
       handleDelete,

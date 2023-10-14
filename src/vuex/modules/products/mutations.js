@@ -16,6 +16,22 @@ export default {
     state.error = err;
     state.success = false;
   },
+  fetchDetailBegin(state) {
+    state.loading = true;
+    state.error = null;
+    state.success = false;
+  },
+  fetchDetailSuccess(state, { data }) {
+    state.loading = false;
+    state.success = true;
+    state.product = data;
+   
+  },
+  fetchDetailErr(state, err) {
+    state.loading = false;
+    state.error = err;
+    state.success = false;
+  },
   getBegin(state) {
     state.loading = true;
     state.error = null;
@@ -24,7 +40,7 @@ export default {
   getSuccess(state, { data }) {
     state.loading = false;
     state.success = true;
-    state.product = data;
+    state.productD = data;
    
   },
   getErr(state, err) {

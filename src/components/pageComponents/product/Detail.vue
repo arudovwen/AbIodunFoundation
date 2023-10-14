@@ -53,7 +53,7 @@ import ProductDetailTable from "../products/overview/ProductsDetailTable.vue";
 
 const route = useRoute();
 const { state, dispatch } = useStore();
-const product = computed(() => state.products.product);
+const product = computed(() => state.products.productD);
 const loading = computed(() => state.products.loading);
 
 onMounted(() => {
