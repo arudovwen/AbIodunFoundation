@@ -149,7 +149,7 @@
                           (productDetail?.length &&
                             productDetail[0]?.productName?.toLowerCase() !==
                               'interest free credit') ||
-                          formState.type !== 'savings'
+                          formState.type === 'savings'
                         "
                         label="Interest rate"
                         name="interestRate"
@@ -172,10 +172,9 @@
 
                       <a-form-item
                         v-if="
-                          (productDetail?.length &&
-                            productDetail[0]?.productName?.toLowerCase() ===
-                              'asset finance') ||
-                          formState.type !== 'savings'
+                          productDetail?.length &&
+                          productDetail[0]?.productName?.toLowerCase() ===
+                            'asset finance'
                         "
                         label="Equity Contribution"
                         name="equityContribution"
@@ -187,7 +186,7 @@
                         ]"
                       >
                         <a-input-number
-                          :value="equityAmount"
+                          :value="formState.amount - equityAmount"
                           :formatter="
                             (value) =>
                               `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
