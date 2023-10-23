@@ -90,7 +90,7 @@
                           { required: true, message: 'Please select a value!' },
                         ]"
                       >
-                        <a-select
+                        <!-- <a-select
                           size="large"
                           v-model:value="formState.lockInPeriod"
                         >
@@ -103,7 +103,11 @@
                             :value="t.value"
                             >{{ t.title }}</a-select-option
                           >
-                        </a-select>
+                        </a-select> -->
+
+                        <a-checkbox readonly :checked="formState.lockInPeriod !== null">
+                          {{ productDetail[0]?.lockInPeriod }} month(s)
+                        </a-checkbox>
                       </a-form-item>
                       <a-form-item
                         label="Amount"
@@ -522,6 +526,7 @@ const maxAmount = ref(10000);
 const upfrontFeePercent = ref(0);
 const interestRatePercent = ref(0);
 const equityPercent = ref(0);
+// eslint-disable-next-line no-unused-vars
 const filteredTenure = computed(() => {
   if (
     productDetail?.value?.productName?.toLowerCase() === "interest free credit"
@@ -611,7 +616,7 @@ const formState = reactive({
   amount: null,
   requestDate: null,
   equityContribution: null,
-  lockInPeriod: "",
+  lockInPeriod: null,
   interestRate: null,
   dueDate: null,
   description: "",
@@ -701,6 +706,7 @@ watch(productDetail, () => {
     interestRatePercent.value = productDetail?.value[0]?.interestRate;
     upfrontFeePercent.value = productDetail?.value[0]?.upfrontFees;
     equityPercent.value = productDetail?.value[0]?.equityContribution;
+    formState.lockInPeriod = productDetail?.value[0]?.lockInPeriod;
   }
 });
 watch(addsuccess, () => {
