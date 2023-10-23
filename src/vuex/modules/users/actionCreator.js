@@ -4,7 +4,8 @@ import { urls } from "@/helpers/apI_urls";
 
 const state = () => ({
   data: [],
-  roles:[],
+  roles: [],
+  stats: null,
   total: 0,
   avatar: null,
   user: null,
@@ -22,19 +23,20 @@ const state = () => ({
   avatarsuccess: false,
   profilesuccess: false,
   error: null,
+  custstatloading: false,
+  custstatsuccess: false,
+  custstaterror: null,
+  adminstatloading: false,
+  adminstatsuccess: false,
+  adminstaterror: null,
 });
 
 const actions = {
   async getRoles({ commit }) {
-   
-     
-      const response = await DataService.get(
-        `${urls.ADMIM_GET_ALL_ROLES}`
-      );
-      if (response.status === 200) {
-        commit("rolesSuccess", response.data);
-      }
-     
+    const response = await DataService.get(`${urls.ADMIM_GET_ALL_ROLES}`);
+    if (response.status === 200) {
+      commit("rolesSuccess", response.data);
+    }
   },
   async getUsers({ commit }, { pageNumber, pageSize, name, email, mobileNo }) {
     try {
@@ -101,7 +103,7 @@ const actions = {
       commit("avatarErr", err);
     }
   },
- 
+
   async getUserByUsername({ commit }, Username) {
     try {
       commit("profileBegin");
@@ -163,6 +165,31 @@ const actions = {
       }
     } catch (err) {
       commit("changeErr", err);
+    }
+  },
+
+  async getAdminStats({ commit }, data) {
+    try {
+      commit("adminStatBegin");
+      const response = await DataService.get(urls.GET_ADMIN_STATS, data);
+
+      if (response.status === 200) {
+        commit("adminStatSuccess", response.data.data);
+      }
+    } catch (err) {
+      commit("adminStatErr", err);
+    }
+  },
+  async getCustomerStats({ commit }, data) {
+    try {
+      commit("adminStatBegin");
+      const response = await DataService.get(urls.GET_CUSTOMER_STATS, data);
+
+      if (response.status === 200) {
+        commit("adminStatSuccess", response.data.data);
+      }
+    } catch (err) {
+      commit("adminStatErr", err);
     }
   },
 };

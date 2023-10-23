@@ -1,11 +1,18 @@
 <template>
-  <BannerCarouselWrap>
+  <BannerCarouselWrap v-if="banners.length">
     <a-carousel autoplay>
       <div class="banner-signle" v-for="ban in banners" :key="ban.id">
         <div class="banner-single__img w-full h-[300px]">
-          <img class="h-full w-full object-cover object-top" :src="ban.bannerUrl" alt="" />
+          <img
+            class="h-full w-full object-cover object-top"
+            :src="ban.bannerUrl"
+            alt=""
+          />
         </div>
-        <div v-if="ban.description" class="banner-single__content text-left px-6">
+        <div
+          v-if="ban.description"
+          class="banner-single__content text-left px-6"
+        >
           <h3 class="text-left">{{ ban.description }}</h3>
         </div>
       </div>
@@ -28,7 +35,12 @@ const query = reactive({
 });
 const carouselRef = ref(null);
 const { state, dispatch } = useStore();
-const banners = computed(() => state.banners.data.map(ban => ({ ...ban, bannerUrl: base64ToImage(ban.bannerUrl) })));
+const banners = computed(() =>
+  state.banners.data.map((ban) => ({
+    ...ban,
+    bannerUrl: base64ToImage(ban.bannerUrl),
+  }))
+);
 
 onMounted(() => {
   dispatch("getBanners", query);

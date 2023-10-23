@@ -1,11 +1,30 @@
 export default {
+  adminStatBegin(state) {
+    state.adminstatloading = true;
+    state.adminstatsuccess = false;
+    state.adminstaterror = null;
+    state.stat = null;
+  },
+
+  adminStatSuccess(state, data) {
+    state.adminstatloading = false;
+    state.adminstatsuccess = true;
+    state.stats = data;
+  },
+
+  adminStatErr(state, err) {
+    state.adminstatloading = false;
+    state.adminstaterror = err;
+    state.adminstatsuccess = false;
+  },
+
   rolesSuccess(state, data) {
     state.roles = data;
   },
   profileBegin(state) {
     state.profileloading = true;
     state.profilesuccess = false;
-    state.profileloading = false;
+    state.profileerror = null;
   },
 
   profileSuccess(state, data) {

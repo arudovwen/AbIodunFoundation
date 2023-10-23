@@ -60,7 +60,7 @@
           </div>
         </div>
 
-        <div v-if="bottomStatus" class="ninjadash-overview-card__bottom">
+        <!-- <div v-if="bottomStatus" class="ninjadash-overview-card__bottom">
           <span
             :class="`ninjadash-overview-status ninjadash-status-${ocData.growth}`"
           >
@@ -72,7 +72,7 @@
             </span>
             <span class="ninjadash-status-label">{{ ocData.dataPeriod }}</span>
           </span>
-        </div>
+        </div> -->
       </div>
     </a-card>
   </OverviewCard>
