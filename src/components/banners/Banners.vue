@@ -1,5 +1,5 @@
 <template>
-  <BannerCarouselWrap v-if="banners.length">
+  <BannerCarouselWrap>
     <a-carousel autoplay>
       <div class="banner-signle" v-for="ban in banners" :key="ban.id">
         <div class="banner-single__img w-full h-[300px]">

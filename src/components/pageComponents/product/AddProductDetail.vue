@@ -45,6 +45,7 @@
                   ]"
                 >
                   <a-input-number
+                    :min="formState.minAmount"
                     v-model:value="formState.maxAmount"
                     placeholder="Provide a Maximum amount"
                     :formatter="
@@ -54,21 +55,7 @@
                     :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                   />
                 </a-form-item>
-                <!-- <a-form-item
-                  label="Rate"
-                  name="rate"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'Please input a rate !',
-                    },
-                  ]"
-                >
-                  <a-input-number
-                    v-model:value="formState.rate"
-                    placeholder="Enter product rate"
-                  />
-                </a-form-item> -->
+
                 <a-form-item
                   label="Upfront Fees"
                   name="upfrontFees"
@@ -166,7 +153,7 @@ const route = useRoute();
 const values = ref(null);
 const handleSubmit = (value) => {
   values.value = value;
-  dispatch("addProductDetail", formState);
+  dispatch("addProductDetail", { ...formState, rate: formState.interestRate });
 };
 
 const formState = reactive({

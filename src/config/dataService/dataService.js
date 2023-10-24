@@ -62,13 +62,9 @@ class DataService {
   }
 }
 
-/**
- * axios interceptors runs before and after a request, letting the developer modify req,req more
- * For more details on axios interceptor see https://github.com/axios/axios#interceptors
- */
+// axios interceptors
 client.interceptors.request.use((config) => {
-  // do something before executing the request
-  // For example tag along the bearer access token to request header or set a cookie
+  // Modify the request before execution
   const requestConfig = config;
   const { headers } = config;
   requestConfig.headers = {
@@ -96,7 +92,6 @@ client.interceptors.response.use(
         Notification.error({
           message: "Error",
           description: "Token expired",
-         
         });
 
         localStorage.clear();
@@ -105,8 +100,20 @@ client.interceptors.response.use(
         Notification.error({
           message: "Error",
           description: response.data.message,
+         
           duration: 5000,
         });
+      
+        if (
+          response.data.message.includes("Your profile has not been activated")
+        ) {
+        
+          const email = JSON.parse(originalRequest.data).username;
+          console.log("🚀 ~ file: dataService.js:111 ~ email:", email)
+          window.location.href = `/auth/validate-email/${encodeURIComponent(
+            email
+          )}`;
+        }
       } else {
         return originalRequest;
       }
@@ -114,4 +121,5 @@ client.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 export { DataService };

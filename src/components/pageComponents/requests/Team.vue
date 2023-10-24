@@ -7,12 +7,12 @@
     >
       <template #subTitle>
         <span class="title-counter">274 Users</span>
-        <sdAutoComplete
+        <!-- <sdAutoComplete
           :dataSource="searchData"
           width="100%"
           placeholder="Search by Name"
           patterns
-        />
+        /> -->
       </template>
       <template #buttons>
         <sdButton class="btn-add_new" size="default" key="1" type="primary">

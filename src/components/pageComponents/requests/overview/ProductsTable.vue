@@ -2,86 +2,207 @@
   <UserTableStyleWrapper>
     <TableWrapper class="table-responsive">
       <a-table
-        :rowSelection="rowSelection"
-        :dataSource="usersTableData"
-        :columns="requestTableHeader"
+        :loading="loading"
+        :dataSource="productsData"
+        :columns="userProductTableHeader"
         :pagination="{
-          defaultPageSize: 5,
-          total: usersTableData.length,
+          defaultPageSize: query.pageSize,
+          total: total,
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
+          onChange: (page) => {
+            fetchRecords(page);
+          },
         }"
-      />
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'action'">
+            <div class="flex gap-x-4 items-center">
+              <router-link :to="`/service/${record.id}`">
+                <button class="text-xs bg-gray-200 rounded-full py-1 px-2">
+                  View
+                </button>
+              </router-link>
+              <!-- <router-link :to="`/service/request-edit/${record.id}`">
+                <button
+                  class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
+                  type="default"
+                  to="#"
+                  shape="circle"
+                >
+                  Edit
+                </button>
+              </router-link> -->
+              <sdButton
+                @click="openModal(record)"
+              
+                to="#"
+                shape="circle"
+                class="h-auto"
+              >
+                <unicon name="trash-alt" width="16"></unicon>
+              </sdButton>
+            </div>
+          </template>
+        </template>
+      </a-table>
     </TableWrapper>
+    <Modal :open="visible" @close="visible = false">
+      <!-- <Detail /> -->
+      <div class="bg-white rounded-lg">
+        <h3 class="text-xl font-bold mb-4">Confirm delete</h3>
+        <p class="mb-10">Are you sure about this action?</p>
+        <div class="flex justify-between">
+          <sdButton
+            :disabled="deleteloading"
+            @click="visible = false"
+            size="sm"
+            type="light"
+          >
+            Cancel
+          </sdButton>
+          <sdButton
+            :disabled="deleteloading"
+            size="sm"
+            type="error"
+            @click="handleDelete"
+            >{{ deleteloading ? "Deleting..." : "Delete" }}
+          </sdButton>
+        </div>
+      </div>
+    </Modal>
   </UserTableStyleWrapper>
 </template>
 <script>
 import { UserTableStyleWrapper } from "../style";
 import { TableWrapper } from "../../../styled";
-import users from "@/demoData/usersData.json";
-import { computed, defineComponent } from "vue";
-import { requestTableHeader } from "@/utility/constant";
+import moment from "moment";
+import { useStore } from "vuex";
+import { debounce } from "lodash";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  watch,
+  reactive,
+  inject,
+  ref,
+} from "vue";
+import { userTableHeader } from "@/utility/constant";
+import { message } from "ant-design-vue";
+import { userProductTableHeader } from "@/utility/constant";
+import { formatCurrency } from "@/utility/formatCurrency";
+import Modal from "components/Modal";
 
 
 const UserListTable = defineComponent({
   name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper },
+  components: { UserTableStyleWrapper, TableWrapper, Modal },
   setup() {
-    const usersTableData = computed(() =>
-      users.map((user) => {
-        const { id, name, designation, img, status } = user;
+    const detail = ref("");
+    const visible = ref(false);
+
+    const search = inject("search");
+    const query = reactive({
+      pageNumber: 1,
+      pageSize: 10,
+      name: "",
+      email: "",
+      mobileNo: "",
+    });
+    const { state, dispatch } = useStore();
+    onMounted(() => {
+      dispatch("getUserProducts", query);
+    });
+    function fetchRecords(page) {
+      dispatch("getUserProducts", { ...query, pageNumber: page });
+    }
+    const loading = computed(() => state.requests.fetchloading);
+    const total = computed(() => state.requests.total);
+    const addsuccess = computed(() => state.requests.addsuccess);
+    const deleteloading = computed(() => state.requests.deleteloading);
+    const deletesuccess = computed(() => state.requests.deletesuccess);
+    const productsData = computed(() =>
+      state.requests.data.map((product) => {
+        const {
+          id,
+          amount,
+          equityContribution,
+          description,
+          dueDate,
+          requestDate,
+          interestRate,
+          lockInPeriod,
+          productName,
+          createdAt,
+        } = product;
 
         return {
           key: id,
-          user: (
-            <div class="user-info">
-              <figure>
-                <img
-                  style={{ width: "40px" }}
-                  src={require(`@/${img}`)}
-                  alt=""
-                />
-              </figure>
-              <figcaption>
-                <sdHeading class="user-name" as="h6">
-                  {name}
-                </sdHeading>
-                <span class="user-designation">San Francisco, CA</span>
-              </figcaption>
-            </div>
+          id: id,
+          lockInPeriod,
+          productName: (
+            <span class="truncate block max-w-[180px]">
+              {productName || "-"}
+            </span>
           ),
-          email: "john@gmail.com",
-          company: "Business Development",
-          position: designation,
-          joinDate: "January 20, 2021",
-          status: <span class={`status-text ${status}`}>{status}</span>,
-          action: (
-            <div class="table-actions">
-              <>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="eye" width="16"></unicon>
-                </sdButton>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="edit" width="16"></unicon>
-                </sdButton>
-                <sdButton class="btn-icon" type="default" to="#" shape="circle">
-                  <unicon name="trash-alt" width="16"></unicon>
-                </sdButton>
-              </>
-            </div>
+          description: (
+            <span class="truncate block max-w-[180px]">{description}</span>
           ),
+          amount: <span class="capitalize">{formatCurrency(amount)}</span>,
+          interestRate: <span class="capitalize">{interestRate}%</span>,
+          equityContribution: (
+            <span class="capitalize">{equityContribution}%</span>
+          ),
+          dueDate: moment(dueDate).format("ll"),
+          requestDate: moment(requestDate).format("ll"),
+
+          createdAt: moment(createdAt).format("ll"),
+
+          action: "",
         };
       })
     );
+    function openModal(data) {
+      visible.value = true;
+      detail.value = data;
+    }
 
-    const rowSelection = {
-      getCheckboxProps: (record) => ({
-        disabled: record.name === "Disabled User", // Column configuration not to be checked
-        name: record.name,
-      }),
+    function handleDelete() {
+      dispatch("deleteUserProduct", detail.value.id);
+    }
+    // Define a debounce delay (e.g., 500 milliseconds)
+    const debounceDelay = 800;
+    const debouncedSearch = debounce((searchValue) => {
+      dispatch("getUserProducts", { ...query, name: searchValue });
+    }, debounceDelay);
+    watch(addsuccess, () => {
+      addsuccess.value && dispatch("getUserProducts", query);
+    });
+    watch(deletesuccess, () => {
+      if (deletesuccess.value) {
+        dispatch("getUserProducts", query);
+        message.success("Service removed!");
+        visible.value = false
+      }
+    });
+
+    watch(search, () => {
+      debouncedSearch(search.value);
+    });
+    return {
+      userProductTableHeader,
+      handleDelete,
+      openModal,
+      productsData,
+      query,
+      total,
+      fetchRecords,
+      userTableHeader,
+      loading,
+      deleteloading,
+      visible,
     };
-
-    return { requestTableHeader, usersTableData, rowSelection };
   },
 });
 

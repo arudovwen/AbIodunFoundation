@@ -58,7 +58,7 @@
               v-model:value="formState.userRole"
             >
               <a-select-option value="">Please Select</a-select-option>
-              <a-select-option v-for="role in roles" :value="role" :key="role">
+              <a-select-option  class="capitalize" v-for="role in roles" :value="role" :key="role">
                 {{ role }}
               </a-select-option>
             </a-select>
@@ -96,7 +96,7 @@
           />
         </a-form-item>
 
-        <a-form-item
+        <!-- <a-form-item
           label="Password"
           name="password"
           :rules="[
@@ -113,7 +113,7 @@
             v-model:value="formState.password"
             placeholder="Password"
           />
-        </a-form-item>
+        </a-form-item> -->
 
         <a-form-item>
           <sdButton
@@ -211,7 +211,7 @@ const SignUp = defineComponent({
       firstName: "",
       lastName: "",
       gender: "",
-      password: "",
+      password: "password",
       emailAddress: "",
       phoneNumber: "",
       userRole: "",
