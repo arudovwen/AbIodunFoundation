@@ -27,7 +27,7 @@
                   },
                 ]"
               >
-                <a-input
+                <a-input-password
                   type="password"
                   placeholder=""
                   v-model:value="formState.currentPassword"

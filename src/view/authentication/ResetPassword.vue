@@ -12,6 +12,19 @@
               you instructions to reset your password.
             </p>
             <a-form-item
+              name="token"
+              label="Token"
+              :rules="[
+                { required: true, message: 'Please input your token!' },
+              ]"
+            >
+              <a-input
+               
+                v-model:value="formState.token"
+                placeholder="Enter your Token"
+              />
+            </a-form-item>
+            <a-form-item
               :rules="[
                 { required: true, message: 'Please input a password!' },
                 {
@@ -24,7 +37,7 @@
               initialValue=""
               label="New Password"
             >
-              <a-input
+              <a-input-password
                 type="password"
                 v-model:value="formState.newPassword"
                 placeholder="Password"
@@ -36,7 +49,7 @@
               label="Confirm Password"
               :rules="confirmPasswordRules"
             >
-              <a-input
+              <a-input-password
                 type="password"
                 v-model:value="formState.confirmPassword"
                 placeholder="Password"

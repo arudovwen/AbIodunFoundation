@@ -80,9 +80,7 @@ const ForgotPassword = defineComponent({
         ?.trim();
 
       router.push(
-        `/auth/reset-password?code=${encodeURIComponent(
-          formState.token
-        )}&email=${encodeURIComponent(formState.emailAddress)}`
+        `/auth/reset-password?email=${encodeURIComponent(formState.emailAddress)}`
       );
     });
     watch(isSuccess, () => {

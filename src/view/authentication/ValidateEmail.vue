@@ -10,7 +10,19 @@
             <p class="forgot-text mb-6">
               Enter the otp code sent your email on registration
             </p>
-
+            <a-form-item
+              name="token"
+              label="Token"
+              :rules="[
+                { required: true, message: 'Please input your token!' },
+              ]"
+            >
+              <a-input
+               
+                v-model:value="formState.token"
+                placeholder="Enter your Token"
+              />
+            </a-form-item>
             <a-form-item
               name="password"
               label="Password"
@@ -18,7 +30,7 @@
                 { required: true, message: 'Please input your password!' },
               ]"
             >
-              <a-input
+              <a-input-password
                 type="password"
                 v-model:value="formState.password"
                 placeholder="Password"
@@ -106,9 +118,9 @@ const ValidateEmail = defineComponent({
       }
     });
 
-    watch(token, () => {
-      formState.token = token?.value?.split(":")[1]?.trim();
-    });
+    // watch(token, () => {
+    //   formState.token = token?.value?.split(":")[1]?.trim();
+    // });
 
     onMounted(() => {
       setTimeout(() => {

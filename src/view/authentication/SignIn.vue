@@ -12,10 +12,11 @@
               <a-input type="email" v-model:value="formState.username" />
             </a-form-item>
             <a-form-item name="password" label="Password">
-              <a-input
+              <a-input-password
                 type="password"
                 v-model:value="formState.password"
                 placeholder="Password"
+                
               />
             </a-form-item>
             <div class="ninjadash-auth-extra-links">

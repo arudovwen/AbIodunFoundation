@@ -108,7 +108,7 @@
             },
           ]"
         >
-          <a-input
+          <a-input-password
             type="password"
             v-model:value="formState.password"
             placeholder="Password"
