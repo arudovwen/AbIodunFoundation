@@ -66,7 +66,7 @@ export default {
     state.validatebeginsuccess = false;
   },
 
-  validatEndBegin(state) {
+  validateEndBegin(state) {
     state.validateendloading = true;
     state.error = null;
     state.validateendsuccess = false;

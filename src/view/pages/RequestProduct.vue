@@ -359,9 +359,11 @@
                           name="cacDocumentUrl"
                           :before-upload="() => false"
                           @change="(e) => handleChange(e, 'cac')"
+                          :progress="!loading"
                         >
                           <a-button>
-                            <upload-outlined class="mt-0"></upload-outlined>
+                            <upload-outlined  v-if="!loading || uploadtype !== 'cac'"></upload-outlined>
+                            <loading-outlined v-if="loading && uploadtype === 'cac'"></loading-outlined>
                             Upload your CAC Documents
                           </a-button>
                         </a-upload>
@@ -385,7 +387,8 @@
                           @change="(e) => handleChange(e, 'statement')"
                         >
                           <a-button>
-                            <upload-outlined></upload-outlined>
+                            <upload-outlined  v-if="!loading  || uploadtype !== 'statement'"></upload-outlined>
+                            <loading-outlined v-if="loading && uploadtype === 'statement'"></loading-outlined>
                             Upload your 1-year account statement.
                           </a-button>
                         </a-upload>
@@ -408,7 +411,8 @@
                           @change="(e) => handleChange(e, 'id')"
                         >
                           <a-button>
-                            <upload-outlined></upload-outlined>
+                            <upload-outlined  v-if="!loading  || uploadtype !== 'id'"></upload-outlined>
+                            <loading-outlined v-if="loading && uploadtype === 'id'"></loading-outlined>
                             Upload valid means of identification
                           </a-button>
                         </a-upload>
@@ -430,7 +434,8 @@
                           @change="(e) => handleChange(e, 'utility')"
                         >
                           <a-button>
-                            <upload-outlined></upload-outlined>
+                            <upload-outlined  v-if="!loading  || uploadtype !== 'utility'"></upload-outlined>
+                            <loading-outlined v-if="loading && uploadtype === 'utility'"></loading-outlined>
                             Upload Utility Bill
                           </a-button>
                         </a-upload>
@@ -444,7 +449,7 @@
                       htmlType="submit"
                       type="primary"
                       size="lg"
-                      :disabled="isLoading"
+                      :disabled="isLoading || loading"
                     >
                       {{ isLoading ? "Processing" : "Submit request" }}
                     </sdButton>
@@ -467,7 +472,7 @@
 <script setup>
 import { Main } from "../styled";
 import { message } from "ant-design-vue";
-import { UploadOutlined } from "@ant-design/icons-vue";
+import { UploadOutlined, LoadingOutlined } from "@ant-design/icons-vue";
 import moment from "moment";
 import { onMounted, computed, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
@@ -488,20 +493,7 @@ const query = reactive({
   name: "",
 });
 const { state, dispatch } = useStore();
-const tenureOptions = [
-  {
-    title: "3 months",
-    value: 3,
-  },
-  {
-    title: "6 months",
-    value: 6,
-  },
-  {
-    title: "12 months",
-    value: 12,
-  },
-];
+
 const products = computed(() => {
   // eslint-disable-next-line vue/no-side-effects-in-computed-properties
   formState.productId = "";
@@ -516,30 +508,14 @@ const maxAmount = ref(10000);
 const upfrontFeePercent = ref(0);
 const interestRatePercent = ref(0);
 const equityPercent = ref(0);
-// eslint-disable-next-line no-unused-vars
-const filteredTenure = computed(() => {
-  if (
-    productDetail?.value?.productName?.toLowerCase() === "interest free credit"
-  ) {
-    return tenureOptions.filter((i) => i.value <= 3);
-  }
-  if (
-    productDetail?.value?.productName?.toLowerCase() ===
-    "working capital finance"
-  ) {
-    return tenureOptions.filter((i) => i.value <= 6);
-  }
-  if (productDetail?.value?.productName?.toLowerCase() === "asset finance") {
-    return tenureOptions.filter((i) => i.value <= 6);
-  }
-  return tenureOptions;
-});
+
 const productDetail = computed(() => state?.products?.product);
 const productLoading = computed(() => state?.products?.loading);
 const isLoading = computed(() => state.requests.addloading);
 const addsuccess = computed(() => state.requests.addsuccess);
 const userData = computed(() => state.auth.userData);
 const uploadsuccess = computed(() => state.file.success);
+const loading = computed(() => state.file.loading);
 const upfrontFeesAmount = computed(() => {
   if (!formState.amount || !formState.productId) return 0;
   let calc;
@@ -590,7 +566,7 @@ const handleSubmit = (values) => {
     facilityAmount: formState.amount.toString(),
     interestRate: interestRateAmount?.value?.toString() || 0,
     equityContribution: equityFee?.value?.toString() || 0,
-    upfrontFees: upfrontFeesAmount?.value?.toString() || 0,
+    upfrontFee: upfrontFeesAmount?.value || 0,
   });
 };
 const onFinishFailed = (errorInfo) => {
@@ -625,6 +601,7 @@ const formState = reactive({
   interestRate: null,
   dueDate: null,
   description: "",
+  upfrontFee:""
 });
 
 const breadcrumbs = [
@@ -655,7 +632,7 @@ const handleChange = (data, type) => {
   ];
   if (!allowedTypes.includes(file.type)) {
     message.error(
-      `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG allowed)`
+      `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG,PDF allowed)`
     );
   }
   if (file.size > 800 * 1024) {

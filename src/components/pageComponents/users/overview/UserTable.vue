@@ -161,7 +161,7 @@ const UserListTable = defineComponent({
           ),
           emailAddress,
           mobileNo,
-          role: roleName == "admin" ? "Administrator" : "Customer",
+          role: <span class="capitalize">{roleName}</span>,
           emailValidated: status !== 0 ? "Yes" : "No",
           createdOn: moment(createdOn).format("ll"),
           lastLogin:
@@ -221,12 +221,10 @@ const UserListTable = defineComponent({
       addsuccess.value && dispatch("getUsers", query);
     });
     watch(forgotSuccess, () => {
-      if(forgotSuccess.value){
+      if (forgotSuccess.value) {
         visible.value = false;
         message.success("Reset link sent!");
-        
       }
-     
     });
     watch(deletesuccess, () => {
       if (deletesuccess.value) {
@@ -252,7 +250,7 @@ const UserListTable = defineComponent({
       loading,
       deleteloading,
       forgotLoading,
-      roles
+      roles,
     };
   },
 });

@@ -33,25 +33,25 @@
         <span class="block text-sm font-medium text-gray-500"
           >Lock-in period</span
         >
-        <span class="text-base font-medium capitalize">{{
-          product.lockInPeriod || "-"
-        }}</span>
+        <span class="text-base font-medium capitalize"
+          >{{ product.lockInPeriod }} months</span
+        >
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500"
-          >Interest rate</span
+          >Interest</span
         >
-        <span class="text-base font-medium capitalize"
-          >{{ formatCurrency(product.interestRate) || "-" }}</span
-        >
+        <span class="text-base font-medium capitalize">{{
+          formatCurrency(product.interestRate) || "-"
+        }}</span>
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500"
           >Equity contribution</span
         >
-        <span class="text-base font-medium capitalize"
-          >{{ formatCurrency(product.equityContribution) }}</span
-        >
+        <span class="text-base font-medium capitalize">{{
+          formatCurrency(product.equityContribution)
+        }}</span>
       </div>
       <div class="col-span-2">
         <span class="block text-sm font-medium text-gray-500">Description</span>
@@ -122,33 +122,33 @@
           <span class="block text-sm font-medium text-gray-500"
             >CAC Document</span
           >
-          <span class="text-base font-medium capitalize">{{
-            product?.description || "-"
-          }}</span>
+          <button @click="handleFileDownload(productReq?.cacDocumentUrl)">
+            <span class="text-base font-medium capitalize">Download</span>
+          </button>
         </div>
         <div class="">
           <span class="block text-sm font-medium text-gray-500"
             >Business statement</span
           >
-          <span class="text-base font-medium capitalize">{{
-            product?.description || "-"
-          }}</span>
+          <button @click="handleFileDownload(productReq?.statementUrl)">
+            <span class="text-base font-medium capitalize">Download</span>
+          </button>
         </div>
         <div class="">
           <span class="block text-sm font-medium text-gray-500"
             >Utility Bill</span
           >
-          <span class="text-base font-medium capitalize">{{
-            product?.description || "-"
-          }}</span>
+          <button @click="handleFileDownload(productReq?.utilityBillUrl)">
+            <span class="text-base font-medium capitalize">Download</span>
+          </button>
         </div>
         <div class="">
           <span class="block text-sm font-medium text-gray-500"
             >Identification Document</span
           >
-          <span class="text-base font-medium capitalize">{{
-            product?.description || "-"
-          }}</span>
+          <button @click="handleFileDownload(productReq?.identificationUrl)">
+            <span class="text-base font-medium capitalize">Download</span>
+          </button>
         </div>
       </div>
     </div>
@@ -163,10 +163,12 @@
 </template>
 <script setup>
 import { useStore } from "vuex";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import moment from "moment";
 import { formatCurrency } from "@/utility/formatCurrency";
+import { downloadBase64File } from "@/utility/base64ToImage";
+
 
 const query = {
   pageNumber: 1,
@@ -179,6 +181,8 @@ const product = computed(() => state.requests.request);
 const productReq = computed(() => state.requests.reqData[0]);
 const loading = computed(() => state.requests.getloading);
 // const loadingReq = computed(() => state.requests.getreqloading);
+const filesuccess = computed(() => state.file.success);
+const filedata = computed(() => state.file.data);
 
 onMounted(() => {
   if (route.params.id) {
@@ -189,4 +193,22 @@ onMounted(() => {
     });
   }
 });
+function handleFileDownload(id) {
+  dispatch("getFileId", id);
+}
+
+watch(
+  () => filesuccess.value,
+  () => {
+    if (filesuccess.value) {
+      downloadBase64File(
+        filedata.value.fileBase64,
+        "file.pdf",
+        filedata.value.contentType
+      );
+
+    
+    }
+  }
+);
 </script>

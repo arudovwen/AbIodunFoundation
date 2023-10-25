@@ -11,6 +11,7 @@
         <input
           class="max-w-[300px] w-full border bordergray-300 rounded-lg px-3 py-2"
           placeholder="Search by request"
+          v-model="search"
         />
       </div>
       <a-row :gutter="15">
@@ -23,6 +24,7 @@
 </template>
 
 <script setup>
+import { ref, provide } from "vue";
 import { Main } from "../styled";
 import Products from "components/pageComponents/requests/overview/ProductsTable";
 
@@ -40,4 +42,6 @@ const breadcrumbs = [
     breadcrumbName: "Requests",
   },
 ];
+const search = ref("");
+provide("search", search);
 </script>

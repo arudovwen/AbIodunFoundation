@@ -58,13 +58,13 @@
           >Request date</span
         >
         <span class="text-base font-medium capitalize">{{
-          moment(product.requestDate).format("lll") || "-"
+          moment(product.requestDate).format("ll") || "-"
         }}</span>
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500">Due date</span>
         <span class="text-base font-medium capitalize">{{
-          moment(product.dueDate).format("lll") || "-"
+          moment(product.dueDate).format("ll") || "-"
         }}</span>
       </div>
       <div>
@@ -80,16 +80,22 @@
           >Interest rate</span
         >
         <span class="text-base font-medium capitalize">{{
-          product.interestRate || "-"
-        }}%</span>
+          formatCurrency(product.interestRate)
+        }}</span>
+      </div>
+      <div>
+        <span class="block text-sm font-medium text-gray-500">Upfront Fee</span>
+        <span class="text-base font-medium capitalize">{{
+          formatCurrency(product.upfrontFee)
+        }}</span>
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500"
           >Equity contribution</span
         >
-        <span class="text-base font-medium capitalize"
-          >{{ product?.equityContribution || "-" }}%</span
-        >
+        <span class="text-base font-medium capitalize">{{
+          formatCurrency(product?.equityContribution)
+        }}</span>
       </div>
       <div class="col-span-2">
         <span class="block text-sm font-medium text-gray-500">Description</span>
@@ -137,9 +143,7 @@
           }}</span>
         </div>
         <div>
-          <span class="block text-sm font-medium text-gray-500"
-            >Facility amount</span
-          >
+          <span class="block text-sm font-medium text-gray-500">Amount</span>
           <span class="text-base font-medium capitalize">{{
             formatCurrency(productReq?.facilityAmount) || "-"
           }}</span>
@@ -163,33 +167,33 @@
           <span class="block text-sm font-medium text-gray-500"
             >CAC Document</span
           >
-          <span class="text-base font-medium capitalize">{{
-            product?.description || "-"
-          }}</span>
+          <button @click="handleFileDownload(productReq?.cacDocumentUrl)">
+            <span class="text-base font-medium capitalize">Download</span>
+          </button>
         </div>
         <div class="">
           <span class="block text-sm font-medium text-gray-500"
             >Business statement</span
           >
-          <span class="text-base font-medium capitalize">{{
-            product?.description || "-"
-          }}</span>
+          <button @click="handleFileDownload(productReq?.statementUrl)">
+            <span class="text-base font-medium capitalize">Download</span>
+          </button>
         </div>
         <div class="">
           <span class="block text-sm font-medium text-gray-500"
             >Utility Bill</span
           >
-          <span class="text-base font-medium capitalize">{{
-            product?.description || "-"
-          }}</span>
+          <button @click="handleFileDownload(productReq?.utilityBillUrl)">
+            <span class="text-base font-medium capitalize">Download</span>
+          </button>
         </div>
         <div class="">
           <span class="block text-sm font-medium text-gray-500"
             >Identification Document</span
           >
-          <span class="text-base font-medium capitalize">{{
-            product?.description || "-"
-          }}</span>
+          <button @click="handleFileDownload(productReq?.identificationUrl)">
+            <span class="text-base font-medium capitalize">Download</span>
+          </button>
         </div>
       </div>
     </div>
@@ -241,6 +245,7 @@ import { useRoute } from "vue-router";
 import moment from "moment";
 import { formatCurrency } from "@/utility/formatCurrency";
 import { message } from "ant-design-vue";
+import { downloadBase64File } from "@/utility/base64ToImage";
 
 function handleStatus(status) {
   if (status === "pending") {
@@ -273,6 +278,8 @@ const updateloading = computed(() => state.transactions.updateloading);
 const loading = computed(() => state.transactions.getloading);
 const reqloading = computed(() => state.requests.getloading);
 const loadingReq = computed(() => state.requests.getreqloading);
+const filesuccess = computed(() => state.file.success);
+const filedata = computed(() => state.file.data);
 
 onMounted(() => {
   if (route.params.id) {
@@ -307,9 +314,27 @@ function handleDisplay(role, status) {
   if (role?.toLowerCase() === "approver" && status === "reviewed") {
     return true;
   }
-  if (role?.toLowerCase() === "underwritter" && status === "approved") {
+  if (role?.toLowerCase() === "underwriter" && status === "approved") {
     return true;
   }
   return false;
 }
+function handleFileDownload(id) {
+  dispatch("getFileId", id);
+}
+
+watch(
+  () => filesuccess.value,
+  () => {
+    if (filesuccess.value) {
+      downloadBase64File(
+        filedata.value.fileBase64,
+        "file.pdf",
+        filedata.value.contentType
+      );
+
+      message.success("Download successful");
+    }
+  }
+);
 </script>
