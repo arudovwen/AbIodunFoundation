@@ -15,6 +15,7 @@
                 name="requests"
                 :model="formState"
                 @finish="handleSubmit"
+                @finishFailed="onFinishFailed"
                 layout="vertical"
                 class="md:grid grid-cols-1 md:grid-cols-2 md:gap-y-0 md:gap-x-8"
               >
@@ -105,7 +106,10 @@
                           >
                         </a-select> -->
 
-                        <a-checkbox readonly :checked="formState.lockInPeriod !== null">
+                        <a-checkbox
+                          readonly
+                          :checked="formState.lockInPeriod !== null"
+                        >
                           {{ productDetail[0]?.lockInPeriod }} month(s)
                         </a-checkbox>
                       </a-form-item>
@@ -155,14 +159,8 @@
                               'interest free credit') ||
                           formState.type === 'savings'
                         "
-                        label="Interest rate"
+                        label="Interest"
                         name="interestRate"
-                        :rules="[
-                          {
-                            required: true,
-                            message: 'Please input an Interest rate!',
-                          },
-                        ]"
                       >
                         <a-input-number
                           :value="interestRateAmount"
@@ -182,12 +180,6 @@
                         "
                         label="Equity Contribution"
                         name="equityContribution"
-                        :rules="[
-                          {
-                            required: true,
-                            message: 'Please input a value!',
-                          },
-                        ]"
                       >
                         <a-input-number
                           :value="formState.amount - equityAmount"
@@ -214,7 +206,6 @@
                         ]"
                       >
                         <a-date-picker
-                          inputReadOnly
                           class="w-full"
                           v-model:value="formState.requestDate"
                         />
@@ -518,7 +509,6 @@ const products = computed(() => {
     i?.productType?.toLowerCase().includes(formState?.type?.toLowerCase())
   );
 });
-const values = ref(null);
 const uploadtype = ref("");
 const fileId = computed(() => state.file.data);
 const minAmount = ref(1);
@@ -558,7 +548,7 @@ const upfrontFeesAmount = computed(() => {
   } else {
     calc = formState.amount * (upfrontFeePercent.value / 100);
   }
-  return calc;
+  return calc || 0;
 });
 const interestRateAmount = computed(() => {
   if (!formState.amount || !formState.productId || !formState.lockInPeriod)
@@ -575,21 +565,36 @@ const interestRateAmount = computed(() => {
       (interestRatePercent.value / 100) *
       formState.lockInPeriod;
   }
-  return calc;
+  return calc || 0;
 });
 const equityAmount = computed(() => {
   if (!formState.amount || !formState.productId) return 0;
   const calc = formState.amount * (equityPercent.value / 100);
   const mainAmt = formState.amount - calc;
-  return mainAmt;
+  return mainAmt || 0;
+});
+// eslint-disable-next-line no-unused-vars
+const equityFee = computed(() => {
+  if (productDetail?.value?.productName?.toLowerCase() === "asset finance") {
+    if (!formState.amount || !formState.productId) return 0;
+    const calc = formState.amount * (equityPercent.value / 100);
+    return calc || 0;
+  }
+  return 0;
 });
 
-const handleSubmit = (value) => {
-  values.value = value;
+const handleSubmit = (values) => {
   dispatch("addUserProduct", {
     ...formState,
-    facilityAmount: formState.facilityAmount.toString(),
+    ...values,
+    facilityAmount: formState.amount.toString(),
+    interestRate: interestRateAmount?.value?.toString() || 0,
+    equityContribution: equityFee?.value?.toString() || 0,
+    upfrontFees: upfrontFeesAmount?.value?.toString() || 0,
   });
+};
+const onFinishFailed = (errorInfo) => {
+  console.log("Failed:", errorInfo);
 };
 
 const utilityList = ref([]);
@@ -674,21 +679,28 @@ const disabledDate = (current) => {
   // Can not select days before today and today
   return current && current < dayjs().endOf("day");
 };
-const checkAmountRange = (rule, value, callback) => {
-  if (value >= minAmount.value && value <= maxAmount.value) {
-    callback(); // Pass validation
-  } else {
-    callback("Invalid amount range"); // Fail validation
-  }
+const checkAmountRange = async (rule, value) => {
+  return new Promise((resolve, reject) => {
+    if (value >= minAmount.value && value <= maxAmount.value) {
+      resolve(); // Pass validation
+    } else {
+      reject("Invalid amount range"); // Fail validation
+    }
+  });
 };
-const checkRequestDate = (rule, value, callback) => {
-  if (!formState.lockInPeriod) {
-    formState.requestDate = null;
-    callback(new Error("Lock-in Period is required"));
-  } else {
-    callback(); // Pass validation
-  }
+
+// eslint-disable-next-line no-unused-vars
+const checkRequestDate = async (rule, value) => {
+  return new Promise((resolve, reject) => {
+    if (!formState.lockInPeriod) {
+      formState.requestDate = null;
+      reject("Lock-in Period is required"); // Fail validation
+    } else {
+      resolve(); // Pass validation
+    }
+  });
 };
+
 watch(
   () => formState.productId,
   () => {

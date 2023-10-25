@@ -20,13 +20,13 @@
           >Request date</span
         >
         <span class="text-base font-medium capitalize">{{
-          moment(product.requestDate).format("lll") || "-"
+          moment(product.requestDate).format("ll") || "-"
         }}</span>
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500">Due date</span>
         <span class="text-base font-medium capitalize">{{
-          moment(product.dueDate).format("lll") || "-"
+          moment(product.dueDate).format("ll") || "-"
         }}</span>
       </div>
       <div>
@@ -42,7 +42,7 @@
           >Interest rate</span
         >
         <span class="text-base font-medium capitalize"
-          >{{ product.interestRate || "-" }}%</span
+          >{{ formatCurrency(product.interestRate) || "-" }}</span
         >
       </div>
       <div>
@@ -50,7 +50,7 @@
           >Equity contribution</span
         >
         <span class="text-base font-medium capitalize"
-          >{{ product.equityContribution }}%</span
+          >{{ formatCurrency(product.equityContribution) }}</span
         >
       </div>
       <div class="col-span-2">

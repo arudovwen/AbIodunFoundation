@@ -140,7 +140,7 @@ const UserListTable = defineComponent({
         return {
           key: id,
           id: id,
-          lockInPeriod,
+          lockInPeriod:<span class="truncate block max-w-[180px]">{lockInPeriod} months</span>,
           productName: (
             <span class="truncate block max-w-[180px]">
               {productName || "-"}
@@ -150,9 +150,9 @@ const UserListTable = defineComponent({
             <span class="truncate block max-w-[180px]">{description}</span>
           ),
           amount: <span class="capitalize">{formatCurrency(amount)}</span>,
-          interestRate: <span class="capitalize">{interestRate}%</span>,
+          interestRate: <span class="capitalize">{formatCurrency(interestRate)}</span>,
           equityContribution: (
-            <span class="capitalize">{equityContribution}%</span>
+            <span class="capitalize">{formatCurrency(equityContribution)}</span>
           ),
           dueDate: moment(dueDate).format("ll"),
           requestDate: moment(requestDate).format("ll"),

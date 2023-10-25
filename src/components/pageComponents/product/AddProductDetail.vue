@@ -111,9 +111,11 @@
                 >
                   <a-select size="large" v-model:value="formState.lockInPeriod">
                     <a-select-option value="">Please Select</a-select-option>
-                    <a-select-option value="3 months">3 months</a-select-option>
-                    <a-select-option value="6 months">6 months</a-select-option>
-                    <a-select-option value="12 months"
+                    <a-select-option value="1">1 months</a-select-option>
+                    <a-select-option value="2">2 months</a-select-option>
+                    <a-select-option value="3">3 months</a-select-option>
+                    <a-select-option value="6">6 months</a-select-option>
+                    <a-select-option value="12"
                       >12 months</a-select-option
                     >
                   </a-select>

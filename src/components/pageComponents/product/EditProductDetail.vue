@@ -121,18 +121,24 @@
                   />
                 </a-form-item>
 
+             
                 <a-form-item
                   label="Lock-in Period"
                   name="lockInPeriod"
                   :rules="[
-                    { required: true, message: 'Please provide a value!' },
+                    { required: true, message: 'Please select a value!' },
                   ]"
                 >
-                  <a-input
-                    class="w-full"
-                    v-model:value="formState.lockInPeriod"
-                    :disabled="loading"
-                  />
+                  <a-select :disabled="loading" size="large" v-model:value="formState.lockInPeriod">
+                    <a-select-option value="">Please Select</a-select-option>
+                    <a-select-option value="1">1 months</a-select-option>
+                    <a-select-option value="2">2 months</a-select-option>
+                    <a-select-option value="3">3 months</a-select-option>
+                    <a-select-option value="6">6 months</a-select-option>
+                    <a-select-option value="12"
+                      >12 months</a-select-option
+                    >
+                  </a-select>
                 </a-form-item>
 
                 <div class="col-span-2 flex justify-center my-4">

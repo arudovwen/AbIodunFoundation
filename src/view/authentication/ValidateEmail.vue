@@ -6,19 +6,22 @@
           <h2 class="ninjadash-authentication-top__title">Validate Email</h2>
         </div>
         <div class="ninjadash-authentication-content">
-          <a-form @finish="handleSubmit" :model="formState" layout="vertical">
+          <a-form
+            @finish="handleSubmit"
+            :model="formState"
+            layout="vertical"
+            autocomplete="off"
+          >
             <p class="forgot-text mb-6">
               Enter the otp code sent your email on registration
             </p>
             <a-form-item
               name="token"
               label="Token"
-              :rules="[
-                { required: true, message: 'Please input your token!' },
-              ]"
+              :rules="[{ required: true, message: 'Please input your token!' }]"
             >
               <a-input
-               
+                type="text"
                 v-model:value="formState.token"
                 placeholder="Enter your Token"
               />
@@ -93,8 +96,9 @@ const ValidateEmail = defineComponent({
     const route = useRoute();
     const emailAddress = route.params.email;
 
-
-    const validatebeginloading = computed(() => state.auth.validatebeginloading);
+    const validatebeginloading = computed(
+      () => state.auth.validatebeginloading
+    );
     const validateendloading = computed(() => state.auth.validateendloading);
     // const validatebeginsuccess = computed(() => state.auth.validatebeginsuccess);
     const validateendsuccess = computed(() => state.auth.validateendsuccess);
@@ -154,14 +158,14 @@ const ValidateEmail = defineComponent({
     return {
       handleSubmit,
       formState,
- 
+
       error,
       requestCountdown,
       isRequesting,
       handleRequest,
       token,
       validatebeginloading,
-      validateendloading
+      validateendloading,
     };
   },
 });

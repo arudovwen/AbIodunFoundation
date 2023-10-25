@@ -209,7 +209,12 @@ export const userProductTableHeader = [
     key: "lockInPeriod",
   },
   {
-    title: "Interest Rate",
+    title: "Upfront Fees",
+    dataIndex: "upfrontFees",
+    key: "upfrontFees",
+  },
+  {
+    title: "Interest",
     dataIndex: "interestRate",
     key: "interestRate",
   },

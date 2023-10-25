@@ -142,7 +142,7 @@ const UserListTable = defineComponent({
           equityContribution: (
             <span class="capitalize">{equityContribution}%</span>
           ),
-          lockInPeriod: <span class="capitalize">{lockInPeriod}</span>,
+          lockInPeriod: <span class="">{lockInPeriod} month(s)</span>,
           // rate: <span class="capitalize">{rate}%</span>,
 
           action: "",

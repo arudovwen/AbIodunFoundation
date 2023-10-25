@@ -82,7 +82,7 @@
                     require('../../../static/img/avatar/chat-auth.png')
                   "
                   alt=""
-                  class="w-10 h-10 object-cover"
+                  class="w-8 h-8 object-cover rounded-full"
                 />
                 <figcaption>
                   <sdHeading as="h5">{{ profile.fullName }}</sdHeading>
@@ -116,7 +116,7 @@
         </template>
         <a to="#" class="ninjadash-nav-action-link">
           <a-avatar
-            class="h-10 w-10 object-cover"
+            class="h-8 w-8 object-cover"
             :src="avatar || require('../../../static/img/avatar/chat-auth.png')"
           />
           <span class="ninjadash-nav-actions__author--name">{{
