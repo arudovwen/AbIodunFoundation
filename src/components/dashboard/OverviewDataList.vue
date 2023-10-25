@@ -84,7 +84,7 @@ const OverviewDataList = defineComponent({
 
     onMounted(() => {
       if (profile?.value?.userRole?.toLowerCase() === "customer") {
-        dispatch("getCustomerStats");
+        dispatch("getCustomerStats", profile.value.id);
       } else {
         dispatch("getAdminStats");
       }

@@ -20,7 +20,7 @@
       </sdButton>
     </div>
     <div
-      v-if="product && !loading && !reqloading"
+      v-if="product && transaction && !loading && !reqloading"
       class="grid grid-cols-2 gap-6 mb-10"
     >
       <div>
@@ -28,7 +28,7 @@
           >Transaction type</span
         >
         <span class="text-base font-medium capitalize">{{
-          transaction.transactionType || "-"
+          transaction?.transactionType || "-"
         }}</span>
       </div>
       <div>

@@ -180,10 +180,10 @@ const actions = {
       commit("adminStatErr", err);
     }
   },
-  async getCustomerStats({ commit }, data) {
+  async getCustomerStats({ commit }, id) {
     try {
       commit("adminStatBegin");
-      const response = await DataService.get(urls.GET_CUSTOMER_STATS, data);
+      const response = await DataService.get(`${urls.GET_CUSTOMER_STATS}?userId=${id}`);
 
       if (response.status === 200) {
         commit("adminStatSuccess", response.data.data);
