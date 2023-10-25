@@ -167,7 +167,7 @@ import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import moment from "moment";
 import { formatCurrency } from "@/utility/formatCurrency";
-import { downloadBase64File } from "@/utility/base64ToImage";
+import { downloadBase64File } from "@/utility/downloadBase64File";
 
 const query = {
   pageNumber: 1,

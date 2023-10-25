@@ -157,7 +157,7 @@ export const productDetailTableHeader = [
     key: "lockInPeriod",
   },
   {
-    title: "Upfront Fees",
+    title: "Upfront Fee",
     dataIndex: "upfrontFees",
     key: "upfrontFees",
   },
@@ -210,8 +210,8 @@ export const userProductTableHeader = [
   },
   {
     title: "Upfront Fees",
-    dataIndex: "upfrontFees",
-    key: "upfrontFees",
+    dataIndex: "upfrontFee",
+    key: "upfrontFee",
   },
   {
     title: "Interest",

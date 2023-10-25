@@ -53,6 +53,15 @@
           formatCurrency(product.equityContribution)
         }}</span>
       </div>
+      <div>
+        <span class="block text-sm font-medium text-gray-500"
+          >Upfront  Fee</span
+        >
+        <span class="text-base font-medium capitalize">{{
+          formatCurrency(product.upfrontFee)
+        }}</span>
+      </div>
+      
       <div class="col-span-2">
         <span class="block text-sm font-medium text-gray-500">Description</span>
         <span class="text-base font-medium capitalize">{{
@@ -167,7 +176,7 @@ import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import moment from "moment";
 import { formatCurrency } from "@/utility/formatCurrency";
-import { downloadBase64File } from "@/utility/base64ToImage";
+import { downloadBase64File } from "@/utility/downloadBase64File";
 
 
 const query = {

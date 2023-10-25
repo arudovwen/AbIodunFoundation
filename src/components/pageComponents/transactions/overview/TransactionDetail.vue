@@ -245,7 +245,7 @@ import { useRoute } from "vue-router";
 import moment from "moment";
 import { formatCurrency } from "@/utility/formatCurrency";
 import { message } from "ant-design-vue";
-import { downloadBase64File } from "@/utility/base64ToImage";
+import { downloadBase64File } from "@/utility/downloadBase64File";
 
 function handleStatus(status) {
   if (status === "pending") {
