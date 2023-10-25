@@ -11,6 +11,8 @@ const state = () => ({
   user: null,
   profile: null,
   loading: false,
+  editloading: false,
+  editsuccess: false,
   addloading: false,
   deleteloading: false,
   changeloading: false,
@@ -183,13 +185,26 @@ const actions = {
   async getCustomerStats({ commit }, id) {
     try {
       commit("adminStatBegin");
-      const response = await DataService.get(`${urls.GET_CUSTOMER_STATS}?userId=${id}`);
+      const response = await DataService.get(
+        `${urls.GET_CUSTOMER_STATS}?userId=${id}`
+      );
 
       if (response.status === 200) {
         commit("adminStatSuccess", response.data.data);
       }
     } catch (err) {
       commit("adminStatErr", err);
+    }
+  },
+  async updateUser({ commit }, data) {
+    try {
+      commit("editBegin");
+      const response = await DataService.put(urls.UPDATE_USER_PROFILE, data);
+      if (response.status === 200) {
+        commit("editSuccess");
+      }
+    } catch (err) {
+      commit("editErr", err);
     }
   },
 };

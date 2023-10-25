@@ -52,6 +52,7 @@ export const urls = {
   GET_ALL_USERS: "/UserManagement/GetAllUsers",
   SIGN_UP_USER: "/UserManagement/SignUpUser",
   GET_USER_AVATAR: "/UserManagement/GetUserAvatar",
+  UPDATE_USER_PROFILE: "/UserManagement/UpdateUserProfile",
 
   // UserProductRequirement
   CREATE_USER_PRODUCT_REQUIREMENT:

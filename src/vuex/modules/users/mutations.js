@@ -87,18 +87,18 @@ export default {
     state.deletesuccess = false;
   },
   editBegin(state) {
-    state.loading = true;
+    state.editloading = true;
     state.error = null;
-    state.success = false;
+    state.editsuccess = false;
   },
   editSuccess(state) {
-    state.loading = false;
-    state.success = true;
+    state.editloading = false;
+    state.editsuccess = true;
   },
   editErr(state, err) {
-    state.loading = false;
+    state.editloading = false;
     state.error = err;
-    state.success = false;
+    state.editsuccess = false;
   },
   addBegin(state) {
     state.addloading = true;

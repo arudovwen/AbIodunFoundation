@@ -72,8 +72,8 @@
           >Lock-in period</span
         >
         <span class="text-base font-medium capitalize">{{
-          product?.lockInPeriod || "-"
-        }}</span>
+          product?.lockInPeriod 
+        }} months</span>
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500"
@@ -329,7 +329,7 @@ watch(
     if (filesuccess.value) {
       downloadBase64File(
         filedata.value.fileBase64,
-        "file.pdf",
+        "file",
         filedata.value.contentType
       );
 

@@ -48,9 +48,7 @@
                 :value="formState.emailAddress"
                 placeholder="name@example.com"
                 ><template #suffix>
-                  
-                  <unicon name="lock" width="16"></unicon>
-                  </template
+                  <unicon name="lock" width="16"></unicon> </template
               ></a-input>
             </a-form-item>
 
@@ -88,7 +86,12 @@
             </a-form-item>
 
             <div class="setting-form-actions">
-              <sdButton size="default" htmlType="submit" type="primary">
+              <sdButton
+                :loading="editloading"
+                size="default"
+                htmlType="submit"
+                type="primary"
+              >
                 Update Profile
               </sdButton>
               &nbsp; &nbsp;
@@ -103,6 +106,7 @@
   </sdCards>
 </template>
 <script>
+import { message } from "ant-design-vue";
 import {
   BasicFormWrapper,
   //  TagInput
@@ -119,8 +123,10 @@ const Profile = defineComponent({
   setup() {
     const { state, dispatch } = useStore();
     const loading = computed(() => state.users.loading);
+    const editloading = computed(() => state.users.editloading);
     const profile = computed(() => state.users.profile);
     const success = computed(() => state.users.success);
+    const editsuccess = computed(() => state.users.editsuccess);
     const userData = computed(() => state.auth.userData);
 
     onMounted(() => {
@@ -136,8 +142,10 @@ const Profile = defineComponent({
     });
 
     const handleFinish = (values) => {
-      this.values = { ...values, tags: this.tags };
-      console.log(values, formState);
+      console.log("🚀 ~ file: Profile.vue:144 ~ handleFinish ~ values:", values)
+      // this.values = { ...values, tags: this.tags };
+   
+      dispatch("updateUser",{...values, userId:userData.value.id})
     };
 
     const handleFinishFailed = (errors) => {
@@ -156,6 +164,7 @@ const Profile = defineComponent({
         callback(new Error("Please enter a valid 11-digit phone number."));
       }
     };
+
     watch(profile, () => {
       formState.firstName = profile.value.firstName;
       formState.lastName = profile.value.lastName;
@@ -163,6 +172,13 @@ const Profile = defineComponent({
 
       formState.emailAddress = profile.value.email;
       formState.phoneNumber = profile.value.phoneNumber;
+    });
+
+    watch(editsuccess, () => {
+      if (editsuccess.value) {
+        message.success("Profile updated")
+        dispatch("getUserById", userData.value.id);
+      }
     });
 
     return {
@@ -173,6 +189,7 @@ const Profile = defineComponent({
       handleFinish,
       handleFinishFailed,
       profile,
+      editloading,
     };
   },
 

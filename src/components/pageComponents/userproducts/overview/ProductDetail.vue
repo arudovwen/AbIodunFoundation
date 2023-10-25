@@ -212,7 +212,7 @@ watch(
     if (filesuccess.value) {
       downloadBase64File(
         filedata.value.fileBase64,
-        "file.pdf",
+        "file",
         filedata.value.contentType
       );
 
