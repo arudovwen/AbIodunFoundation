@@ -41,7 +41,9 @@
                         loading ? "Loading..." : "Please Select"
                       }}</a-select-option
                     >
-                    <a-select-option value="loans">Loans</a-select-option>
+                    <a-select-option value="ifc loans">Interest Free Credit</a-select-option>
+                    <a-select-option value="af loans">Asset Finance</a-select-option>
+                    <a-select-option value="wcf loans">Working Capital Finance</a-select-option>
                     <a-select-option value="savings">Savings</a-select-option>
                   </a-select>
                 </a-form-item>

@@ -17,7 +17,7 @@
       <div>
         <span class="block text-sm font-medium">Product type</span>
         <span class="text-base font-bold capitalize">{{
-          product.productType || "-"
+         product?.productType?.split(" ")[1] || "-"
         }}</span>
       </div>
       <div class="col-span-2">

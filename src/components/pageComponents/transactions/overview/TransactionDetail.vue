@@ -97,12 +97,12 @@
           formatCurrency(product?.equityContribution)
         }}</span>
       </div>
-      <div class="col-span-2">
+      <!-- <div class="col-span-2">
         <span class="block text-sm font-medium text-gray-500">Description</span>
         <span class="text-base font-medium capitalize">{{
           product?.description || "-"
         }}</span>
-      </div>
+      </div> -->
     </div>
     <div>
       <h4 class="col-span-2 text-lg font-bold mb-8">Requirements</h4>

@@ -3,7 +3,7 @@ export function formatCurrency(amount, currency = "NGN") {
   const formatter = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency,
-    minimumFractionDigits: 2,
+    minimumFractionDigits: 0,
   });
 
   return formatter.format(amount);

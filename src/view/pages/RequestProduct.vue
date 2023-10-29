@@ -85,6 +85,7 @@
                       class="col-span-2 md:grid grid-cols-1 md:grid-cols-2 md:gap-x-8 mb-8"
                     >
                       <a-form-item
+                        class="col-span-2"
                         label="Lock-in Period"
                         name="lockInPeriod"
                         :rules="[
@@ -156,7 +157,7 @@
                         v-if="
                           (productDetail?.length &&
                             productDetail[0]?.productName?.toLowerCase() !==
-                              'interest free credit') ||
+                              'ifc loans') ||
                           formState.type === 'savings'
                         "
                         label="Interest"
@@ -176,7 +177,7 @@
                         v-if="
                           productDetail?.length &&
                           productDetail[0]?.productName?.toLowerCase() ===
-                            'asset finance'
+                            'af loans'
                         "
                         label="Equity Contribution"
                         name="equityContribution"
@@ -206,6 +207,7 @@
                         ]"
                       >
                         <a-date-picker
+                          :disabled-date="disabledDate"
                           class="w-full"
                           v-model:value="formState.requestDate"
                         />
@@ -227,20 +229,6 @@
                           disabled
                         />
                       </a-form-item>
-
-                      <a-form-item
-                        class="col-span-2"
-                        label="Description"
-                        name="description"
-                        :rules="[
-                          {
-                            required: true,
-                            message: 'Please provide a description!',
-                          },
-                        ]"
-                      >
-                        <a-textarea v-model:value="formState.description" />
-                      </a-form-item>
                     </div>
                   </BasicFormWrapper>
                   <h2 class="font-bold mb-7 col-span-2">Requirements</h2>
@@ -248,6 +236,7 @@
                     class="mb-8 col-span-2 md:grid grid-cols-1 md:grid-cols-2 md:gap-x-8"
                   >
                     <a-form-item
+                      v-if="formState.type.includes('loans')"
                       label="Use of funds"
                       name="useOfFunds"
                       :rules="[
@@ -261,6 +250,7 @@
                     </a-form-item>
 
                     <a-form-item
+                      v-if="formState.type.includes('loans')"
                       label="Business Name"
                       name="businessName"
                       :rules="[
@@ -276,6 +266,7 @@
                       />
                     </a-form-item>
                     <a-form-item
+                      v-if="formState.type.includes('loans')"
                       label="Business address"
                       name="businessAddress"
                       :rules="[
@@ -291,6 +282,7 @@
                       />
                     </a-form-item>
                     <a-form-item
+                      v-if="formState.type.includes('loans')"
                       label="Residential address"
                       name="residentialAddress"
                       :rules="[
@@ -306,6 +298,7 @@
                       />
                     </a-form-item>
                     <a-form-item
+                      v-if="formState.type.includes('loans')"
                       label="What type of Business are you into?"
                       name="businessType"
                       :rules="[
@@ -331,6 +324,22 @@
                       </a-select>
                     </a-form-item>
                     <a-form-item
+                      v-if="formState.type === 'savings'"
+                      label="Occupation"
+                      name="occupation"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please provide your occupation!',
+                        },
+                      ]"
+                    >
+                      <a-input
+                        v-model:value="formState.occupation"
+                        placeholder="What's your occupation?"
+                      />
+                    </a-form-item>
+                    <a-form-item
                       label="Enter your BVN"
                       name="bvn"
                       :rules="[
@@ -339,15 +348,19 @@
                         { min: 11 },
                       ]"
                     >
-                      <a-input v-model:value="formState.bvn" placeholder="" />
+                      <a-input
+                        v-model:value="formState.bvn"
+                        placeholder="Enter your 11 digit BVN"
+                      />
                     </a-form-item>
                   </div>
                   <div class="col-span-2">
                     <h4 class="font-medium mb-3">Document uploads</h4>
                     <div
-                      class="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-2"
+                      class="grid grid-cols-1 md:grid-cols-2 md:gap-x-8 gap-y-2"
                     >
                       <a-form-item
+                        v-if="formState.type.includes('loans')"
                         name="cacDocumentUrl"
                         :rules="[
                           { required: true, message: 'Please upload your Cac' },
@@ -362,14 +375,19 @@
                           :progress="!loading"
                         >
                           <a-button>
-                            <upload-outlined  v-if="!loading || uploadtype !== 'cac'"></upload-outlined>
-                            <loading-outlined v-if="loading && uploadtype === 'cac'"></loading-outlined>
+                            <upload-outlined
+                              v-if="!loading || uploadtype !== 'cac'"
+                            ></upload-outlined>
+                            <loading-outlined
+                              v-if="loading && uploadtype === 'cac'"
+                            ></loading-outlined>
                             Upload your CAC Documents
                           </a-button>
                         </a-upload>
                       </a-form-item>
 
                       <a-form-item
+                        v-if="formState.type.includes('loans')"
                         name="statementUrl"
                         :rules="[
                           {
@@ -387,8 +405,12 @@
                           @change="(e) => handleChange(e, 'statement')"
                         >
                           <a-button>
-                            <upload-outlined  v-if="!loading  || uploadtype !== 'statement'"></upload-outlined>
-                            <loading-outlined v-if="loading && uploadtype === 'statement'"></loading-outlined>
+                            <upload-outlined
+                              v-if="!loading || uploadtype !== 'statement'"
+                            ></upload-outlined>
+                            <loading-outlined
+                              v-if="loading && uploadtype === 'statement'"
+                            ></loading-outlined>
                             Upload your 1-year account statement.
                           </a-button>
                         </a-upload>
@@ -406,13 +428,18 @@
                         <a-upload
                           :max-count="1"
                           name="identificationUrl"
+                          class="w-full"
                           v-model:file-list="idList"
                           :before-upload="() => false"
                           @change="(e) => handleChange(e, 'id')"
                         >
                           <a-button>
-                            <upload-outlined  v-if="!loading  || uploadtype !== 'id'"></upload-outlined>
-                            <loading-outlined v-if="loading && uploadtype === 'id'"></loading-outlined>
+                            <upload-outlined
+                              v-if="!loading || uploadtype !== 'id'"
+                            ></upload-outlined>
+                            <loading-outlined
+                              v-if="loading && uploadtype === 'id'"
+                            ></loading-outlined>
                             Upload valid means of identification
                           </a-button>
                         </a-upload>
@@ -430,12 +457,17 @@
                           :max-count="1"
                           v-model:file-list="utilityList"
                           name="utilityBillUrl"
+                          class="w-full"
                           :before-upload="() => false"
                           @change="(e) => handleChange(e, 'utility')"
                         >
                           <a-button>
-                            <upload-outlined  v-if="!loading  || uploadtype !== 'utility'"></upload-outlined>
-                            <loading-outlined v-if="loading && uploadtype === 'utility'"></loading-outlined>
+                            <upload-outlined
+                              v-if="!loading || uploadtype !== 'utility'"
+                            ></upload-outlined>
+                            <loading-outlined
+                              v-if="loading && uploadtype === 'utility'"
+                            ></loading-outlined>
                             Upload Utility Bill
                           </a-button>
                         </a-upload>
@@ -519,7 +551,7 @@ const loading = computed(() => state.file.loading);
 const upfrontFeesAmount = computed(() => {
   if (!formState.amount || !formState.productId) return 0;
   let calc;
-  if (productDetail?.value?.productName?.toLowerCase() === "asset finance") {
+  if (productDetail?.value?.productName?.toLowerCase() === "af loans") {
     calc = equityAmount.value * (upfrontFeePercent.value / 100);
   } else {
     calc = formState.amount * (upfrontFeePercent.value / 100);
@@ -530,7 +562,7 @@ const interestRateAmount = computed(() => {
   if (!formState.amount || !formState.productId || !formState.lockInPeriod)
     return 0;
   let calc;
-  if (productDetail?.value?.productName?.toLowerCase() === "asset finance") {
+  if (productDetail?.value?.productName?.toLowerCase() === "af loans") {
     calc =
       equityAmount.value *
       (interestRatePercent.value / 100) *
@@ -551,7 +583,7 @@ const equityAmount = computed(() => {
 });
 // eslint-disable-next-line no-unused-vars
 const equityFee = computed(() => {
-  if (productDetail?.value?.productName?.toLowerCase() === "asset finance") {
+  if (productDetail?.value?.productName?.toLowerCase() === "af loans") {
     if (!formState.amount || !formState.productId) return 0;
     const calc = formState.amount * (equityPercent.value / 100);
     return calc || 0;
@@ -565,7 +597,7 @@ const handleSubmit = (values) => {
     ...values,
     facilityAmount: formState.amount.toString(),
     interestRate: interestRateAmount?.value?.toString() || 0,
-    equityContribution: equityFee?.value?.toString() || 0,
+    equityContribution: (formState.amount - equityAmount.value).toString() || 0,
     upfrontFee: upfrontFeesAmount?.value || 0,
   });
 };
@@ -600,8 +632,9 @@ const formState = reactive({
   lockInPeriod: null,
   interestRate: null,
   dueDate: null,
-  description: "",
-  upfrontFee:""
+  occupation: "",
+  description: "desc",
+  upfrontFee: "",
 });
 
 const breadcrumbs = [
