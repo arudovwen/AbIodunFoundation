@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-end mb-6" v-if="profile !== 'customer'">
+    <div class="flex justify-end mb-6 gap-x-4" v-if="profile !== 'customer'">
       <sdButton
         v-if="
           handleDisplay(
@@ -10,13 +10,34 @@
         "
         class="capitalize"
         htmlType="button"
-        type="primary"
+        type="danger"
         size="small"
         :disabled="updateloading"
-        @click="visible = true"
+        @click="
+          visible = true;
+          type = 'reject';
+        "
       >
-        Mark as
-        {{ handleStatus(transaction?.transactionStatus?.toLowerCase()) }}
+        Reject
+      </sdButton>
+      <sdButton
+        v-if="
+          handleDisplay(
+            profile.userRole,
+            transaction?.transactionStatus?.toLowerCase()
+          )
+        "
+        class="capitalize"
+        htmlType="button"
+        type="success"
+        size="small"
+        :disabled="updateloading"
+        @click="
+          visible = true;
+          type = 'approve';
+        "
+      >
+        Approve
       </sdButton>
     </div>
     <div
@@ -71,9 +92,9 @@
         <span class="block text-sm font-medium text-gray-500"
           >Lock-in period</span
         >
-        <span class="text-base font-medium capitalize">{{
-          product?.lockInPeriod 
-        }} months</span>
+        <span class="text-base font-medium capitalize"
+          >{{ product?.lockInPeriod }} months</span
+        >
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500"
@@ -208,13 +229,17 @@
   <Modal :open="visible" @close="visible = false">
     <div class="bg-white rounded-lg w-[250px]">
       <h3 class="text-xl font-bold mb-6">Confirm this action</h3>
-      <p class="mb-8">
-        Are you sure about changing the status to
-        <span class="uppercase">{{
-          handleStatus(transaction?.transactionStatus?.toLowerCase())
-        }}</span
-        >?
-      </p>
+      <p class="mb-6">Are you sure you want to {{ type }} this transaction?</p>
+      <a-form-item
+        v-if="type === 'reject'"
+        name="reason"
+        label="Provide your reason"
+      >
+        <a-input
+          placeholder="Please input your reason for this rejection!"
+          v-model:value="freject"
+        />
+      </a-form-item>
       <div class="flex justify-between">
         <sdButton
           :disabled="updateloading"
@@ -247,6 +272,7 @@ import { formatCurrency } from "@/utility/formatCurrency";
 import { message } from "ant-design-vue";
 import { downloadBase64File } from "@/utility/downloadBase64File";
 
+const reject = ref("");
 function handleStatus(status) {
   if (status === "pending") {
     return "reviewed";
@@ -267,6 +293,7 @@ const query = {
   pageSize: 100000,
   name: "",
 };
+const type = ref("");
 const { state, dispatch } = useStore();
 const product = computed(() => state.requests.request);
 const productReq = computed(() => state.requests.reqData[0]);
@@ -303,7 +330,11 @@ watch(updatesuccess, () => {
 function handleUpdate() {
   dispatch("updateTransaction", {
     transactionId: parseInt(route.params.id),
-    status: handleStatus(transaction?.value?.transactionStatus?.toLowerCase()),
+    status:
+      type.value === "approve"
+        ? handleStatus(transaction?.value?.transactionStatus?.toLowerCase())
+        : "rejected",
+    reason: reject.value,
   });
 }
 
