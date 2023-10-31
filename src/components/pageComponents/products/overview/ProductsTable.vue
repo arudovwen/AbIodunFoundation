@@ -133,7 +133,7 @@ const UserListTable = defineComponent({
           key: id,
           productid: id,
           productName,
-          productType: <span class="capitalize">{productType}</span>,
+          productType: <span class="capitalize">{productType?.split(" ")[1]}</span>,
           isDeleted: isDeleted ? "Yes" : "No",
           description: (
             <span class="block truncate max-w-[160px]">

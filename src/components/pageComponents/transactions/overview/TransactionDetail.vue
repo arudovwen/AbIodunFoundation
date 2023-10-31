@@ -48,16 +48,49 @@
         <span class="block text-sm font-medium text-gray-500"
           >Transaction type</span
         >
-        <span class="text-base font-medium capitalize">{{
-          transaction?.transactionType || "-"
-        }}</span>
+        <span
+          :class="`text-base font-medium capitalize `"
+          >{{ transaction?.transactionType || "-" }}</span
+        >
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500"
           >Transaction status</span
         >
-        <span class="text-base font-medium capitalize">{{
+        <span  :class="`text-base font-medium capitalize ${
+            transaction?.transactionStatus === 'rejected'
+              ? 'text-red-600'
+              : transaction?.transactionStatus === 'pending'
+              ? 'text-gray-600'
+              : 'text-green-600'
+          }`">{{
           transaction.transactionStatus || "-"
+        }}</span>
+      </div>
+      <div
+        v-if="
+          transaction.reason &&
+          transaction?.transactionStatus.toLowerCase() === 'rejected'
+        "
+      >
+        <span class="block text-sm font-medium text-gray-500"
+          >Reason for rejection</span
+        >
+        <span class="text-base font-medium capitalize">{{
+          transaction.reason || "-"
+        }}</span>
+      </div>
+      <div
+        v-if="
+          transaction.rejectedDate &&
+          transaction?.transactionStatus.toLowerCase() === 'rejected'
+        "
+      >
+        <span class="block text-sm font-medium text-gray-500"
+          >Rejection date</span
+        >
+        <span class="text-base font-medium capitalize">{{
+          moment(product.rejectedDate).format("ll") || "-"
         }}</span>
       </div>
       <div>
@@ -235,9 +268,10 @@
         name="reason"
         label="Provide your reason"
       >
-        <a-input
+        <a-textarea
+          :rows="5"
           placeholder="Please input your reason for this rejection!"
-          v-model:value="freject"
+          v-model:value="reject"
         />
       </a-form-item>
       <div class="flex justify-between">

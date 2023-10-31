@@ -136,7 +136,7 @@ const NewProducts = defineComponent({
           key: id,
           productid: id,
           productName,
-          productType: <span class="capitalize">{productType}</span>,
+          productType: <span class="capitalize">{productType?.split(" ")[1]}</span>,
         };
       })
     );

@@ -92,8 +92,15 @@ const UserListTable = defineComponent({
 
           status: (
             <div class="">
-              <span class="bg-gray-50 text-gray-600 px-3 py-[2px] rounded-full capitalize text-center max-w-max">
-                {" "}
+              <span
+              class={`px-3 py-[2px] rounded-full capitalize text-center max-w-max ${
+                  transactionStatus === "rejected"
+                    ? "bg-red-50 text-red-600"
+                    : transactionStatus === "pending"
+                    ? "bg-gray-50 text-gray-600"
+                    : "bg-green-50 text-green-600"
+                }`}
+              >
                 {transactionStatus}
               </span>
             </div>
