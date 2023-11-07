@@ -8,7 +8,7 @@
     </sdPageHeader>
     <Main>
       <a-row justify="center">
-        <a-col :sm="24">
+        <a-col class="w-full">
           <sdCards headless>
             <div>
               <a-form
