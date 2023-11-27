@@ -1,4 +1,4 @@
-# Biodun and Ibikunle Limited
+# Altfinance.ng Limited
 
 ## Project setup
 ```

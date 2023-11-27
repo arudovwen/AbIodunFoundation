@@ -100,7 +100,7 @@ const ValidateEmail = defineComponent({
       () => state.auth.validatebeginloading
     );
     const validateendloading = computed(() => state.auth.validateendloading);
-    // const validatebeginsuccess = computed(() => state.auth.validatebeginsuccess);
+    const validatebeginsuccess = computed(() => state.auth.validatebeginsuccess);
     const validateendsuccess = computed(() => state.auth.validateendsuccess);
     const token = computed(() => state.auth.token);
 
@@ -122,9 +122,11 @@ const ValidateEmail = defineComponent({
       }
     });
 
-    // watch(token, () => {
-    //   formState.token = token?.value?.split(":")[1]?.trim();
-    // });
+    watch(validatebeginsuccess, () => {
+     if(validatebeginsuccess.value){
+      message.success("Email sent")
+     }
+    });
 
     onMounted(() => {
       setTimeout(() => {
