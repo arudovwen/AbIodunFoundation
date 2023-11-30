@@ -53,7 +53,7 @@
       <a-menu-item @click="toggleCollapsed" key="ueip">
         <a
           target="_blank"
-          href="https://docs.google.com/forms/d/e/1FAIpQLScsYa2QskBBbbKEgIi6xhFSyrjK5RoAByNrY_-Y126Pc2N13g/closedform"
+          href="https://biodunandibikunle.org/ueip/"
           class="capitalize"
         >
           UEIP

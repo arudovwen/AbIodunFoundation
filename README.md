@@ -1,4 +1,4 @@
-# Altfinance.ng Limited
+# ALTFinance.ng Limited
 
 ## Project setup
 ```
