@@ -97,18 +97,18 @@ const UserListTable = defineComponent({
   name: "UserListTable",
   components: { UserTableStyleWrapper, TableWrapper, Modal },
   setup() {
+    const { state, dispatch } = useStore();
     const detail = ref("");
     const visible = ref(false);
-
+    const profile = computed(() => state.auth.userData);
     const search = inject("search");
     const query = reactive({
       pageNumber: 1,
       pageSize: 10,
       name: "",
-      email: "",
-      mobileNo: "",
+      userId:profile.value.id
     });
-    const { state, dispatch } = useStore();
+   
     onMounted(() => {
       dispatch("getUserProducts", query);
     });

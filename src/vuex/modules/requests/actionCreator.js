@@ -28,11 +28,11 @@ const state = () => ({
 });
 
 const actions = {
-  async getUserProducts({ commit }, { pageNumber, name, pageSize }) {
+  async getUserProducts({ commit }, { pageNumber, name, pageSize,userId }) {
     try {
       commit("fetchBegin");
       const response = await DataService.get(
-        `${urls.GET_ALL_USER_PRODUCT}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}`
+        `${urls.GET_ALL_USER_PRODUCT}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}&userId=${userId}`
       );
       if (response.status === 200) {
         commit("fetchSuccess", response.data);

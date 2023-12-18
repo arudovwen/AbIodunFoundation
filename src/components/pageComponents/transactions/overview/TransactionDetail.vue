@@ -11,7 +11,7 @@
         class="capitalize"
         htmlType="button"
         type="danger"
-        size="small"
+        size="sm"
         :disabled="updateloading"
         @click="
           visible = true;
@@ -30,7 +30,7 @@
         class="capitalize"
         htmlType="button"
         type="success"
-        size="small"
+        size="sm"
         :disabled="updateloading"
         @click="
           visible = true;
@@ -373,6 +373,7 @@ function handleUpdate() {
 }
 
 function handleDisplay(role, status) {
+  
   if (role?.toLowerCase() === "reviewer" && status === "pending") {
     return true;
   }
