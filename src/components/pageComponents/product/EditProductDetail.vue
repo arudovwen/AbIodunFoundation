@@ -46,6 +46,7 @@
                   ]"
                 >
                   <a-input-number
+                    :min="parseFloat(formState.minAmount) + 1"
                     v-model:value="formState.maxAmount"
                     :disabled="loading"
                     placeholder="Provide a Maximum amount"
@@ -121,7 +122,6 @@
                   />
                 </a-form-item>
 
-             
                 <a-form-item
                   label="Lock-in Period"
                   name="lockInPeriod"
@@ -129,15 +129,17 @@
                     { required: true, message: 'Please select a value!' },
                   ]"
                 >
-                  <a-select :disabled="loading" size="large" v-model:value="formState.lockInPeriod">
+                  <a-select
+                    :disabled="loading"
+                    size="large"
+                    v-model:value="formState.lockInPeriod"
+                  >
                     <a-select-option value="">Please Select</a-select-option>
                     <a-select-option value="1">1 months</a-select-option>
                     <a-select-option value="2">2 months</a-select-option>
                     <a-select-option value="3">3 months</a-select-option>
                     <a-select-option value="6">6 months</a-select-option>
-                    <a-select-option value="12"
-                      >12 months</a-select-option
-                    >
+                    <a-select-option value="12">12 months</a-select-option>
                   </a-select>
                 </a-form-item>
 

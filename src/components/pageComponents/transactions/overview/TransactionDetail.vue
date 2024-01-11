@@ -48,24 +48,24 @@
         <span class="block text-sm font-medium text-gray-500"
           >Transaction type</span
         >
-        <span
-          :class="`text-base font-medium capitalize `"
-          >{{ transaction?.transactionType || "-" }}</span
-        >
+        <span :class="`text-base font-medium capitalize `">{{
+          transaction?.transactionType || "-"
+        }}</span>
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500"
           >Transaction status</span
         >
-        <span  :class="`text-base font-medium capitalize ${
+        <span
+          :class="`text-base font-medium capitalize ${
             transaction?.transactionStatus === 'rejected'
               ? 'text-red-600'
               : transaction?.transactionStatus === 'pending'
               ? 'text-gray-600'
               : 'text-green-600'
-          }`">{{
-          transaction.transactionStatus || "-"
-        }}</span>
+          }`"
+          >{{ transaction.transactionStatus || "-" }}</span
+        >
       </div>
       <div
         v-if="
@@ -312,11 +312,12 @@ function handleStatus(status) {
     return "reviewed";
   }
   if (status === "reviewed") {
-    return "approved";
-  }
-  if (status === "approved") {
     return "underwritten";
   }
+  if (status === "underwritten") {
+    return "approved";
+  }
+
   return "";
 }
 
@@ -373,14 +374,13 @@ function handleUpdate() {
 }
 
 function handleDisplay(role, status) {
-  
   if (role?.toLowerCase() === "reviewer" && status === "pending") {
     return true;
   }
-  if (role?.toLowerCase() === "approver" && status === "reviewed") {
+  if (role?.toLowerCase() === "underwriter" && status === "reviewed") {
     return true;
   }
-  if (role?.toLowerCase() === "underwriter" && status === "approved") {
+  if (role?.toLowerCase() === "approver" && status === "underwritten") {
     return true;
   }
   return false;

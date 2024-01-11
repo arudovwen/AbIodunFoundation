@@ -18,9 +18,12 @@
             <a-form-item
               name="token"
               label="Token"
+              for="token"
               :rules="[{ required: true, message: 'Please input your token!' }]"
             >
               <a-input
+                id="token"
+                name="token"
                 type="text"
                 v-model:value="formState.token"
                 placeholder="Enter your Token"
@@ -100,7 +103,9 @@ const ValidateEmail = defineComponent({
       () => state.auth.validatebeginloading
     );
     const validateendloading = computed(() => state.auth.validateendloading);
-    const validatebeginsuccess = computed(() => state.auth.validatebeginsuccess);
+    const validatebeginsuccess = computed(
+      () => state.auth.validatebeginsuccess
+    );
     const validateendsuccess = computed(() => state.auth.validateendsuccess);
     const token = computed(() => state.auth.token);
 
@@ -123,9 +128,9 @@ const ValidateEmail = defineComponent({
     });
 
     watch(validatebeginsuccess, () => {
-     if(validatebeginsuccess.value){
-      message.success("Email sent")
-     }
+      if (validatebeginsuccess.value) {
+        message.success("Email sent");
+      }
     });
 
     onMounted(() => {

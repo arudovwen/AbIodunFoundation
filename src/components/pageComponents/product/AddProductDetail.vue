@@ -45,7 +45,7 @@
                   ]"
                 >
                   <a-input-number
-                    :min="formState.minAmount"
+                    :min="parseFloat(formState.minAmount) + 1"
                     v-model:value="formState.maxAmount"
                     placeholder="Provide a Maximum amount"
                     :formatter="
@@ -115,9 +115,7 @@
                     <a-select-option value="2">2 months</a-select-option>
                     <a-select-option value="3">3 months</a-select-option>
                     <a-select-option value="6">6 months</a-select-option>
-                    <a-select-option value="12"
-                      >12 months</a-select-option
-                    >
+                    <a-select-option value="12">12 months</a-select-option>
                   </a-select>
                 </a-form-item>
 
