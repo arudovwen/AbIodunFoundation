@@ -109,7 +109,6 @@ client.interceptors.response.use(
         ) {
         
           const email = JSON.parse(originalRequest.data).username;
-          console.log("🚀 ~ file: dataService.js:111 ~ email:", email)
           window.location.href = `/auth/validate-email/${encodeURIComponent(
             email
           )}`;

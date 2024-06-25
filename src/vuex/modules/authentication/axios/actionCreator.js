@@ -12,12 +12,12 @@ function getRedirectFrom(url) {
     const queryParams = parsedUrl.searchParams;
 
     // Get the value of the 'redirect_from' parameter
-    const redirectFrom = queryParams.get('redirect_from');
+    const redirectFrom = queryParams.get("redirect_from");
 
     return redirectFrom;
   } catch (error) {
     // Handle invalid URL or other errors
-    console.error('Error parsing URL:', error);
+    console.error("Error parsing URL:", error);
     return null;
   }
 }
@@ -79,7 +79,11 @@ const actions = {
       const response = await DataService.post(urls.SIGN_UP_USER, data);
 
       if (response.status === 200) {
-        commit("signupSuccess");
+        if (response.data.succeeded) {
+          commit("signupSuccess");
+        } else {
+          commit("signupErr", response?.data?.message);
+        }
       }
     } catch (err) {
       commit("signupErr", err);

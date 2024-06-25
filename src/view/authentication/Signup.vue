@@ -3,9 +3,7 @@
     <a-col :xxl="6" :xl="8" :md="12" :sm="18">
       <AuthWrapper>
         <div class="ninjadash-authentication-top">
-          <h2 class="ninjadash-authentication-top__title">
-            Sign Up
-          </h2>
+          <h2 class="ninjadash-authentication-top__title">Sign Up</h2>
         </div>
         <div class="ninjadash-authentication-content">
           <a-form
@@ -168,6 +166,7 @@
 import { AuthWrapper } from "./style";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { Notification } from "ant-design-vue";
 import { computed, reactive, ref, defineComponent, watch } from "vue";
 // import InlineSvg from "vue-inline-svg";
 
@@ -255,6 +254,16 @@ const SignUp = defineComponent({
           `/auth/validate-email/${encodeURIComponent(formState.emailAddress)}`
         );
     });
+
+    watch(error, () => {
+      error.value &&
+        Notification.error({
+          message: "Error",
+          description: error.value,
+          duration: 5000,
+        });
+    });
+
     return {
       validatePassword,
       onChange,
