@@ -180,7 +180,7 @@ const SignUp = defineComponent({
     const { state, dispatch } = useStore();
     const isLoading = computed(() => state.auth.loading);
     const isSuccess = computed(() => state.auth.signupsuccess);
-    const error = computed(() => state.auth.error);
+    const errors = computed(() => state.auth.error);
     const router = useRouter();
     const values = ref(null);
     const checked = ref(null);
@@ -255,13 +255,16 @@ const SignUp = defineComponent({
         );
     });
 
-    watch(error, () => {
-      error.value &&
-        Notification.error({
-          message: "Error",
-          description: error.value,
-          duration: 5000,
+    watch(errors, () => {
+      if (errors.value && errors?.value?.length) {
+        errors.value?.forEach((err) => {
+          Notification.error({
+            message: "Error",
+            description: err.description,
+            duration: 5000,
+          });
         });
+      }
     });
 
     return {
@@ -271,7 +274,7 @@ const SignUp = defineComponent({
       formState,
       validatePhoneNumber,
       isLoading,
-      error,
+      errors,
       checked,
     };
   },

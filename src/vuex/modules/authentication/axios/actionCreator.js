@@ -77,12 +77,12 @@ const actions = {
     try {
       commit("signupBegin");
       const response = await DataService.post(urls.SIGN_UP_USER, data);
-
+    
       if (response.status === 200) {
-        if (response.data.succeeded) {
+        if (response?.data?.succeeded) {
           commit("signupSuccess");
         } else {
-          commit("signupErr", response?.data?.message);
+          commit("signupErr", response?.data?.data?.errors);
         }
       }
     } catch (err) {
