@@ -86,7 +86,19 @@
                 placeholder="Phone number"
               />
             </a-form-item>
-
+            <a-form-item
+              name="region"
+              label="Region"
+              :rules="[
+                { required: true, message: 'Please select your region!' },
+              ]"
+            >
+              <a-select size="large" v-model:value="formState.gender">
+                <a-select-option value="">Please Select</a-select-option>
+                <a-select-option value="nigeria">Nigeria</a-select-option>
+                <a-select-option value="ghana">Ghana</a-select-option>
+              </a-select>
+            </a-form-item>
             <a-form-item
               label="Password"
               name="password"
@@ -247,6 +259,7 @@ const SignUp = defineComponent({
       emailAddress: "",
       phoneNumber: "",
       userRole: "customer",
+      region: ""
     });
     watch(isSuccess, () => {
       isSuccess.value &&
