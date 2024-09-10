@@ -18,7 +18,7 @@
         key="1"
         type="primary"
       >
-     Add User
+     Add Admin
       </sdButton>
     </div>
   </div>

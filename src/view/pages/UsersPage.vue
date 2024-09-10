@@ -1,7 +1,7 @@
 <template>
   <div>
     <sdPageHeader
-      title="Users"
+      title="Users Management"
       class="ninjadash-page-header-main"
       :routes="breadcrumbs"
     >
@@ -16,7 +16,8 @@
           />
         </div>
 
-        <div>
+        <div class="flex gap-x-4 items-center">
+          <ExportButton :data="usersData" />
           <sdButton
             @click="visible = true"
             class="btn-add_new"
@@ -24,7 +25,7 @@
             key="1"
             type="primary"
           >
-          Add User
+            Add admin
           </sdButton>
         </div>
       </div>
@@ -43,11 +44,49 @@
 <script setup>
 import Modal from "components/Modal";
 import { Main } from "../styled";
-import { ref, provide } from "vue";
+import { ref, provide, computed } from "vue";
 import Users from "components/pageComponents/users/overview/UserTable";
 import AddUser from "components/pageComponents/users/AddUsers";
-// import AddRole from "components/pageComponents/users/AddRole";
+import ExportButton from "components/ExportButton";
+import { useStore } from "vuex";
+import moment from "moment";
 
+// import AddRole from "components/pageComponents/users/AddRole";
+const { state } = useStore();
+const usersData = computed(() =>
+  state.users.data.map((user) => {
+    const {
+      fullName,
+      emailAddress,
+      roleName,
+      mobileNo,
+      status,
+      createdOn,
+      lastLogin,
+    } = user;
+
+    return {
+      "Full Name": fullName,
+      "Email Address": emailAddress,
+      "Mobile No": mobileNo,
+      role: roleName,
+      "Email Validated": status !== 0 ? "Yes" : "No",
+      created: moment(createdOn).format("ll"),
+      lastLogin:
+        lastLogin && lastLogin !== "n/a"
+          ? moment(lastLogin).format("lll")
+          : "-",
+      status:
+        status === 0
+          ? " Pending Activation"
+          : status === 1
+          ? "Active"
+          : status === 5
+          ? "Inactive"
+          : "",
+    };
+  })
+);
 const visible = ref(false);
 const search = ref("");
 const breadcrumbs = [

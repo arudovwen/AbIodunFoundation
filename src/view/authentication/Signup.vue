@@ -61,8 +61,8 @@
                 { required: true, message: 'Please select your gender!' },
               ]"
             >
-              <a-select size="large" v-model:value="formState.gender">
-                <a-select-option value="">Please Select</a-select-option>
+              <a-select size="small" v-model:value="formState.gender">
+                <a-select-option value="">Please Select gender</a-select-option>
                 <a-select-option value="male">Male</a-select-option>
                 <a-select-option value="female">Female</a-select-option>
               </a-select>
@@ -93,8 +93,12 @@
                 { required: true, message: 'Please select your region!' },
               ]"
             >
-              <a-select size="large" v-model:value="formState.gender">
-                <a-select-option value="">Please Select</a-select-option>
+              <a-select
+                size="small"
+                v-model:value="formState.region"
+                class="h-11"
+              >
+                <a-select-option value="">Please Select region</a-select-option>
                 <a-select-option value="nigeria">Nigeria</a-select-option>
                 <a-select-option value="ghana">Ghana</a-select-option>
               </a-select>
@@ -221,7 +225,7 @@ const SignUp = defineComponent({
               callback(new Error("Password must contain at least one digit."));
             }
           } else {
-            // Password does not contain a lowercase letter
+            // Password does not contain a lpowercase letter
             callback(
               new Error("Password must contain at least one lowercase letter.")
             );
@@ -259,7 +263,7 @@ const SignUp = defineComponent({
       emailAddress: "",
       phoneNumber: "",
       userRole: "customer",
-      region: ""
+      region: "",
     });
     watch(isSuccess, () => {
       isSuccess.value &&

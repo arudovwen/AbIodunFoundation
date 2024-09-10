@@ -1,5 +1,22 @@
+export const regionTableHeader = [
+  {
+    title: "Region Name",
+    dataIndex: "region",
+    key: "region",
+  },
+  {
+    title: "Currency",
+    dataIndex: "currency",
+    key: "currency",
+  },
+
+  {
+    title: "Actions",
+    dataIndex: "action",
+    key: "action",
+  },
+];
 export const userTableHeader = [
- 
   {
     title: "Name",
     dataIndex: "fullName",
@@ -35,6 +52,41 @@ export const userTableHeader = [
     dataIndex: "lastLogin",
     key: "lastLogin",
   },
+  {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+  },
+
+  {
+    title: "Actions",
+    dataIndex: "action",
+    key: "action",
+  },
+];
+export const customerTableHeader = [
+  {
+    title: "Name",
+    dataIndex: "fullName",
+    key: "fullName",
+  },
+  {
+    title: "Email",
+    dataIndex: "emailAddress",
+    key: "emailAddress",
+  },
+
+  {
+    title: "Phone number",
+    dataIndex: "mobileNo",
+    key: "mobileNo",
+  },
+  {
+    title: "Join Date",
+    dataIndex: "createdOn",
+    key: "createdOn",
+  },
+
   {
     title: "Status",
     dataIndex: "status",
@@ -321,7 +373,6 @@ export const bannerTableHeader = [
     width: "90px",
   },
 ];
-
 
 export const businessTypesInNigeria = [
   "Agriculture",

@@ -73,6 +73,9 @@
       <a-menu-item @click="toggleCollapsed" key="set-account">
         <router-link to="/page/profile-settings/account"> Account </router-link>
       </a-menu-item>
+      <a-menu-item @click="toggleCollapsed" key="set-account">
+        <router-link to="/page/profile-settings/account"> Regions </router-link>
+      </a-menu-item>
       <a-menu-item @click="toggleCollapsed" key="set-password">
         <router-link to="/page/profile-settings/password">
           Password
@@ -141,6 +144,13 @@ export default defineComponent({
         role: "admin",
       },
       {
+        title: "Customer management",
+        url: "/customer-management",
+        icon: "user-square",
+        disable: false,
+        role: "admin",
+      },
+      {
         title: "product management",
         url: "/product-management",
         icon: "box",
@@ -182,6 +192,13 @@ export default defineComponent({
         icon: "exchange",
         disable: true,
         role: "customer",
+      },
+      {
+        title: "regions",
+        url: "/regions",
+        icon: "globe",
+        disable: false,
+        role: "admin",
       },
     ];
     const state = reactive({

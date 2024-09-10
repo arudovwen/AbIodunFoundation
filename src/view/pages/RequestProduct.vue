@@ -509,12 +509,13 @@ import moment from "moment";
 import { onMounted, computed, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { formatCurrency } from "@/utility/formatCurrency";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { BasicFormWrapper } from "../styled";
 import dayjs from "dayjs";
 import { businessTypesInNigeria } from "@/utility/constant";
 
 const router = useRouter();
+const route = useRoute();
 onMounted(() => {
   dispatch("getProducts", query);
 });
@@ -611,7 +612,8 @@ const idList = ref([]);
 const statementList = ref([]);
 const formState = reactive({
   type: "",
-  userId: userData.value.id,
+  userId:
+    userData?.value?.userRole === "admin" ? route.query.id : userData.value.id,
   productId: "",
   facilityAmount: null,
   useOfFunds: "",

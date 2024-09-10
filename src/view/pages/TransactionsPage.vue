@@ -1,6 +1,10 @@
 <template>
   <div>
-    <sdPageHeader title="Transactions Page " class="ninjadash-page-header-main" :routes="breadcrumbs">
+    <sdPageHeader
+      title="Transactions"
+      class="ninjadash-page-header-main"
+      :routes="breadcrumbs"
+    >
     </sdPageHeader>
     <Main>
       <div class="flex justify-between items-center py-6">
@@ -13,15 +17,7 @@
         </div>
 
         <div>
-          <!-- <sdButton
-            @click="visible = true"
-            class="btn-add_new"
-            size="sm"
-            key="1"
-            type="primary"
-          >
-            <unicon name="plus" width="14"></unicon> Add New Administrator
-          </sdButton> -->
+          <ExportButton :data="transactionsData" />
         </div>
       </div>
       <a-row :gutter="25">
@@ -35,12 +31,16 @@
   </div>
 </template>
 
-
 <script setup>
-import { ref, provide } from "vue";
 import { Main } from "../styled";
+import ExportButton from "components/ExportButton";
 import Transactions from "components/pageComponents/transactions/overview/TransactionsTable";
+import { ref, provide, computed } from "vue";
+import moment from "moment";
+import { useStore } from "vuex";
+import { formatCurrency } from "@/utility/formatCurrency";
 
+const { state } = useStore();
 const search = ref("");
 const breadcrumbs = [
   {
@@ -52,5 +52,25 @@ const breadcrumbs = [
     breadcrumbName: "Transactions",
   },
 ];
+const transactionsData = computed(() =>
+  state.transactions.data.map((transaction) => {
+    const {
+
+      amount,
+      transactionType,
+      transactionDate,
+      transactionStatus,
+      description,
+    } = transaction;
+
+    return {
+      amount: formatCurrency(amount),
+      description,
+      "Transaction Type": transactionType,
+      "Transaction Date": moment(transactionDate).format("lll"),
+      status: transactionStatus,
+    };
+  })
+);
 provide("search", search);
 </script>

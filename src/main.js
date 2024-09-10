@@ -1,6 +1,7 @@
 import app from './config/configApp';
 import router from './routes/protectedRoute';
 import store from '@/vuex/store';
+import excel from "vue-excel-export";
 import './static/css/style.css';
 import './static/css/tailwind.css';
 // Vue 3rd party plugins
@@ -17,4 +18,5 @@ import './assets/tailwind.css'
 app.config.productionTip = false;
 app.use(store);
 app.use(router);
+app.use(excel)
 app.mount('#app');

@@ -64,6 +64,14 @@ export const paths = [
       ),
   },
   {
+    name: "regions",
+    path: "/regions",
+    component: () =>
+      import(
+        /* webpackChunkName: "regions" */  "@/view/pages/Region.vue"
+      ),
+  },
+  {
     name: "transfers",
     path: "/transfers",
     component: () =>
@@ -133,6 +141,13 @@ export const paths = [
     name: "user management",
     component: () =>
       import(/* webpackChunkName: "users" */ "@/view/pages/UsersPage.vue"),
+    meta: { admin: true },
+  },
+  {
+    path: "/customer-management",
+    name: "customer management",
+    component: () =>
+      import(/* webpackChunkName: "customers" */ "@/view/pages/CustomersPage.vue"),
     meta: { admin: true },
   },
   {
@@ -208,5 +223,12 @@ export const paths = [
     component: () =>
       import(/* webpackChunkName: "Banners" */ "@/view/pages/BannerPage.vue"),
     meta: { admin: true },
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: () =>
+      import(/* webpackChunkName: "test" */ "@/view/pages/Test.vue"),
+    meta: { admin: false },
   },
 ];

@@ -15,6 +15,7 @@
           type="search"
         />
         <div class="flex gap-x-4">
+          <ExportButton :data="productsData" />
           <router-link to="/product-management/add">
             <sdButton class="btn-add_new" size="sm" key="1" type="primary">
               <unicon name="plus" width="14"></unicon> Add product
@@ -34,8 +35,12 @@
 
 <script setup>
 import { Main } from "../styled";
+import ExportButton from "components/ExportButton";
 import Products from "components/pageComponents/products/overview/ProductsTable";
-import { ref, provide } from "vue";
+import { ref, provide, computed } from "vue";
+import moment from "moment";
+import { useStore } from "vuex";
+
 const breadcrumbs = [
   {
     path: "/dashboard",
@@ -46,6 +51,27 @@ const breadcrumbs = [
     breadcrumbName: "Products",
   },
 ];
+const { state } = useStore();
 const search = ref("");
+const productsData = computed(() =>
+  state.products.data.map((user) => {
+    const {
+      createdAt,
+      isDeleted,
+      productDescription,
+      productName,
+      productType,
+    } = user;
+
+    return {
+      "Product Name": productName,
+      "Product Type": productType?.split(" ")[1],
+      Status: isDeleted ? "Yes" : "No",
+      description: productDescription,
+      created: moment(createdAt).format("ll"),
+      status: isDeleted ? "Inactive" : "Active",
+    };
+  })
+);
 provide("search", search);
 </script>

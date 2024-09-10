@@ -30,7 +30,8 @@
             <DialogPanel
               class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:min-w-[300px] sm:max-w-lg"
             >
-              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 relative">
+                <button class="absolute top-3 right-3" type="button" @click="emit('close')">  <unicon name="times"></unicon></button>
                 <slot></slot>
               </div>
             </DialogPanel>

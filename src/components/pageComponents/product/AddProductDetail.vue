@@ -118,6 +118,15 @@
                     <a-select-option value="12">12 months</a-select-option>
                   </a-select>
                 </a-form-item>
+                <div class="mt-10 col-span-2 bg-gray-50 p-6">
+                  <h3 class="text-sm font-semibold mb-6">Extra Input</h3>
+                  <Builder
+                    @handler="
+                      {
+                      }
+                    "
+                  />
+                </div>
 
                 <div class="col-span-2 flex justify-center my-4">
                   <sdButton
@@ -144,6 +153,7 @@ import { message } from "ant-design-vue";
 import { computed, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
+import Builder from "components/form/builder";
 
 const { state, dispatch } = useStore();
 const isLoading = computed(() => state.products.addloading);

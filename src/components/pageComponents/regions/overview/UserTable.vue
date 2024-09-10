@@ -1,14 +1,10 @@
 <template>
- <div>
-  <div class="mb-8">
-    <slot></slot>
-  </div>
   <UserTableStyleWrapper>
     <TableWrapper class="table-responsive">
       <a-table
         :loading="loading || forgotLoading"
         :dataSource="usersData"
-        :columns="userTableHeader"
+        :columns="regionTableHeader"
         :pagination="{
           defaultPageSize: query.pageSize,
           total: total,
@@ -21,37 +17,17 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <div class="flex gap-x-4 justify-end">
-              <button
-                v-if="record.statusInt !== 5"
-                @click="openDelete(record, 'disable')"
-                class="text-xs bg-gray-200 rounded-full py-1 px-2"
-              >
-                Disable
+            <div class="flex gap-x-4 items-center">
+              <button class="text-xs" @click="openModal(record, 'edit')">
+                Edit
               </button>
-              <button
-                v-if="record.statusInt === 5"
-                @click="openDelete(record, 'enable')"
-                class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
-                type="default"
-                to="#"
-                shape="circle"
-              >
-                Enable
-              </button>
-              <button
-                @click="openDelete(record, 'password')"
-                class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
-                type="default"
-                to="#"
-                shape="circle"
-              >
-                Reset Password
+              <button @click="openModal(record, 'delete')" class="text-xs">
+                Delete
               </button>
             </div>
           </template>
-        </template></a-table
-      >
+        </template>
+      </a-table>
     </TableWrapper>
   </UserTableStyleWrapper>
   <Modal :open="visible" @close="visible = false">
@@ -80,7 +56,6 @@
       </div>
     </div>
   </Modal>
- </div>
 </template>
 <script>
 import Modal from "components/Modal";
@@ -98,7 +73,7 @@ import {
   inject,
   ref,
 } from "vue";
-import { userTableHeader } from "@/utility/constant";
+import { regionTableHeader } from "@/utility/constant";
 import { message } from "ant-design-vue";
 
 const UserListTable = defineComponent({
@@ -251,7 +226,7 @@ const UserListTable = defineComponent({
       total,
       fetchRecords,
       usersData,
-      userTableHeader,
+      regionTableHeader,
       loading,
       deleteloading,
       forgotLoading,
