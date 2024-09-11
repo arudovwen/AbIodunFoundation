@@ -19,7 +19,7 @@
       <button
         type="button"
         @click="triggerFileInput"
-        class="text-xs text-white border border-[#98A2B3] bg-[#111620] rounded px-5 py-[6px] active:scale-[.95] leading-normal flex justify-center"
+        class="text-xs text-white border border-[#98A2B3] !h-full bg-[#111620] rounded px-5 py-[6px] active:scale-[.95] leading-normal flex justify-center items-center"
       >
         <div
           v-if="loading"
@@ -30,7 +30,7 @@
 
       <span
         class="flex-1 px-4 truncate text-[#999999] inline-block max-w-[300px] xl:max-w-[380px]"
-        >{{ title || label.replaceAll(" ","_") }}</span
+        >{{ title || `Upload ${label.replaceAll(" ","_")}` }}</span
       >
     </div>
   </div>

@@ -150,7 +150,7 @@
 <script setup>
 import { BasicFormWrapper } from "../../styled";
 import { message } from "ant-design-vue";
-import { computed, reactive, ref, watch } from "vue";
+import { computed, reactive, ref, watch, provide } from "vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import Builder from "components/form/builder";
@@ -175,6 +175,17 @@ const formState = reactive({
   interestRate: "", // Update property to match the "Interest rate" input field
   lockInPeriod: null, // Update property to match the "Due date" input field
   equityContribution: "", // Update property to match the "Description" input field
+  dynamicForm:  [
+    {
+      label: "",
+      key: Date.now(),
+      name: "",
+      options: [],
+      type: "",
+      value: null,
+      required: false,
+    },
+  ],
 });
 
 watch(addsuccess, () => {
@@ -183,4 +194,5 @@ watch(addsuccess, () => {
     router.push(`/product-management/product/${route?.params?.id}`);
   }
 });
+provide("forms", formState);
 </script>

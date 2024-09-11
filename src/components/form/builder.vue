@@ -2,16 +2,11 @@
   <div class="grid grid-cols-2 gap-x-5">
     <div class="w-full">
       <div>
-        <a-form
-          name="register"
-          :model="formState"
-          layout="vertical"
-          ref="formRef"
-        >
+        <a-form name="register" :model="forms" layout="vertical" ref="formRef">
           <div class="grid gap-y-6">
             <div
               class="border rounded-lg p-6 bg-white relative"
-              v-for="(n, id) in formState.forms"
+              v-for="(n, id) in forms.dynamicForm"
               :key="n.key"
             >
               <div class="flex gap-x-8 items-center justify-between">
@@ -30,7 +25,7 @@
               <div v-if="activeTab.includes(id)" class="mt-6">
                 <a-form-item
                   label="Input Label"
-                  :name="['forms', id, 'label']"
+                  :name="['dynamicForm', id, 'label']"
                   :rules="[
                     {
                       required: true,
@@ -47,10 +42,10 @@
                 <div class="grid grid-cols-2 gap-x-6">
                   <a-form-item
                     label="Input Type"
-                    :name="['forms', id, 'type']"
+                    :name="['dynamicForm', id, 'type']"
                     :rules="[{ required: true, message: 'Select input type' }]"
                   >
-                    <a-select class="!h-12" size="small" v-model:value="n.type">
+                    <a-select class="!h-12"  v-model:value="n.type">
                       <a-select-option value=""
                         >Please Select type</a-select-option
                       >
@@ -59,9 +54,9 @@
                       <a-select-option value="email">Email</a-select-option>
                       <a-select-option value="file">File</a-select-option>
                       <a-select-option value="select">Select</a-select-option>
-                      <a-select-option value="select">Radio</a-select-option>
-                      <a-select-option value="select">Checkbox</a-select-option>
-                      <a-select-option value="select">Date</a-select-option>
+                      <!-- <a-select-option value="select">Radio</a-select-option>
+                      <a-select-option value="select">Checkbox</a-select-option> -->
+                      <a-select-option value="date">Date</a-select-option>
                     </a-select>
                   </a-form-item>
 
@@ -80,9 +75,9 @@
                     :key="idx"
                   >
                     <a-form-item
-                      :name="['forms', id, 'options', idx, 'name']"
-                      label="Option name"
-                      class="flex-1"
+                      :name="['dynamicForm', id, 'options', idx, 'name']"
+                      :label="idx === 0 ? 'Option name' : ''"
+                      class="flex-1 mb-2"
                       :rules="[
                         { required: true, message: 'Value is required!' },
                       ]"
@@ -94,9 +89,9 @@
                       />
                     </a-form-item>
                     <a-form-item
-                      :name="['forms', id, 'options', idx, 'value']"
-                      label="Option value"
-                      class="flex-1"
+                      :name="['dynamicForm', id, 'options', idx, 'value']"
+                      :label="idx === 0 ? 'Option value' : ''"
+                      class="flex-1 mb-2"
                       :rules="[
                         { required: true, message: 'Value is required!' },
                       ]"
@@ -155,13 +150,13 @@
       </div>
     </div>
     <div>
-      <Preview :forms="formState.forms" />
+      <Preview :forms="forms.dynamicForm" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, defineEmits, watch } from "vue";
+import { ref, defineEmits, watch, inject } from "vue";
 import Preview from "@/components/form/preview";
 
 const formRef = ref({});
@@ -169,26 +164,27 @@ const activeTab = ref([]);
 // const isLoading = ref(false);
 //   const emits =
 defineEmits(["handler"]);
-const formState = reactive({
-  forms: [
-    {
-      label: "",
-      key: Date.now(),
-      name: "",
-      options: [],
-      type: "",
-      value: null,
-      required: false,
-    },
-  ],
-});
+const forms = inject("forms");
+// const formState = reactive({
+//   forms: [
+//     {
+//       label: "",
+//       key: Date.now(),
+//       name: "",
+//       options: [],
+//       type: "",
+//       value: null,
+//       required: false,
+//     },
+//   ],
+// });
 
 // const handleSubmit = (value) => {
 //   console.log("value", value);
 //   formRef.value
 //     .validate()
 //     .then(() => {
-//       console.log("values", formState.forms);
+//       console.log("values", forms);
 //     })
 //     .catch((error) => {
 //       console.log("error", error);
@@ -196,7 +192,7 @@ const formState = reactive({
 // };
 
 const addField = () => {
-  formState.forms.push({
+  forms.dynamicForm.push({
     label: "",
     key: Date.now(),
     name: "",
@@ -205,13 +201,13 @@ const addField = () => {
     value: "",
     required: false,
   });
-  activeTab.value = [formState.forms.length - 1]; // Open the newly added tab
+  activeTab.value = [forms.dynamicForm.length - 1]; // Open the newly added tab
 };
 
 const removeField = (id) => {
-  formState.forms.splice(id, 1);
+  forms.dynamicForm.splice(id, 1);
   activeTab.value = activeTab.value.filter((i) => i !== id);
-  if (activeTab.value.length === 0 && formState.forms.length > 0) {
+  if (activeTab.value.length === 0 && forms.dynamicForm.length > 0) {
     activeTab.value = [0]; // Ensure at least one tab is active
   }
 };
@@ -225,19 +221,19 @@ const handleTab = (id) => {
 };
 
 const addOption = (fieldId) => {
-  formState.forms[fieldId].options.push({
+  forms.dynamicForm[fieldId].options.push({
     name: "",
     value: "",
   });
 };
 
 const removeOption = (fieldId, optionIndex) => {
-  formState.forms[fieldId].options.splice(optionIndex, 1);
+  forms.dynamicForm[fieldId].options.splice(optionIndex, 1);
 };
 watch(
-  () => [formState.form],
+  () => [forms],
   () => {
-    console.log("🚀 ~ watch ~ formState.form:", formState.form);
+    console.log("🚀 ~ watch ~ form:", forms);
   }
 );
 </script>
