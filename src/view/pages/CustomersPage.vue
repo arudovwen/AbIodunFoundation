@@ -15,8 +15,7 @@
             placeholder="Search by name"
           />
         </div>
-
-     
+        <ExportButton :data="usersData" />
       </div>
       <a-row :gutter="15">
         <a-col :md="24">
@@ -29,10 +28,13 @@
 
 <script setup>
 import { Main } from "../styled";
-import { ref, provide } from "vue";
+import { ref, provide, computed } from "vue";
 import Users from "components/pageComponents/customers/overview/UserTable";
-// import AddRole from "components/pageComponents/users/AddRole";
+import ExportButton from "components/ExportButton";
+import { useStore } from "vuex";
+import moment from "moment";
 
+const { state } = useStore();
 const visible = ref(false);
 const search = ref("");
 const breadcrumbs = [
@@ -45,7 +47,40 @@ const breadcrumbs = [
     breadcrumbName: "Users",
   },
 ];
+const usersData = computed(() =>
+  state.users.data.map((user) => {
+    const {
+      fullName,
+      emailAddress,
+      roleName,
+      mobileNo,
+      status,
+      createdOn,
+      lastLogin,
+    } = user;
 
+    return {
+      "Full Name": fullName,
+      "Email Address": emailAddress,
+      "Mobile No": mobileNo,
+      role: roleName,
+      "Email Validated": status !== 0 ? "Yes" : "No",
+      created: moment(createdOn).format("ll"),
+      lastLogin:
+        lastLogin && lastLogin !== "n/a"
+          ? moment(lastLogin).format("lll")
+          : "-",
+      status:
+        status === 0
+          ? " Pending Activation"
+          : status === 1
+          ? "Active"
+          : status === 5
+          ? "Inactive"
+          : "",
+    };
+  })
+);
 provide("visible", visible);
 provide("search", search);
 </script>

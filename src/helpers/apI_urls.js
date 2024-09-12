@@ -5,7 +5,7 @@ export const urls = {
   CHANGE_PASSWORD_COMPLETE: "/Auth/ChangePasswordComplete",
   CHANGE_PASSWORD: "/Auth/ChangePasswordCompleteInside",
   VALIDATE_EMAIL_INITIATE: "/Auth/ValidateEmailInitiate",
-  VALIDATE_EMAIL_COMPLETE: "/Auth/ValidateEmailComplete",
+  VALIDATE_EMAIL_COMPLETE: "/Auth/ActivateUserComplete",
 
   // Admin
   CREATE_ADMIN: "/Admin/CreateAdmin",
@@ -45,14 +45,14 @@ export const urls = {
   UPDATE_TRANSACTION: "/Transaction/SetTransactionStatus",
 
   // UserManagement
-  GET_USER_PROFILE: "/UserManagement/GetUserProfile",
-  GET_USER_BY_ID: "/UserManagement/GetUserbyId",
-  GET_USER_BY_NAME: "/UserManagement/GetUserbyName",
-  GET_USER_BY_EMAIL: "/UserManagement/GetUserbyEmail",
-  GET_ALL_USERS: "/UserManagement/GetAllUsers",
-  SIGN_UP_USER: "/UserManagement/SignUpUser",
-  GET_USER_AVATAR: "/UserManagement/GetUserAvatar",
-  UPDATE_USER_PROFILE: "/UserManagement/UpdateUserProfile",
+  GET_USER_PROFILE: "/api/UserManagement/GetUserProfile",
+  GET_USER_BY_ID: "/api/UserManagement/GetUserbyId",
+  GET_USER_BY_NAME: "/api/UserManagement/GetUserbyName",
+  GET_USER_BY_EMAIL: "/api/UserManagement/GetUserbyEmail",
+  GET_ALL_USERS: "/api/UserManagement/GetAllUsers",
+  SIGN_UP_USER: "/api/UserManagement/SignUp",
+  GET_USER_AVATAR: "/api/UserManagement/GetUserAvatar",
+  UPDATE_USER_PROFILE: "/api/UserManagement/UpdateUserProfile",
 
   // UserProductRequirement
   CREATE_USER_PRODUCT_REQUIREMENT:
@@ -72,4 +72,12 @@ export const urls = {
   DELETE_USER_PRODUCT: "/UserProduct/DeleteUserProduct",
   GET_ADMIN_STATS: "stats/getadminstats",
   GET_CUSTOMER_STATS: "stats/getcustomerstats",
+
+  // Regions
+
+  CREATE_REGION: "/UserRegion/CreateRegion",
+  UPDATE_REGION: "/UserRegion/UpdateRegion",
+  GET_REGION_BY_ID: "/UserRegion/GetRegionById",
+  GET_ALL_REGIONS: "/UserRegion/GetAllRegions",
+  DELETE_REGION: "/UserRegion/Delete",
 };

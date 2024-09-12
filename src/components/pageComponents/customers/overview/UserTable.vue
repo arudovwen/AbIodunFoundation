@@ -91,6 +91,7 @@ const UserListTable = defineComponent({
       name: "",
       email: "",
       mobileNo: "",
+      // role: "customer"
     });
     const { state, dispatch } = useStore();
     onMounted(() => {

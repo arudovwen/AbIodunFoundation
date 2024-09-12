@@ -41,7 +41,7 @@ const breadcrumbs = [
   },
   {
     path: "/product-management",
-    breadcrumbName: "ProductS",
+    breadcrumbName: "Products",
   },
   {
     path: "#",

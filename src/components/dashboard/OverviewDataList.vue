@@ -2,7 +2,7 @@
   <a-row :gutter="25">
     <a-col
       v-for="(item, i) in tabs"
-      :lg="8"
+      :lg="6"
       :md="12"
       :sm="12"
       :xs="24"
@@ -132,6 +132,19 @@ const OverviewDataList = defineComponent({
           suffix: "",
           prefix: "",
           label: "Total Requests",
+          growth: "upward",
+          growthRate: "25.36",
+          dataPeriod: "Since Last Month",
+          decimal: 0,
+        },
+        {
+          id: 3,
+          type: "primary",
+          icon: "receipt",
+          total: stats.value.totalRequests || 0,
+          suffix: "",
+          prefix: "",
+          label: "Total Loans Dsbursed",
           growth: "upward",
           growthRate: "25.36",
           dataPeriod: "Since Last Month",

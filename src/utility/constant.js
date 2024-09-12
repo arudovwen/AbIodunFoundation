@@ -1,13 +1,30 @@
 export const regionTableHeader = [
   {
     title: "Region Name",
-    dataIndex: "region",
-    key: "region",
+    dataIndex: "name",
+    key: "name",
   },
   {
     title: "Currency",
     dataIndex: "currency",
     key: "currency",
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
+  },
+
+  {
+    title: "Created",
+    dataIndex: "createdAt",
+    key: "createdAt",
+  },
+
+  {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
   },
 
   {
@@ -398,4 +415,33 @@ export const businessTypesInNigeria = [
   "Energy",
   "Mining",
   "Tourism",
+];
+
+export const countriesAndCurrencies = [
+  { country: "United States", currency: "USD" },
+  { country: "Canada", currency: "CAD" },
+  { country: "United Kingdom", currency: "GBP" },
+  { country: "Eurozone", currency: "EUR" },
+  { country: "Japan", currency: "JPY" },
+  { country: "Australia", currency: "AUD" },
+  { country: "Switzerland", currency: "CHF" },
+  { country: "China", currency: "CNY" },
+  { country: "India", currency: "INR" },
+  { country: "Brazil", currency: "BRL" },
+  { country: "Nigeria", currency: "NGN" },
+  { country: "Ghana", currency: "GHS" },
+  { country: "South Africa", currency: "ZAR" },
+  { country: "Kenya", currency: "KES" },
+  { country: "Egypt", currency: "EGP" },
+  { country: "Morocco", currency: "MAD" },
+  { country: "Algeria", currency: "DZD" },
+  { country: "Tanzania", currency: "TZS" },
+  { country: "Uganda", currency: "UGX" },
+  { country: "Ethiopia", currency: "ETB" },
+  { country: "Zimbabwe", currency: "ZWL" },
+  { country: "Ivory Coast", currency: "XOF" },
+  { country: "Senegal", currency: "XOF" },
+  { country: "Rwanda", currency: "RWF" },
+  { country: "Angola", currency: "AOA" },
+  { country: "Mali", currency: "XOF" },
 ];

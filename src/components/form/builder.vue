@@ -6,7 +6,7 @@
           <div class="grid gap-y-6">
             <div
               class="border rounded-lg p-6 bg-white relative"
-              v-for="(n, id) in forms.dynamicForm"
+              v-for="(n, id) in forms.dynamicFields"
               :key="n.key"
             >
               <div class="flex gap-x-8 items-center justify-between">
@@ -25,7 +25,7 @@
               <div v-if="activeTab.includes(id)" class="mt-6">
                 <a-form-item
                   label="Input Label"
-                  :name="['dynamicForm', id, 'label']"
+                  :name="['dynamicFields', id, 'label']"
                   :rules="[
                     {
                       required: true,
@@ -42,7 +42,7 @@
                 <div class="grid grid-cols-2 gap-x-6">
                   <a-form-item
                     label="Input Type"
-                    :name="['dynamicForm', id, 'type']"
+                    :name="['dynamicFields', id, 'type']"
                     :rules="[{ required: true, message: 'Select input type' }]"
                   >
                     <a-select class="!h-12"  v-model:value="n.type">
@@ -75,7 +75,7 @@
                     :key="idx"
                   >
                     <a-form-item
-                      :name="['dynamicForm', id, 'options', idx, 'name']"
+                      :name="['dynamicFields', id, 'options', idx, 'name']"
                       :label="idx === 0 ? 'Option name' : ''"
                       class="flex-1 mb-2"
                       :rules="[
@@ -89,7 +89,7 @@
                       />
                     </a-form-item>
                     <a-form-item
-                      :name="['dynamicForm', id, 'options', idx, 'value']"
+                      :name="['dynamicFields', id, 'options', idx, 'value']"
                       :label="idx === 0 ? 'Option value' : ''"
                       class="flex-1 mb-2"
                       :rules="[
@@ -150,7 +150,7 @@
       </div>
     </div>
     <div>
-      <Preview :forms="forms.dynamicForm" />
+      <Preview :forms="forms.dynamicFields" />
     </div>
   </div>
 </template>
@@ -192,7 +192,7 @@ const forms = inject("forms");
 // };
 
 const addField = () => {
-  forms.dynamicForm.push({
+  forms.dynamicFields.push({
     label: "",
     key: Date.now(),
     name: "",
@@ -201,13 +201,13 @@ const addField = () => {
     value: "",
     required: false,
   });
-  activeTab.value = [forms.dynamicForm.length - 1]; // Open the newly added tab
+  activeTab.value = [forms.dynamicFields.length - 1]; // Open the newly added tab
 };
 
 const removeField = (id) => {
-  forms.dynamicForm.splice(id, 1);
+  forms.dynamicFields.splice(id, 1);
   activeTab.value = activeTab.value.filter((i) => i !== id);
-  if (activeTab.value.length === 0 && forms.dynamicForm.length > 0) {
+  if (activeTab.value.length === 0 && forms.dynamicFields.length > 0) {
     activeTab.value = [0]; // Ensure at least one tab is active
   }
 };
@@ -221,14 +221,14 @@ const handleTab = (id) => {
 };
 
 const addOption = (fieldId) => {
-  forms.dynamicForm[fieldId].options.push({
+  forms.dynamicFields[fieldId].options.push({
     name: "",
     value: "",
   });
 };
 
 const removeOption = (fieldId, optionIndex) => {
-  forms.dynamicForm[fieldId].options.splice(optionIndex, 1);
+  forms.dynamicFields[fieldId].options.splice(optionIndex, 1);
 };
 watch(
   () => [forms],

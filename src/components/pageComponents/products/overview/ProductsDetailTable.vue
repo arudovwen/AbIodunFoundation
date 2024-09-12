@@ -43,12 +43,13 @@
     <div class="bg-white rounded-lg">
       <h3 class="text-xl font-bold mb-4">Confirm delete</h3>
       <p class="mb-10">Are you sure about this action?</p>
-      <div class="flex justify-between">
+      <div class="flex justify-between gap-x-4">
         <sdButton
           :disabled="deleteloading"
           @click="visible = false"
           size="sm"
           type="light"
+          class="w-full"
         >
           Cancel
         </sdButton>
@@ -57,6 +58,7 @@
           size="sm"
           type="error"
           @click="handleDelete"
+          class="w-full"
           >{{ deleteloading ? "Deleting..." : "Delete" }}
         </sdButton>
       </div>

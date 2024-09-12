@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import themeLayout from "./modules/themeLayout/actionCreator";
 import auth from "./modules/authentication/axios/actionCreator";
 import users from "./modules/users/actionCreator";
+import regions from "./modules/regions/actionCreator";
 import file from "./modules/file/actionCreator";
 import transactions from "./modules/transactions/actionCreator";
 import banners from "./modules/banners/actionCreator";
@@ -15,6 +16,7 @@ export default createStore({
     auth,
     headerSearchData,
     users,
+    regions,
     file,
     transactions,
     products,

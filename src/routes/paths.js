@@ -63,14 +63,7 @@ export const paths = [
         /* webpackChunkName: "apply-for-grant" */ "@/view/pages/ApplyGrant.vue"
       ),
   },
-  {
-    name: "regions",
-    path: "/regions",
-    component: () =>
-      import(
-        /* webpackChunkName: "regions" */  "@/view/pages/Region.vue"
-      ),
-  },
+
   {
     name: "transfers",
     path: "/transfers",

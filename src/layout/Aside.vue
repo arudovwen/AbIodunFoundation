@@ -73,9 +73,6 @@
       <a-menu-item @click="toggleCollapsed" key="set-account">
         <router-link to="/page/profile-settings/account"> Account </router-link>
       </a-menu-item>
-      <a-menu-item @click="toggleCollapsed" key="set-account">
-        <router-link to="/page/profile-settings/account"> Regions </router-link>
-      </a-menu-item>
       <a-menu-item @click="toggleCollapsed" key="set-password">
         <router-link to="/page/profile-settings/password">
           Password
@@ -199,6 +196,14 @@ export default defineComponent({
         icon: "globe",
         disable: false,
         role: "admin",
+      },
+      {
+        title: "Ship goods",
+        url: "#",
+        icon: "truck",
+        disable: true,
+        role: "admin",
+        isLabel: true
       },
     ];
     const state = reactive({

@@ -99,8 +99,8 @@
                 class="h-11"
               >
                 <a-select-option value="">Please Select region</a-select-option>
-                <a-select-option value="nigeria">Nigeria</a-select-option>
-                <a-select-option value="ghana">Ghana</a-select-option>
+                <a-select-option :value="n.id" v-for="n in regionsData" :key="n.id">{{n.name}}</a-select-option>
+               
               </a-select>
             </a-form-item>
             <a-form-item
@@ -183,7 +183,14 @@ import { AuthWrapper } from "./style";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { Notification } from "ant-design-vue";
-import { computed, reactive, ref, defineComponent, watch } from "vue";
+import {
+  computed,
+  reactive,
+  ref,
+  defineComponent,
+  watch,
+  onMounted,
+} from "vue";
 // import InlineSvg from "vue-inline-svg";
 
 const SignUp = defineComponent({
@@ -200,11 +207,27 @@ const SignUp = defineComponent({
     const router = useRouter();
     const values = ref(null);
     const checked = ref(null);
+
+    onMounted(() => {
+      dispatch("getRegions", { pageNumber: 1, pageSize: 1000 });
+    });
     const handleSubmit = (value) => {
       values.value = value;
       dispatch("signup", formState);
     };
+    const regionsData = computed(() =>
+      state.regions.data.map((user) => {
+        const { id, name, currency } = user;
 
+        return {
+          ...user,
+          key: id,
+          name,
+
+          currency,
+        };
+      })
+    );
     const onChange = (e) => {
       checked.value = e.target.checked;
     };
@@ -293,6 +316,7 @@ const SignUp = defineComponent({
       isLoading,
       errors,
       checked,
+      regionsData
     };
   },
 });

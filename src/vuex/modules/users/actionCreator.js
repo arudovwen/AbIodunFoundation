@@ -40,11 +40,11 @@ const actions = {
       commit("rolesSuccess", response.data);
     }
   },
-  async getUsers({ commit }, { pageNumber, pageSize, name, email, mobileNo }) {
+  async getUsers({ commit }, payload) {
     try {
       commit("fetchBegin");
       const response = await DataService.get(
-        `${urls.ADMIM_GET_ALL_USERS}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}&email=${email}&mobileNo=${mobileNo}`
+        `${urls.ADMIM_GET_ALL_USERS}?${new URLSearchParams(payload)}`
       );
       if (response.status === 200) {
         commit("fetchSuccess", response.data);

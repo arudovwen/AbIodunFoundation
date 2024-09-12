@@ -282,6 +282,36 @@
                       />
                     </a-form-item>
                     <a-form-item
+                      label="Active Phone number"
+                      name="occupation"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please provide your an phone number!',
+                        },
+                      ]"
+                    >
+                      <a-input
+                        v-model:value="formState.activePhone"
+                        placeholder=""
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      label="Active E-mail"
+                      name="occupation"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please provide an active emal!',
+                        },
+                      ]"
+                    >
+                      <a-input
+                        v-model:value="formState.activeEmail"
+                        placeholder=""
+                      />
+                    </a-form-item>
+                    <a-form-item
                       v-if="formState.type.includes('loans')"
                       label="Residential address"
                       name="residentialAddress"
@@ -622,10 +652,10 @@ const formState = reactive({
   residentialAddress: "",
   businessType: "",
   bvn: "",
-  cacDocumentUrl: "null",
-  statementUrl: "null",
-  identificationUrl: "null",
-  utilityBillUrl: "null",
+  cacDocumentUrl: "",
+  statementUrl: "",
+  identificationUrl: "",
+  utilityBillUrl: "",
   alumniCode: "",
   alumni: false,
   amount: null,
@@ -635,8 +665,10 @@ const formState = reactive({
   interestRate: null,
   dueDate: null,
   occupation: "",
-  description: "desc",
+  description: "",
   upfrontFee: "",
+  activePhone: "",
+  activeEmail: "",
 });
 
 const breadcrumbs = [

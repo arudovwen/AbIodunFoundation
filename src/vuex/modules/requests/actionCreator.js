@@ -1,6 +1,7 @@
 import { DataService } from "@/config/dataService/dataService";
 import mutations from "./mutations";
 import { urls } from "@/helpers/apI_urls";
+import { cleanObject } from "@/utility/cleanObject";
 
 const state = () => ({
   data: [],
@@ -28,11 +29,13 @@ const state = () => ({
 });
 
 const actions = {
-  async getUserProducts({ commit }, { pageNumber, name, pageSize,userId }) {
+  async getUserProducts({ commit }, payload) {
     try {
       commit("fetchBegin");
       const response = await DataService.get(
-        `${urls.GET_ALL_USER_PRODUCT}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}&userId=${userId}`
+        `${urls.GET_ALL_USER_PRODUCT}?${new URLSearchParams(
+          cleanObject(payload)
+        )}`
       );
       if (response.status === 200) {
         commit("fetchSuccess", response.data);
