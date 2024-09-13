@@ -144,7 +144,7 @@ const OverviewDataList = defineComponent({
           total: stats.value.totalRequests || 0,
           suffix: "",
           prefix: "",
-          label: "Total Loans Dsbursed",
+          label: "Total Loans Disbursed",
           growth: "upward",
           growthRate: "25.36",
           dataPeriod: "Since Last Month",

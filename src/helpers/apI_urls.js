@@ -5,7 +5,7 @@ export const urls = {
   CHANGE_PASSWORD_COMPLETE: "/Auth/ChangePasswordComplete",
   CHANGE_PASSWORD: "/Auth/ChangePasswordCompleteInside",
   VALIDATE_EMAIL_INITIATE: "/Auth/ValidateEmailInitiate",
-  VALIDATE_EMAIL_COMPLETE: "/Auth/ActivateUserComplete",
+  VALIDATE_EMAIL_COMPLETE: "/Auth/ValidateEmailComplete",
 
   // Admin
   CREATE_ADMIN: "/Admin/CreateAdmin",

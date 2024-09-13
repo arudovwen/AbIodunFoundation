@@ -30,7 +30,9 @@
                     placeholder="Provide a Minimum amount"
                     :formatter="
                       (value) =>
-                        `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        `${
+                                regionData?.currency || 'NGN'
+                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                     "
                     :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                   />
@@ -52,7 +54,9 @@
                     placeholder="Provide a Maximum amount"
                     :formatter="
                       (value) =>
-                        `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        `${
+                                regionData?.currency || 'NGN'
+                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                     "
                     :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                   />
@@ -181,6 +185,7 @@ const handleSubmit = (value) => {
   values.value = value;
   dispatch("editProductDetail", formState);
 };
+const regionData = JSON.parse(localStorage.getItem("regionData"));
 
 const formState = reactive({
   productId: route?.params?.id, // Update property to match the "Name" input field

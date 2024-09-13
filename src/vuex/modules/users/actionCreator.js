@@ -102,7 +102,7 @@ const actions = {
         commit("avatarSuccess", response.data.data);
       }
     } catch (err) {
-      commit("avatarErr", err);
+      // commit("avatarErr", err);
     }
   },
 

@@ -135,7 +135,9 @@
                           v-model:value="formState.amount"
                           :formatter="
                             (value) =>
-                              `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              `${
+                                regionData?.currency || 'NGN'
+                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                           "
                           :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                         />
@@ -148,7 +150,9 @@
                           :value="upfrontFeesAmount"
                           :formatter="
                             (value) =>
-                              `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              `${
+                                regionData?.currency || 'NGN'
+                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                           "
                           :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                         />
@@ -167,7 +171,9 @@
                           :value="interestRateAmount"
                           :formatter="
                             (value) =>
-                              `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              `${
+                                regionData?.currency || 'NGN'
+                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                           "
                           :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                         />
@@ -186,7 +192,9 @@
                           :value="formState.amount - equityAmount"
                           :formatter="
                             (value) =>
-                              `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              `${
+                                regionData?.currency || 'NGN'
+                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                           "
                           :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                         />
@@ -283,7 +291,7 @@
                     </a-form-item>
                     <a-form-item
                       label="Active Phone number"
-                      name="occupation"
+                      name="activePhone"
                       :rules="[
                         {
                           required: true,
@@ -298,7 +306,7 @@
                     </a-form-item>
                     <a-form-item
                       label="Active E-mail"
-                      name="occupation"
+                      name="activeEmail"
                       :rules="[
                         {
                           required: true,
@@ -309,6 +317,7 @@
                       <a-input
                         v-model:value="formState.activeEmail"
                         placeholder=""
+                        type="email"
                       />
                     </a-form-item>
                     <a-form-item
@@ -543,6 +552,8 @@ import { useRouter, useRoute } from "vue-router";
 import { BasicFormWrapper } from "../styled";
 import dayjs from "dayjs";
 import { businessTypesInNigeria } from "@/utility/constant";
+
+const regionData = JSON.parse(localStorage.getItem("regionData"));
 
 const router = useRouter();
 const route = useRoute();

@@ -58,7 +58,7 @@ const actions = {
       commit("regionErr", err);
     }
   },
-  async getRegion({ commit }, data) {
+  async getRegionById({ commit }, data) {
     try {
       commit("getBegin");
       const response = await DataService.get(
@@ -66,6 +66,7 @@ const actions = {
       );
       if (response.status === 200) {
         commit("getSuccess", response.data);
+        localStorage.setItem("regionData", JSON.stringify(response.data.data));
       }
     } catch (err) {
       commit("getErr", err);

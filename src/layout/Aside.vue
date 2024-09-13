@@ -202,7 +202,7 @@ export default defineComponent({
         url: "#",
         icon: "truck",
         disable: true,
-        role: "admin",
+        role: "all",
         isLabel: true
       },
     ];

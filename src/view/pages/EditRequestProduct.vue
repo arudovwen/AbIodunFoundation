@@ -62,7 +62,9 @@
                         placeholder="Provide an amount"
                         :formatter="
                           (value) =>
-                            `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                            `${
+                                regionData?.currency || 'NGN'
+                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                         "
                         :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
                       />
@@ -229,6 +231,37 @@
                     placeholder="Business address"
                   />
                 </a-form-item>
+                <a-form-item
+                      label="Active Phone number"
+                      name="activePhone"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please provide your an phone number!',
+                        },
+                      ]"
+                    >
+                      <a-input
+                        v-model:value="formState.activePhone"
+                        placeholder=""
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      label="Active E-mail"
+                      name="activeEmail"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please provide an active emal!',
+                        },
+                      ]"
+                    >
+                      <a-input
+                        v-model:value="formState.activeEmail"
+                        placeholder=""
+                        type="email"
+                      />
+                    </a-form-item>
                 <a-form-item
                   label="Residential address"
                   name="residentialAddress"
@@ -434,6 +467,8 @@ const query = reactive({
   pageSize: 100000000,
   name: "",
 });
+const regionData = JSON.parse(localStorage.getItem("regionData"));
+
 const { state, dispatch } = useStore();
 onMounted(() => {
   dispatch("getProducts", query);
@@ -495,6 +530,8 @@ const formState = reactive({
   interestRate: null,
   dueDate: null,
   description: "",
+  activeEmail:"",
+  activePhone: ""
 });
 
 const breadcrumbs = [
@@ -574,10 +611,6 @@ watch(request, () => {
   formState.prodId = request?.value?.id;
   formState.productId = request?.value?.productId.toString();
   formState.amount = request?.value?.amount;
-  console.log(
-    "🚀 ~ file: EditRequestProduct.vue:572 ~ watch ~ request?.value?.amount:",
-    request?.value?.amount
-  );
   formState.requestDate = dayjs(request.value.requestDate);
   formState.equityContribution = request.value.equityContribution;
   formState.lockInPeriod = request.value.lockInPeriod;
@@ -585,6 +618,8 @@ watch(request, () => {
   formState.dueDate = dayjs(request.value.dueDate);
   formState.description = request.value.description;
   formState.userProductId = request.value.userProductId;
+  formState.activeEmail = request.value.activeEmail;
+  formState.activePhone = request.value.activePhone;
 });
 
 watch(productReq, () => {
