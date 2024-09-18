@@ -36,69 +36,57 @@
               </sdButton>
             </div> -->
 
-            <div class="">
-              <Menu as="div" class="relative inline-block text-left">
-                <div>
-                  <MenuButton
-                    class="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-white hover:bg-black/30"
-                  >
-                    <unicon name="trash-alt" width="16"></unicon>
-                  </MenuButton>
-                </div>
-
-                <transition
-                  enter-active-class="transition duration-100 ease-out"
-                  enter-from-class="transform scale-95 opacity-0"
-                  enter-to-class="transform scale-100 opacity-100"
-                  leave-active-class="transition duration-75 ease-in"
-                  leave-from-class="transform scale-100 opacity-100"
-                  leave-to-class="transform scale-95 opacity-0"
+            <Menu as="div" class="relative inline-block text-left">
+              <Float class="">
+                <MenuButton
+                  class="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-white hover:bg-black/30"
                 >
-                  <MenuItems
-                    class="absolute right-0 mt-2 w-[150px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
-                  >
-                    <div class="px-1 py-1 grid">
-                      <MenuItem>
+                  <unicon name="trash-alt" width="16"></unicon>
+                </MenuButton>
+                <MenuItems
+                  class="w-[150px] divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+                >
+                  <div class="px-1 py-1 grid">
+                    <MenuItem>
+                      <sdButton
+                        @click="openDelete(record)"
+                        class="btn-icon text-left flex justify-start"
+                        type="default"
+                        to="#"
+                        shape="circle"
+                      >
+                        Assign
+                      </sdButton>
+                    </MenuItem>
+                    <MenuItem>
+                      <router-link
+                        :to="`/product-management/edit-product-detail/${record.productId}`"
+                      >
                         <sdButton
-                          @click="openDelete(record)"
-                          class="btn-icon text-left flex justify-start"
+                          class="btn-icon"
                           type="default"
                           to="#"
                           shape="circle"
                         >
-                          Assign
+                          Edit
                         </sdButton>
-                      </MenuItem>
-                      <MenuItem>
-                        <router-link
-                          :to="`/product-management/edit-product-detail/${record.productId}`"
-                        >
-                          <sdButton
-                            class="btn-icon"
-                            type="default"
-                            to="#"
-                            shape="circle"
-                          >
-                            Edit
-                          </sdButton>
-                        </router-link>
-                      </MenuItem>
-                      <MenuItem>
-                        <sdButton
-                          @click="openDelete(record)"
-                            class="btn-icon text-left flex justify-start"
-                          type="default"
-                          to="#"
-                          shape="circle"
-                        >
-                          Delete
-                        </sdButton>
-                      </MenuItem>
-                    </div>
-                  </MenuItems>
-                </transition>
-              </Menu>
-            </div>
+                      </router-link>
+                    </MenuItem>
+                    <MenuItem>
+                      <sdButton
+                        @click="openDelete(record)"
+                        class="btn-icon text-left flex justify-start"
+                        type="default"
+                        to="#"
+                        shape="circle"
+                      >
+                        Delete
+                      </sdButton>
+                    </MenuItem>
+                  </div>
+                </MenuItems>
+              </Float>
+            </Menu>
           </template>
         </template></a-table
       >
@@ -148,6 +136,7 @@ import { useRoute } from "vue-router";
 import { productDetailTableHeader } from "@/utility/constant";
 import { formatCurrency } from "@/utility/formatCurrency";
 import { message } from "ant-design-vue";
+import { Float } from "@headlessui-float/vue";
 
 const UserListTable = defineComponent({
   name: "UserListTable",
@@ -159,6 +148,7 @@ const UserListTable = defineComponent({
     MenuButton,
     MenuItems,
     MenuItem,
+    Float,
   },
   setup() {
     const route = useRoute();
