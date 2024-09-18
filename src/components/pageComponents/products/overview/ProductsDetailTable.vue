@@ -36,15 +36,15 @@
               </sdButton>
             </div> -->
 
-            <Menu as="div" class="relative inline-block text-left">
-              <Float class="">
+            <Menu as="div" class="">
+              <Float placement="bottom-end" :offset="4">
                 <MenuButton
                   class="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-white hover:bg-black/30"
                 >
                   <unicon name="trash-alt" width="16"></unicon>
                 </MenuButton>
                 <MenuItems
-                  class="w-[150px] divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+                  class="w-[150px] divide-y divide-gray-100 rounded-md bg-white shadow-lg border-gray-50"
                 >
                   <div class="px-1 py-1 grid">
                     <MenuItem>
