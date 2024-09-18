@@ -63,7 +63,12 @@ export const paths = [
         /* webpackChunkName: "apply-for-grant" */ "@/view/pages/ApplyGrant.vue"
       ),
   },
-
+  {
+    name: "regions",
+    path: "/regions",
+    component: () =>
+      import(/* webpackChunkName: "regions" */ "@/view/pages/Region.vue"),
+  },
   {
     name: "transfers",
     path: "/transfers",
@@ -140,7 +145,9 @@ export const paths = [
     path: "/customer-management",
     name: "customer management",
     component: () =>
-      import(/* webpackChunkName: "customers" */ "@/view/pages/CustomersPage.vue"),
+      import(
+        /* webpackChunkName: "customers" */ "@/view/pages/CustomersPage.vue"
+      ),
     meta: { admin: true },
   },
   {

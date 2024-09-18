@@ -6,6 +6,7 @@
       :routes="breadcrumbs"
     >
     </sdPageHeader>
+
     <Main>
       <a-row justify="center">
         <a-col class="w-full">
@@ -136,10 +137,16 @@
                           :formatter="
                             (value) =>
                               `${
-                                regionData?.currency || 'NGN'
+                                productDetail[0]?.currency || 'NGN'
                               } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                           "
-                          :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
+                          :parser="
+                            (value) =>
+                              parseAmount(
+                                value,
+                                productDetail[0]?.currency || 'NGN'
+                              )
+                          "
                         />
                       </a-form-item>
                       <a-form-item
@@ -151,10 +158,16 @@
                           :formatter="
                             (value) =>
                               `${
-                                regionData?.currency || 'NGN'
+                                productDetail[0]?.currency || 'NGN'
                               } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                           "
-                          :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
+                          :parser="
+                            (value) =>
+                              parseAmount(
+                                value,
+                                productDetail[0]?.currency || 'NGN'
+                              )
+                          "
                         />
                       </a-form-item>
                       <a-form-item
@@ -172,10 +185,16 @@
                           :formatter="
                             (value) =>
                               `${
-                                regionData?.currency || 'NGN'
+                                productDetail[0]?.currency || 'NGN'
                               } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                           "
-                          :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
+                          :parser="
+                            (value) =>
+                              parseAmount(
+                                value,
+                                productDetail[0]?.currency || 'NGN'
+                              )
+                          "
                         />
                       </a-form-item>
 
@@ -193,10 +212,16 @@
                           :formatter="
                             (value) =>
                               `${
-                                regionData?.currency || 'NGN'
+                                productDetail[0]?.currency || 'NGN'
                               } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                           "
-                          :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
+                          :parser="
+                            (value) =>
+                              parseAmount(
+                                value,
+                                productDetail[0]?.currency || 'NGN'
+                              )
+                          "
                         />
                       </a-form-item>
                       <a-form-item
@@ -411,7 +436,7 @@
                           name="cacDocumentUrl"
                           :before-upload="() => false"
                           @change="(e) => handleChange(e, 'cac')"
-                          :progress="!loading"
+                      
                         >
                           <a-button>
                             <upload-outlined
@@ -552,22 +577,36 @@ import { useRouter, useRoute } from "vue-router";
 import { BasicFormWrapper } from "../styled";
 import dayjs from "dayjs";
 import { businessTypesInNigeria } from "@/utility/constant";
+import { parseAmount } from "@/utility/parseCurrency";
 
+const { state, dispatch } = useStore();
 const regionData = JSON.parse(localStorage.getItem("regionData"));
-
+const productDetail = computed(() => state?.products?.product);
+const productLoading = computed(() => state?.products?.loading);
+const isLoading = computed(() => state.requests.addloading);
+const addsuccess = computed(() => state.requests.addsuccess);
+const userData = computed(() => state.auth.userData);
+const region = computed(() => state.regions.region);
+const uploadsuccess = computed(() => state.file.success);
+const loading = computed(() => state.file.loading);
 const router = useRouter();
 const route = useRoute();
-onMounted(() => {
-  dispatch("getProducts", query);
-});
 
 const query = reactive({
   pageNumber: 1,
   pageSize: 100000000,
   name: "",
+  currency:
+    userData?.value?.userRole === "admin"
+      ? region.value?.currency
+      : regionData?.currency,
 });
-const { state, dispatch } = useStore();
-
+watch(region, () => {
+  if (region.value?.currency) {
+    query.currency = region.value?.currency;
+    dispatch("getProducts", query);
+  }
+});
 const products = computed(() => {
   // eslint-disable-next-line vue/no-side-effects-in-computed-properties
   formState.productId = "";
@@ -583,13 +622,6 @@ const upfrontFeePercent = ref(0);
 const interestRatePercent = ref(0);
 const equityPercent = ref(0);
 
-const productDetail = computed(() => state?.products?.product);
-const productLoading = computed(() => state?.products?.loading);
-const isLoading = computed(() => state.requests.addloading);
-const addsuccess = computed(() => state.requests.addsuccess);
-const userData = computed(() => state.auth.userData);
-const uploadsuccess = computed(() => state.file.success);
-const loading = computed(() => state.file.loading);
 const upfrontFeesAmount = computed(() => {
   if (!formState.amount || !formState.productId) return 0;
   let calc;
@@ -646,6 +678,13 @@ const handleSubmit = (values) => {
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
+onMounted(() => {
+  if (!route.query.regionId && route.query.id) {
+    dispatch("getProducts", query);
+    return;
+  }
+  dispatch("getRegionById", route.query.regionId);
+});
 
 const utilityList = ref([]);
 const cacList = ref([]);
@@ -779,7 +818,10 @@ watch(productDetail, () => {
 watch(addsuccess, () => {
   if (addsuccess.value) {
     message.success("Request creation successful!");
-    router.push("/services");
+
+    userData?.value?.userRole === "admin"
+      ? router.push("/customer-management")
+      : router.push("/services");
   }
 });
 watch(

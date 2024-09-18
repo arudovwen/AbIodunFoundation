@@ -30,11 +30,14 @@
                     placeholder="Provide a Minimum amount"
                     :formatter="
                       (value) =>
-                        `${
-                                regionData?.currency || 'NGN'
-                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        `${productInfo?.currency || 'NGN'} ${value}`.replace(
+                          /\B(?=(\d{3})+(?!\d))/g,
+                          ','
+                        )
                     "
-                    :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
+                    :parser="
+                      (value) => parseAmount(value, product?.currency || 'NGN')
+                    "
                   />
                 </a-form-item>
                 <a-form-item
@@ -54,11 +57,14 @@
                     placeholder="Provide a Maximum amount"
                     :formatter="
                       (value) =>
-                        `${
-                                regionData?.currency || 'NGN'
-                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        `${productInfo?.currency || 'NGN'} ${value}`.replace(
+                          /\B(?=(\d{3})+(?!\d))/g,
+                          ','
+                        )
                     "
-                    :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
+                    :parser="
+                      (value) => parseAmount(value, product?.currency || 'NGN')
+                    "
                   />
                 </a-form-item>
                 <!-- <a-form-item
@@ -172,6 +178,7 @@ import { message } from "ant-design-vue";
 import { computed, reactive, ref, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
+import { parseAmount } from "@/utility/parseCurrency";
 
 const { state, dispatch } = useStore();
 const isLoading = computed(() => state.products.editloading);
@@ -185,8 +192,7 @@ const handleSubmit = (value) => {
   values.value = value;
   dispatch("editProductDetail", formState);
 };
-const regionData = JSON.parse(localStorage.getItem("regionData"));
-
+const productInfo = computed(() => state.products.productD);
 const formState = reactive({
   productId: route?.params?.id, // Update property to match the "Name" input field
   minAmount: null, // Update property to match the "Minimum amount" input field
@@ -204,6 +210,7 @@ const query = reactive({
   productId: route.params.id,
 });
 onMounted(() => {
+  dispatch("getProduct", route?.params?.id);
   if (route.params.id) {
     dispatch("getProductDetails", query);
   }
@@ -217,10 +224,6 @@ watch(editsuccess, () => {
 });
 
 watch(product, () => {
-  console.log(
-    "🚀 ~ file: EditProductDetail.vue:202 ~ watch ~ product:",
-    product
-  );
   if (product.value.length) {
     formState.id = product.value[0].id;
     formState.minAmount = product.value[0].minAmount;

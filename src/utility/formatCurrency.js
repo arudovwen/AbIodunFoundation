@@ -1,10 +1,10 @@
 export function formatCurrency(amount, currency = "NGN") {
-  const regionData = JSON.parse(localStorage.getItem("regionData"));
+  // const regionData = JSON.parse(localStorage.getItem("regionData"));
 
-  if (!amount) return "₦0.00";
+  if (!amount) return "NGN0.00";
   const formatter = new Intl.NumberFormat("en-NG", {
     style: "currency",
-    currency: regionData?.currency || currency || "NGN",
+    currency: currency || "NGN",
     minimumFractionDigits: 0,
   });
 

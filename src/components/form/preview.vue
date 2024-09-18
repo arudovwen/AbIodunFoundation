@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-lg p-6 bg-white border">
+  <div class="rounded-lg p-6 bg-white border" v-if="forms?.[0].label">
     <a-form layout="vertical">
       <div class="flex flex-col" v-for="(form, id) in forms" :key="id">
         <a-form-item

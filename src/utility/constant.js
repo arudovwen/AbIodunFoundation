@@ -180,11 +180,11 @@ export const productTableHeader = [
     dataIndex: "createdOn",
     key: "createdOn",
   },
-  // {
-  //   title: "Created by",
-  //   dataIndex: "createdBy",
-  //   key: "createdBy",
-  // },
+  {
+    title: "Currency",
+    dataIndex: "currency",
+    key: "currency",
+  },
 
   {
     title: "Deleted",

@@ -41,13 +41,37 @@
                         loading ? "Loading..." : "Please Select"
                       }}</a-select-option
                     >
-                    <a-select-option value="ifc loans">Interest Free Credit</a-select-option>
-                    <a-select-option value="af loans">Asset Finance</a-select-option>
-                    <a-select-option value="wcf loans">Working Capital Finance</a-select-option>
+                    <a-select-option value="ifc loans"
+                      >Interest Free Credit</a-select-option
+                    >
+                    <a-select-option value="af loans"
+                      >Asset Finance</a-select-option
+                    >
+                    <a-select-option value="wcf loans"
+                      >Working Capital Finance</a-select-option
+                    >
                     <a-select-option value="savings">Savings</a-select-option>
                   </a-select>
                 </a-form-item>
-
+                <a-form-item
+                  name="currency"
+                  label="Currency"
+                  :rules="[
+                    { required: true, message: 'Please select a currency!' },
+                  ]"
+                >
+                  <a-select size="large" v-model:value="formState.currency">
+                    <a-select-option disabled value=""
+                      >Please Select</a-select-option
+                    >
+                    <a-select-option
+                      :value="n.currency"
+                      v-for="n in regionsData"
+                      :key="n.id"
+                      >{{ `${n.name} - ${n.currency}` }}</a-select-option
+                    >
+                  </a-select>
+                </a-form-item>
                 <a-form-item label="Description" name="productDescription">
                   <a-textarea
                     v-model:value="formState.productDescription"
@@ -103,12 +127,25 @@ const formState = reactive({
   productName: "",
   productType: "",
   productDescription: "",
+  currency: "",
 });
+const regionsData = computed(() =>
+  state.regions.data.map((user) => {
+    const { id, name, currency } = user;
 
+    return {
+      ...user,
+      key: id,
+      name,
+      currency,
+    };
+  })
+);
 onMounted(() => {
- if(route.params.id){
-  dispatch("getProduct", route.params.id);
- }
+  dispatch("getRegions", { pageNumber: 1, pageSize: 1000 });
+  if (route.params.id) {
+    dispatch("getProduct", route.params.id);
+  }
 });
 watch(editsuccess, () => {
   if (editsuccess.value) {
@@ -118,10 +155,11 @@ watch(editsuccess, () => {
 });
 watch(product, () => {
   if (product.value) {
-    formState.id =  product.value.id;
-    formState.productName = product.value.productName;
-    formState.productType = product.value.productType;
-    formState.productDescription = product.value.productDescription;
+    formState.id = product.value?.id;
+    formState.productName = product.value?.productName;
+    formState.productType = product.value?.productType;
+    formState.productDescription = product.value?.productDescription;
+    formState.currency = product.value?.currency;
   }
 });
 </script>

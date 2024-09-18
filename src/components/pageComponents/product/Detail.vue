@@ -24,6 +24,12 @@
           product?.productType?.split(" ")[1] || "-"
         }}</span>
       </div>
+      <div>
+        <span class="block text-sm font-medium text-gray-500">Currency</span>
+        <span class="text-base font-medium capitalize">{{
+          product.currency || "-"
+        }}</span>
+      </div>
       <div class="col-span-2">
         <span class="block text-sm font-medium text-gray-500"
           >Product description</span

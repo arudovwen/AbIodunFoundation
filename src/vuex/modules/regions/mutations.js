@@ -1,5 +1,4 @@
 export default {
-  
   updateStatusBegin(state) {
     state.updatestatusloading = true;
     state.error = null;
@@ -33,9 +32,11 @@ export default {
     state.error = null;
     state.getsuccess = false;
   },
-  getSuccess(state) {
+  getSuccess(state, { data }) {
+    console.log("🚀 ~ getSuccess ~ data:", data)
     state.getloading = false;
     state.getsuccess = true;
+    state.region = data;
   },
   getErr(state, err) {
     state.getloading = false;

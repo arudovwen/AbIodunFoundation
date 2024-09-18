@@ -51,7 +51,7 @@ export default defineComponent({
       )
     );
     const avatarsuccess = computed(() => state?.users?.avatarsuccess);
- 
+
     onMounted(() => {
       window.addEventListener("load", () => {
         const domHtml = document.getElementsByTagName("html")[0];
@@ -62,7 +62,8 @@ export default defineComponent({
       });
       if (state?.auth?.userData) {
         dispatch("getUserAvatar", state?.auth?.userData?.id);
-        dispatch("getRegionById",state?.auth?.userData?.regionId)
+        if (!state?.auth?.userData?.regionId) return;
+        dispatch("getRegionById", state?.auth?.userData?.regionId);
       }
     });
 

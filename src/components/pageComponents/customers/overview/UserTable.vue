@@ -18,7 +18,9 @@
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
             <div class="flex gap-x-4 justify-end">
-              <router-link :to="`/service/request?id${record?.userId}`">
+              <router-link
+                :to="`/service/request?id=${record?.userId}&regionId=${record?.regionId}`"
+              >
                 <button
                   class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
                 >
@@ -91,7 +93,7 @@ const UserListTable = defineComponent({
       name: "",
       email: "",
       mobileNo: "",
-      // role: "customer"
+      role: "customer"
     });
     const { state, dispatch } = useStore();
     onMounted(() => {
@@ -120,11 +122,13 @@ const UserListTable = defineComponent({
           status,
           createdOn,
           lastLogin,
+          regionId,
         } = user;
 
         return {
           key: userId,
           userId: userId,
+          regionId,
           fullName: (
             <div class="user-info">
               {/* <figure>

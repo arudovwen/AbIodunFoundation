@@ -1,6 +1,6 @@
 <template>
-  <div class="grid grid-cols-2 gap-x-5">
-    <div class="w-full">
+  <div class="flex  gap-x-5">
+    <div class="w-full max-w-[60%]">
       <div>
         <a-form name="register" :model="forms" layout="vertical" ref="formRef">
           <div class="grid gap-y-6">
@@ -15,6 +15,7 @@
                   <span> {{ n.label }}</span>
                 </span>
                 <button
+                  v-if="forms.dynamicFields.length > 1"
                   @click="removeField(id)"
                   class="text-red-500 text-sm"
                   type="button"
@@ -45,7 +46,7 @@
                     :name="['dynamicFields', id, 'type']"
                     :rules="[{ required: true, message: 'Select input type' }]"
                   >
-                    <a-select class="!h-12"  v-model:value="n.type">
+                    <a-select class="!h-12" v-model:value="n.type">
                       <a-select-option value=""
                         >Please Select type</a-select-option
                       >
@@ -149,7 +150,7 @@
         </a-form>
       </div>
     </div>
-    <div>
+    <div class="flex-1">
       <Preview :forms="forms.dynamicFields" />
     </div>
   </div>

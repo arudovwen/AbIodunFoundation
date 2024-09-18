@@ -21,9 +21,9 @@
               <button class="text-xs" @click="openModal(record, 'edit')">
                 Edit
               </button>
-              <button @click="openModal(record, 'delete')" class="text-xs">
+              <!-- <button @click="openModal(record, 'delete')" class="text-xs">
                 Delete
-              </button>
+              </button> -->
             </div>
           </template>
         </template>
@@ -45,13 +45,13 @@
           Cancel
         </sdButton>
         <sdButton
-          :disabled="deleteloading || forgotLoading"
+          :disabled="deleteloading"
           class=""
           size="sm"
           key="1"
           type="error"
           @click="handleDelete"
-          >{{ deleteloading || forgotLoading ? "Processing..." : "Confirm" }}
+          >{{ deleteloading ? "Processing..." : "Confirm" }}
         </sdButton>
       </div>
     </div>
@@ -116,7 +116,7 @@ const UserListTable = defineComponent({
           ...user,
           key: id,
           name,
-          description,
+          description: description || "-",
           currency,
           createdAt: moment(createdAt).format("ll"),
           statusInt: status,

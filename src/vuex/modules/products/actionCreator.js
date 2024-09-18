@@ -1,11 +1,12 @@
 import { DataService } from "@/config/dataService/dataService";
 import mutations from "./mutations";
 import { urls } from "@/helpers/apI_urls";
+import { cleanObject } from "@/utility/cleanObject";
 
 const state = () => ({
   data: [],
   total: 0,
-  productD:null,
+  productD: null,
   product: null,
   loading: false,
   success: false,
@@ -70,11 +71,11 @@ const actions = {
       commit("editErr", err);
     }
   },
-  async getProducts({ commit }, { pageNumber, pageSize, name }) {
+  async getProducts({ commit }, data) {
     try {
       commit("fetchBegin");
       const response = await DataService.get(
-        `${urls.GET_ALL_PRODUCTS}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}`
+        `${urls.GET_ALL_PRODUCTS}?${new URLSearchParams(cleanObject(data))}`
       );
       if (response.status === 200) {
         commit("fetchSuccess", response.data);
@@ -83,14 +84,11 @@ const actions = {
       commit("fetchErr", err);
     }
   },
-  async getProductDetails(
-    { commit },
-    { pageNumber, pageSize, name, productId }
-  ) {
+  async getProductDetails({ commit }, data) {
     try {
       commit("fetchDetailBegin");
       const response = await DataService.get(
-        `${urls.GET_PRODUCTS_WITH_DETAILS}?pageNumber=${pageNumber}&pageSize=${pageSize}&name=${name}&productId=${productId}`
+        `${urls.GET_PRODUCTS_WITH_DETAILS}?${new URLSearchParams(cleanObject(data))}`
       );
       if (response.status === 200) {
         commit("fetchDetailSuccess", response.data);

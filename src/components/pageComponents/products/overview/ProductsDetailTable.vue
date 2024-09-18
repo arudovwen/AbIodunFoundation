@@ -17,7 +17,7 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <div class="table-actions">
+            <!-- <div class="table-actions">
               <router-link
                 :to="`/product-management/edit-product-detail/${record.productId}`"
               >
@@ -34,9 +34,74 @@
               >
                 <unicon name="trash-alt" width="16"></unicon>
               </sdButton>
+            </div> -->
+
+            <div class="">
+              <Menu as="div" class="relative inline-block text-left">
+                <div>
+                  <MenuButton
+                    class="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-white hover:bg-black/30"
+                  >
+                    <unicon name="trash-alt" width="16"></unicon>
+                  </MenuButton>
+                </div>
+
+                <transition
+                  enter-active-class="transition duration-100 ease-out"
+                  enter-from-class="transform scale-95 opacity-0"
+                  enter-to-class="transform scale-100 opacity-100"
+                  leave-active-class="transition duration-75 ease-in"
+                  leave-from-class="transform scale-100 opacity-100"
+                  leave-to-class="transform scale-95 opacity-0"
+                >
+                  <MenuItems
+                    class="absolute right-0 mt-2 w-[150px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+                  >
+                    <div class="px-1 py-1 grid">
+                      <MenuItem>
+                        <sdButton
+                          @click="openDelete(record)"
+                          class="btn-icon text-left flex justify-start"
+                          type="default"
+                          to="#"
+                          shape="circle"
+                        >
+                          Assign
+                        </sdButton>
+                      </MenuItem>
+                      <MenuItem>
+                        <router-link
+                          :to="`/product-management/edit-product-detail/${record.productId}`"
+                        >
+                          <sdButton
+                            class="btn-icon"
+                            type="default"
+                            to="#"
+                            shape="circle"
+                          >
+                            Edit
+                          </sdButton>
+                        </router-link>
+                      </MenuItem>
+                      <MenuItem>
+                        <sdButton
+                          @click="openDelete(record)"
+                            class="btn-icon text-left flex justify-start"
+                          type="default"
+                          to="#"
+                          shape="circle"
+                        >
+                          Delete
+                        </sdButton>
+                      </MenuItem>
+                    </div>
+                  </MenuItems>
+                </transition>
+              </Menu>
             </div>
-          </template> </template
-      ></a-table>
+          </template>
+        </template></a-table
+      >
     </TableWrapper>
   </UserTableStyleWrapper>
   <Modal :open="visible" @close="visible = false">
@@ -69,6 +134,7 @@
 import Modal from "components/Modal";
 import { useStore } from "vuex";
 import { UserTableStyleWrapper } from "../style";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { TableWrapper } from "../../../styled";
 import {
   computed,
@@ -76,25 +142,31 @@ import {
   onMounted,
   watch,
   reactive,
- 
   ref,
-  
 } from "vue";
-import {useRoute} from "vue-router"
+import { useRoute } from "vue-router";
 import { productDetailTableHeader } from "@/utility/constant";
 import { formatCurrency } from "@/utility/formatCurrency";
 import { message } from "ant-design-vue";
 
 const UserListTable = defineComponent({
   name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper, Modal },
+  components: {
+    UserTableStyleWrapper,
+    TableWrapper,
+    Modal,
+    Menu,
+    MenuButton,
+    MenuItems,
+    MenuItem,
+  },
   setup() {
     const route = useRoute();
     const visible = ref(false);
     const detail = ref("");
-  
+
     const productId = ref(route.params.id);
-  
+
     const query = reactive({
       pageNumber: 1,
       pageSize: 10,
@@ -103,9 +175,9 @@ const UserListTable = defineComponent({
     });
     const { state, dispatch } = useStore();
     onMounted(() => {
-     if(productId.value){
-      dispatch("getProductDetails", query);
-     }
+      if (productId.value) {
+        dispatch("getProductDetails", query);
+      }
     });
     function fetchRecords(page) {
       dispatch("getProductDetails", { ...query, pageNumber: page });
@@ -115,6 +187,8 @@ const UserListTable = defineComponent({
     const addsuccess = computed(() => state.products.addsuccess);
     const deleteloading = computed(() => state.products.deleteloading);
     const deletesuccess = computed(() => state.products.deletesuccess);
+    const product = computed(() => state.products.productD);
+
     const productsData = computed(() =>
       state?.products?.product?.map((user) => {
         const {
@@ -133,14 +207,16 @@ const UserListTable = defineComponent({
           productId: id,
           interestRate: <span class="capitalize">{interestRate}%</span>,
           maxAmount: (
-            <span class="capitalize">{formatCurrency(maxAmount)}</span>
+            <span class="capitalize">
+              {formatCurrency(maxAmount, product.value?.currency)}
+            </span>
           ),
           minAmount: (
-            <span class="capitalize">{formatCurrency(minAmount)}</span>
+            <span class="capitalize">
+              {formatCurrency(minAmount, product.value?.currency)}
+            </span>
           ),
-          upfrontFees: (
-            <span class="capitalize">{upfrontFees}%</span>
-          ),
+          upfrontFees: <span class="capitalize">{upfrontFees}%</span>,
           equityContribution: (
             <span class="capitalize">{equityContribution}%</span>
           ),
@@ -159,7 +235,7 @@ const UserListTable = defineComponent({
     function handleDelete() {
       dispatch("deleteProductDetail", detail.value.productId);
     }
- 
+
     watch(addsuccess, () => {
       addsuccess.value && dispatch("getProductDetails", query);
     });
@@ -171,7 +247,6 @@ const UserListTable = defineComponent({
         visible.value = false;
       }
     });
-
 
     return {
       handleDelete,

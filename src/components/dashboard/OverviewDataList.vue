@@ -141,7 +141,7 @@ const OverviewDataList = defineComponent({
           id: 3,
           type: "primary",
           icon: "receipt",
-          total: stats.value.totalRequests || 0,
+          total: stats.value.totalLoanDisbursed || 0,
           suffix: "",
           prefix: "",
           label: "Total Loans Disbursed",

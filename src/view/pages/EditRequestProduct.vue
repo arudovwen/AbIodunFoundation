@@ -63,10 +63,16 @@
                         :formatter="
                           (value) =>
                             `${
-                                regionData?.currency || 'NGN'
+                              productDetail[0]?.currency || 'NGN'
                               } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                         "
-                        :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
+                       :parser="
+                            (value) =>
+                              parseAmount(
+                                value,
+                                productDetail[0]?.currency || 'NGN'
+                              )
+                          "
                       />
                     </a-form-item>
                     <a-form-item
@@ -459,6 +465,8 @@ import { useStore } from "vuex";
 import { BasicFormWrapper } from "../styled";
 import dayjs from "dayjs";
 import { businessTypesInNigeria } from "@/utility/constant";
+import { parseAmount } from "@/utility/parseCurrency";
+
 
 const router = useRouter();
 const route = useRoute();
@@ -467,7 +475,6 @@ const query = reactive({
   pageSize: 100000000,
   name: "",
 });
-const regionData = JSON.parse(localStorage.getItem("regionData"));
 
 const { state, dispatch } = useStore();
 onMounted(() => {
@@ -589,7 +596,9 @@ const disabledDate = (current) => {
 watch(editsuccess, () => {
   if (editsuccess.value) {
     message.success("Service update successful!");
-    router.push("/services");
+    userData?.value?.userRole === "admin"
+      ? router.push("/customer-management")
+      : router.push("/services");
   }
 });
 watch(uploadsuccess, () => {

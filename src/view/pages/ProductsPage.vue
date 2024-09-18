@@ -61,6 +61,7 @@ const productsData = computed(() =>
       productDescription,
       productName,
       productType,
+      currency,
     } = user;
 
     return {
@@ -68,6 +69,7 @@ const productsData = computed(() =>
       "Product Type": productType?.split(" ")[1],
       Status: isDeleted ? "Yes" : "No",
       description: productDescription,
+      currency,
       created: moment(createdAt).format("ll"),
       status: isDeleted ? "Inactive" : "Active",
     };

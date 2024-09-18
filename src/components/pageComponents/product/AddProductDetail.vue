@@ -29,11 +29,14 @@
                     placeholder="Provide a Minimum amount"
                     :formatter="
                       (value) =>
-                        `${
-                                regionData?.currency || 'NGN'
-                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        `${product?.currency || 'NGN'} ${value}`.replace(
+                          /\B(?=(\d{3})+(?!\d))/g,
+                          ','
+                        )
                     "
-                    :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
+                     :parser="
+                      (value) => parseAmount(value, product?.currency || 'NGN')
+                    "
                   />
                 </a-form-item>
                 <a-form-item
@@ -52,11 +55,14 @@
                     placeholder="Provide a Maximum amount"
                     :formatter="
                       (value) =>
-                        `${
-                                regionData?.currency || 'NGN'
-                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        `${product?.currency || 'NGN'} ${value}`.replace(
+                          /\B(?=(\d{3})+(?!\d))/g,
+                          ','
+                        )
                     "
-                    :parser="(value) => value.replace(/\₦\s?|(,*)/g, '')"
+                    :parser="
+                      (value) => parseAmount(value, product?.currency || 'NGN')
+                    "
                   />
                 </a-form-item>
 
@@ -153,8 +159,9 @@
 </template>
 <script setup>
 import { BasicFormWrapper } from "../../styled";
+import { parseAmount } from "@/utility/parseCurrency";
 import { message } from "ant-design-vue";
-import { computed, reactive, ref, watch, provide } from "vue";
+import { computed, reactive, ref, watch, provide, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import Builder from "components/form/builder";
@@ -162,6 +169,7 @@ import Builder from "components/form/builder";
 const { state, dispatch } = useStore();
 const isLoading = computed(() => state.products.addloading);
 const addsuccess = computed(() => state.products.addsuccess);
+const product = computed(() => state.products.productD);
 const router = useRouter();
 const route = useRoute();
 const values = ref(null);
@@ -169,7 +177,6 @@ const handleSubmit = (value) => {
   values.value = value;
   dispatch("addProductDetail", { ...formState, rate: formState.interestRate });
 };
-const regionData = JSON.parse(localStorage.getItem("regionData"));
 
 const formState = reactive({
   productId: route?.params?.id, // Update property to match the "Name" input field
@@ -192,12 +199,15 @@ const formState = reactive({
     },
   ],
 });
-
+// ₦
 watch(addsuccess, () => {
   if (addsuccess.value) {
     message.success("Product detail added!");
     router.push(`/product-management/product/${route?.params?.id}`);
   }
+});
+onMounted(() => {
+  dispatch("getProduct", route?.params?.id);
 });
 provide("forms", formState);
 </script>
