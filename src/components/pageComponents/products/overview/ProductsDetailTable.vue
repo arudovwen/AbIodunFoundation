@@ -39,12 +39,12 @@
             <Menu as="div" class="">
               <Float placement="bottom-end" :offset="4">
                 <MenuButton
-                  class="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-white hover:bg-black/30"
+                  class="inline-flex justify-center rounded-md bg-gray-100 px-1 py-2 text-sm font-medium text-white w-auto"
                 >
-                  <unicon name="trash-alt" width="16"></unicon>
+                  <unicon name="ellipsis-v" width="16"></unicon>
                 </MenuButton>
                 <MenuItems
-                  class="w-[150px] divide-y divide-gray-100 rounded-md bg-white shadow-lg border-gray-50"
+                  class="w-[150px] rounded-md bg-white shadow-lg border-gray-50"
                 >
                   <div class="px-1 py-1 grid">
                     <MenuItem>

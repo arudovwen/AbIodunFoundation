@@ -85,3 +85,8 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.table-responsive {
+  overflow: none;
+}
+</style>
