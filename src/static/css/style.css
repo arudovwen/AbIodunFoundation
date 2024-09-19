@@ -1767,7 +1767,7 @@ html[dir="rtl"] .ninjadash_upload-basic .ninjadash_upload-browse {
 
 .table-bordered .ant-table-thead tr th:last-child,
 .table-bordered .ant-table-tbody tr td:last-child {
-  text-align: right;
+  /* text-align: right; */
 }
 
 .dark-mode .ant-table-thead > tr > th {
@@ -3705,16 +3705,12 @@ html[dir="rtl"] .ant-comment-avatar {
   height: 41px !important;
 }
 
-.ant-input {
+/* .ant-input {
   padding: 8px 14px !important;
-}
+} */
 
 .table-responsive .ant-table-content {
-  overflow-x: unset;
+  /* overflow-x: unset; */
+  /* min-height: 220px; */
 }
 
-@media (max-width: 600px) {
-  .table-responsive .ant-table-content {
-    overflow-x: auto;
-  }
-}

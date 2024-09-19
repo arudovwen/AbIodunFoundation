@@ -1,89 +1,111 @@
 <template>
- <div>
-  <div class="mb-8">
-    <slot></slot>
-  </div>
-  <UserTableStyleWrapper>
-    <TableWrapper class="table-responsive">
-      <a-table
-        :loading="loading || forgotLoading"
-        :dataSource="usersData"
-        :columns="userTableHeader"
-        :pagination="{
-          defaultPageSize: query.pageSize,
-          total: total,
-          showTotal: (total, range) =>
-            `${range[0]}-${range[1]} of ${total} items`,
-          onChange: (page) => {
-            fetchRecords(page);
-          },
-        }"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'action'">
-            <div class="flex gap-x-4 justify-end">
-              <button
-                v-if="record.statusInt !== 5"
-                @click="openDelete(record, 'disable')"
-                class="text-xs bg-gray-200 rounded-full py-1 px-2"
-              >
-                Disable
-              </button>
-              <button
-                v-if="record.statusInt === 5"
-                @click="openDelete(record, 'enable')"
-                class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
-                type="default"
-                to="#"
-                shape="circle"
-              >
-                Enable
-              </button>
-              <button
-                @click="openDelete(record, 'password')"
-                class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
-                type="default"
-                to="#"
-                shape="circle"
-              >
-                Reset Password
-              </button>
+  <div>
+    <div class="mb-8">
+      <slot></slot>
+    </div>
+    <UserTableStyleWrapper>
+      <TableWrapper class="table-responsive">
+        <a-table
+          :loading="loading || forgotLoading"
+          :dataSource="usersData"
+          :columns="userTableHeader"
+          :pagination="{
+            defaultPageSize: query.pageSize,
+            total: total,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} of ${total} items`,
+            onChange: (page) => {
+              fetchRecords(page);
+            },
+          }"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'fullName'">
+            <div>
+              <span class="block text-sm font-medium">{{ record?.name }}</span>
+              <span class="block text-gray-600">{{ record?.emailAddress }}</span>
             </div>
           </template>
-        </template></a-table
-      >
-    </TableWrapper>
-  </UserTableStyleWrapper>
-  <Modal :open="visible" @close="visible = false">
-    <div class="bg-white rounded-lg">
-      <h3 class="text-xl font-bold mb-4">Confirm action</h3>
-      <p class="mb-7">Are you sure about this action?</p>
-      <div class="flex justify-between">
-        <sdButton
-          :disabled="deleteloading"
-          @click="visible = false"
-          size="sm"
-          key="1"
-          type="light"
+            <template v-if="column.key === 'action'">
+       
+            <Menu as="div" class="">
+              <Float placement="bottom-end" :offset="4" portal>
+                <MenuButton
+                  class="inline-flex justify-center rounded-md px-1 py-2 text-sm font-medium text-white w-auto"
+                >
+                  <unicon name="ellipsis-v" width="16"></unicon>
+                </MenuButton>
+                <MenuItems
+                  class="w-[150px] rounded-md bg-white shadow-lg border-gray-50"
+                >
+                  <div class="px-1 grid gap-y-1">
+                    <button
+                      v-if="record.statusInt !== 5"
+                      @click="openDelete(record, 'disable')"
+                      class="text-xs text-left  py-2 px-2"
+                    >
+                      Disable
+                    </button>
+                    <button
+                      v-if="record.statusInt === 5"
+                      @click="openDelete(record, 'enable')"
+                      class="text-xs py-2 px-2"
+                      type="default"
+                      to="#"
+                      shape="circle"
+                    >
+                      Enable
+                    </button>
+                    <button
+                      @click="openDelete(record, 'password')"
+                      class="text-xs py-2 px-2 text-left"
+                      type="default"
+                      to="#"
+                      shape="circle"
+                    >
+                      Reset Password
+                    </button>
+                  </div>
+                </MenuItems>
+              </Float>
+            </Menu>
+            </template>
+          </template></a-table
         >
-          Cancel
-        </sdButton>
-        <sdButton
-          :disabled="deleteloading || forgotLoading"
-          class=""
-          size="sm"
-          key="1"
-          type="error"
-          @click="handleDelete"
-          >{{ deleteloading || forgotLoading ? "Processing..." : "Confirm" }}
-        </sdButton>
+      </TableWrapper>
+    </UserTableStyleWrapper>
+    <Modal :open="visible" @close="visible = false">
+      <div class="bg-white rounded-lg">
+        <h3 class="text-xl font-bold mb-4">Confirm action</h3>
+        <p class="mb-7">Are you sure about this action?</p>
+        <div class="flex justify-between">
+          <sdButton
+            :disabled="deleteloading"
+            @click="visible = false"
+            size="sm"
+            key="1"
+            type="light"
+          >
+            Cancel
+          </sdButton>
+          <sdButton
+            :disabled="deleteloading || forgotLoading"
+            class=""
+            size="sm"
+            key="1"
+            type="error"
+            @click="handleDelete"
+            >{{ deleteloading || forgotLoading ? "Processing..." : "Confirm" }}
+          </sdButton>
+        </div>
       </div>
-    </div>
-  </Modal>
- </div>
+    </Modal>
+  </div>
 </template>
 <script>
 import Modal from "components/Modal";
+import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import { Float } from "@headlessui-float/vue";
 import moment from "moment";
 import { useStore } from "vuex";
 import { debounce } from "lodash";
@@ -103,7 +125,15 @@ import { message } from "ant-design-vue";
 
 const UserListTable = defineComponent({
   name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper, Modal },
+  components: {
+    UserTableStyleWrapper,
+    TableWrapper,
+    Modal,
+    Menu,
+    MenuButton,
+    MenuItems,
+    Float,
+  },
   setup() {
     const visible = ref(false);
     const detail = ref("");
@@ -148,6 +178,7 @@ const UserListTable = defineComponent({
         return {
           key: userId,
           userId: userId,
+          name:fullName,
           fullName: (
             <div class="user-info">
               {/* <figure>

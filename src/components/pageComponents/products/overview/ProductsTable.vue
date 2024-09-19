@@ -17,7 +17,7 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <div class="flex gap-x-3 items-center justify-end">
+            <!-- <div class="flex gap-x-3 items-center justify-end">
               <router-link
                 :to="`product-management/product/${record.productid}`"
               >
@@ -46,9 +46,55 @@
               >
                 <unicon name="trash-alt" width="16"></unicon>
               </sdButton>
-            </div>
-          </template> </template
-      ></a-table>
+            </div> -->
+            <Menu as="div" class="">
+              <Float placement="bottom-end" :offset="4" portal>
+                <MenuButton
+                  class="inline-flex justify-center rounded-md px-1 py-2 text-sm font-medium text-white w-auto mx-auto"
+                >
+                  <unicon name="ellipsis-v" width="16"></unicon>
+                </MenuButton>
+                <MenuItems
+                  class="w-[150px] rounded-md bg-white shadow-lg border-gray-50"
+                >
+                  <div class="px-1 grid gap-y-1">
+                    <router-link
+                      :to="`product-management/product/${record.productid}`"
+                    >
+                      <button
+                        class="btn-icon text-left flex justify-start h-auto py-[4px]"
+                      >
+                        View
+                      </button>
+                    </router-link>
+                    <router-link
+                      :to="`product-management/edit-product/${record.productid}`"
+                    >
+                      <button
+                        class="btn-icon text-left flex justify-start h-auto py-[4px]"
+                        type="default"
+                        to="#"
+                        shape="circle"
+                      >
+                        Edit
+                      </button>
+                    </router-link>
+                    <sdButton
+                      @click="openDelete(record)"
+                      class="btn-icon text-left flex justify-start h-auto py-[4px] px-[13px]"
+                      type="default"
+                      to="#"
+                      shape="circle"
+                    >
+                      Delete
+                    </sdButton>
+                  </div>
+                </MenuItems>
+              </Float>
+            </Menu>
+          </template>
+        </template></a-table
+      >
     </TableWrapper>
   </UserTableStyleWrapper>
   <Modal :open="visible" @close="visible = false">
@@ -95,10 +141,20 @@ import {
 } from "vue";
 import { productTableHeader } from "@/utility/constant";
 import { message } from "ant-design-vue";
+import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import { Float } from "@headlessui-float/vue";
 
 const UserListTable = defineComponent({
   name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper, Modal },
+  components: {
+    UserTableStyleWrapper,
+    TableWrapper,
+    Modal,
+    Menu,
+    MenuButton,
+    MenuItems,
+    Float,
+  },
   setup() {
     const visible = ref(false);
     const detail = ref("");

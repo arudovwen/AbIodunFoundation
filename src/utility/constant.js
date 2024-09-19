@@ -39,11 +39,11 @@ export const userTableHeader = [
     dataIndex: "fullName",
     key: "fullName",
   },
-  {
-    title: "Email",
-    dataIndex: "emailAddress",
-    key: "emailAddress",
-  },
+  // {
+  //   title: "Email",
+  //   dataIndex: "emailAddress",
+  //   key: "emailAddress",
+  // },
   {
     title: "Email validated",
     dataIndex: "emailValidated",
@@ -87,11 +87,11 @@ export const customerTableHeader = [
     dataIndex: "fullName",
     key: "fullName",
   },
-  {
-    title: "Email",
-    dataIndex: "emailAddress",
-    key: "emailAddress",
-  },
+  // {
+  //   title: "Email",
+  //   dataIndex: "emailAddress",
+  //   key: "emailAddress",
+  // },
 
   {
     title: "Phone number",

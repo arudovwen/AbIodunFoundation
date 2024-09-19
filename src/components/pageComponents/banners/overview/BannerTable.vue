@@ -42,7 +42,9 @@
       {{
         query.status === ""
           ? "All"
-          : (query.status === "false" ? "Inactive" : "Active")
+          : query.status === "false"
+          ? "Inactive"
+          : "Active"
       }}
     </div>
     <TableWrapper class="table-responsive">
@@ -62,28 +64,45 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <div class="flex gap-x-4 items-center">
-              <button
-                v-if="record.stat.toLowerCase() == 'true'"
-                class="text-xs"
-                @click="openModal(record, 'disable')"
-              >
-                Disable
-              </button>
-              <button
-                v-if="record.stat.toLowerCase() == 'false'"
-                class="text-xs"
-                @click="openModal(record, 'enable')"
-              >
-                Enable
-              </button>
-              <button class="text-xs" @click="openModal(record, 'edit')">
-                Edit
-              </button>
-              <button @click="openModal(record, 'delete')" class="text-xs">
-                Delete
-              </button>
-            </div>
+        
+            <Menu as="div" class="">
+              <Float placement="bottom-end" :offset="4" portal>
+                <MenuButton
+                  class="inline-flex justify-center rounded-md px-1 py-2 text-sm font-medium text-white w-auto"
+                >
+                  <unicon name="ellipsis-v" width="16"></unicon>
+                </MenuButton>
+                <MenuItems
+                  class="w-[150px] rounded-md bg-white shadow-lg border-gray-50"
+                >
+                  <div class="px-1 grid gap-y-1">
+                    <button
+                      v-if="record.stat.toLowerCase() == 'true'"
+                      class="text-sm py-[6px] px-2 text-left"
+                      @click="openModal(record, 'disable')"
+                    >
+                      Disable
+                    </button>
+                    <button
+                      v-if="record.stat.toLowerCase() == 'false'"
+                      class="text-sm py-[6px] px-[6px] text-left"
+                      @click="openModal(record, 'enable')"
+                    >
+                      Enable
+                    </button>
+                    <button class="text-sm py-[6px] px-2 text-left" @click="openModal(record, 'edit')">
+                      Edit
+                    </button>
+                    <button
+                      @click="openModal(record, 'delete')"
+                      class="text-sm py-[6px] px-2 text-left"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </MenuItems>
+              </Float>
+            </Menu>
           </template>
         </template></a-table
       >
@@ -95,22 +114,24 @@
     <div class="bg-white rounded-lg" v-else>
       <h3 class="text-xl font-bold mb-4">Confirm action</h3>
       <p class="mb-7">Are you sure about this action?</p>
-      <div class="flex justify-between">
+      <div class="flex justify-between gap-x-4">
         <sdButton
           :disabled="deleteloading"
           @click="visible = false"
           size="sm"
           key="1"
           type="light"
+          class="w-full"
         >
           Cancel
         </sdButton>
         <sdButton
           :disabled="deleteloading"
-          class=""
+       
           size="sm"
           key="1"
           type="error"
+           class="w-full"
           @click="handleUpdate"
           >{{ deleteloading ? "Processing..." : "Confirm" }}
         </sdButton>
@@ -132,12 +153,13 @@ import {
   reactive,
   ref,
 } from "vue";
+import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import { Float } from "@headlessui-float/vue";
 import { bannerTableHeader } from "@/utility/constant";
 import AddBanner from "components/pageComponents/banners/AddBanner";
 import EditBanner from "components/pageComponents/banners/EditBanner";
 import { message } from "ant-design-vue";
 import { base64ToImage } from "@/utility/base64ToImage";
-
 
 const UserListTable = defineComponent({
   name: "UserListTable",
@@ -147,6 +169,10 @@ const UserListTable = defineComponent({
     TableWrapper,
     AddBanner,
     Modal,
+    Menu,
+    MenuButton,
+    MenuItems,
+    Float,
   },
   setup() {
     const type = ref("");

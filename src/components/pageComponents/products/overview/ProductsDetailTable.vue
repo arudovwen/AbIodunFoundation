@@ -16,6 +16,7 @@
         }"
       >
         <template #bodyCell="{ column, record }">
+     
           <template v-if="column.key === 'action'">
             <!-- <div class="table-actions">
               <router-link
@@ -37,20 +38,20 @@
             </div> -->
 
             <Menu as="div" class="">
-              <Float placement="bottom-end" :offset="4">
+              <Float placement="bottom-end" :offset="4" portal>
                 <MenuButton
-                  class="inline-flex justify-center rounded-md bg-gray-100 px-1 py-2 text-sm font-medium text-white w-auto"
+                  class="inline-flex justify-center rounded-md px-1 py-2 text-sm font-medium text-white w-auto"
                 >
                   <unicon name="ellipsis-v" width="16"></unicon>
                 </MenuButton>
                 <MenuItems
                   class="w-[150px] rounded-md bg-white shadow-lg border-gray-50"
                 >
-                  <div class="px-1 py-1 grid">
+                  <div class="px-1 grid gap-y-1">
                     <MenuItem>
                       <sdButton
                         @click="openDelete(record)"
-                        class="btn-icon text-left flex justify-start"
+                        class="btn-icon text-left flex justify-start h-auto py-[4px]"
                         type="default"
                         to="#"
                         shape="circle"
@@ -63,7 +64,7 @@
                         :to="`/product-management/edit-product-detail/${record.productId}`"
                       >
                         <sdButton
-                          class="btn-icon"
+                          class="btn-icon h-auto py-[4px]"
                           type="default"
                           to="#"
                           shape="circle"
@@ -75,7 +76,7 @@
                     <MenuItem>
                       <sdButton
                         @click="openDelete(record)"
-                        class="btn-icon text-left flex justify-start"
+                        class="btn-icon text-left flex justify-start h-auto py-[4px]"
                         type="default"
                         to="#"
                         shape="circle"
