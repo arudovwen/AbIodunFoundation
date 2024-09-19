@@ -75,7 +75,10 @@
                 <div
                   class="col-span-2"
                   v-if="
-                    formState.type && formState.productId && !productLoading
+                    formState.type &&
+                    formState.productId &&
+                    !productLoading &&
+                    !prodloading
                   "
                 >
                   <h2 class="font-bold mb-7">Product detail</h2>
@@ -136,19 +139,18 @@
                           v-model:value="formState.amount"
                           :formatter="
                             (value) =>
-                              `${
-                                productDetail[0]?.currency || 'NGN'
-                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              `${productD?.currency || 'NGN'} ${value}`.replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ','
+                              )
                           "
                           :parser="
                             (value) =>
-                              parseAmount(
-                                value,
-                                productDetail[0]?.currency || 'NGN'
-                              )
+                              parseAmount(value, productD?.currency || 'NGN')
                           "
                         />
                       </a-form-item>
+
                       <a-form-item
                         label="Upfront fee"
                         v-if="formState.type !== 'savings'"
@@ -157,16 +159,14 @@
                           :value="upfrontFeesAmount"
                           :formatter="
                             (value) =>
-                              `${
-                                productDetail[0]?.currency || 'NGN'
-                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              `${productD?.currency || 'NGN'} ${value}`.replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ','
+                              )
                           "
                           :parser="
                             (value) =>
-                              parseAmount(
-                                value,
-                                productDetail[0]?.currency || 'NGN'
-                              )
+                              parseAmount(value, productD?.currency || 'NGN')
                           "
                         />
                       </a-form-item>
@@ -184,16 +184,14 @@
                           :value="interestRateAmount"
                           :formatter="
                             (value) =>
-                              `${
-                                productDetail[0]?.currency || 'NGN'
-                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              `${productD?.currency || 'NGN'} ${value}`.replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ','
+                              )
                           "
                           :parser="
                             (value) =>
-                              parseAmount(
-                                value,
-                                productDetail[0]?.currency || 'NGN'
-                              )
+                              parseAmount(value, productD?.currency || 'NGN')
                           "
                         />
                       </a-form-item>
@@ -211,16 +209,14 @@
                           :value="formState.amount - equityAmount"
                           :formatter="
                             (value) =>
-                              `${
-                                productDetail[0]?.currency || 'NGN'
-                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              `${productD?.currency || 'NGN'} ${value}`.replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ','
+                              )
                           "
                           :parser="
                             (value) =>
-                              parseAmount(
-                                value,
-                                productDetail[0]?.currency || 'NGN'
-                              )
+                              parseAmount(value, productD?.currency || 'NGN')
                           "
                         />
                       </a-form-item>
@@ -436,7 +432,6 @@
                           name="cacDocumentUrl"
                           :before-upload="() => false"
                           @change="(e) => handleChange(e, 'cac')"
-                      
                         >
                           <a-button>
                             <upload-outlined
@@ -539,6 +534,11 @@
                     </div>
                   </div>
 
+                  <div class="col-span-2">
+                    <h4 class="font-medium mb-3">Additional Field</h4>
+                    <Preview :formState="formState.dynamicField" />
+                  </div>
+
                   <div class="col-span-2 flex justify-center my-4">
                     <sdButton
                       class="btn-create w-full max-w-[250px] mx-auto"
@@ -553,7 +553,7 @@
                 </div>
               </a-form>
               <div
-                v-if="productLoading"
+                v-if="productLoading || prodloading"
                 class="w-full h-[400px] flex items-center justify-center"
               >
                 <a-spin size="large" />
@@ -570,7 +570,7 @@ import { Main } from "../styled";
 import { message } from "ant-design-vue";
 import { UploadOutlined, LoadingOutlined } from "@ant-design/icons-vue";
 import moment from "moment";
-import { onMounted, computed, reactive, ref, watch } from "vue";
+import { onMounted, computed, reactive, ref, watch, provide } from "vue";
 import { useStore } from "vuex";
 import { formatCurrency } from "@/utility/formatCurrency";
 import { useRouter, useRoute } from "vue-router";
@@ -578,17 +578,22 @@ import { BasicFormWrapper } from "../styled";
 import dayjs from "dayjs";
 import { businessTypesInNigeria } from "@/utility/constant";
 import { parseAmount } from "@/utility/parseCurrency";
+import Preview from "@/components/form/working";
 
 const { state, dispatch } = useStore();
 const regionData = JSON.parse(localStorage.getItem("regionData"));
 const productDetail = computed(() => state?.products?.product);
+const productD = computed(() => state?.products?.productD);
 const productLoading = computed(() => state?.products?.loading);
+const prodloading = computed(() => state?.products?.prodloading);
 const isLoading = computed(() => state.requests.addloading);
 const addsuccess = computed(() => state.requests.addsuccess);
 const userData = computed(() => state.auth.userData);
 const region = computed(() => state.regions.region);
 const uploadsuccess = computed(() => state.file.success);
 const loading = computed(() => state.file.loading);
+const dynamicField = computed(() => state.products.additionaldata);
+
 const router = useRouter();
 const route = useRoute();
 
@@ -609,7 +614,6 @@ watch(region, () => {
 });
 const products = computed(() => {
   // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-  formState.productId = "";
   return state.products.data.filter((i) =>
     i?.productType?.toLowerCase().includes(formState?.type?.toLowerCase())
   );
@@ -666,6 +670,7 @@ const equityFee = computed(() => {
 });
 
 const handleSubmit = (values) => {
+
   dispatch("addUserProduct", {
     ...formState,
     ...values,
@@ -673,17 +678,21 @@ const handleSubmit = (values) => {
     interestRate: interestRateAmount?.value?.toString() || 0,
     equityContribution: (formState.amount - equityAmount.value).toString() || 0,
     upfrontFee: upfrontFeesAmount?.value || 0,
+    dynamicField:formState?.dynamicField
   });
+
 };
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 onMounted(() => {
-  if (!route.query.regionId && route.query.id) {
+  if (!route.query.regionId && !route.query.id) {
     dispatch("getProducts", query);
     return;
   }
-  dispatch("getRegionById", route.query.regionId);
+  if (route.query.regionId && route.query.id) {
+    dispatch("getRegionById", route.query.regionId);
+  }
 });
 
 const utilityList = ref([]);
@@ -719,6 +728,7 @@ const formState = reactive({
   upfrontFee: "",
   activePhone: "",
   activeEmail: "",
+  dynamicField: [],
 });
 
 const breadcrumbs = [
@@ -795,14 +805,20 @@ const checkRequestDate = async (rule, value) => {
   });
 };
 
+watch(dynamicField, () => {
+  formState.dynamicField = dynamicField.value;
+});
 watch(
   () => formState.productId,
   () => {
-    formState.productId &&
+    if (formState.productId) {
       dispatch("getProductDetails", {
         ...query,
         productId: formState.productId,
       });
+      dispatch("getProduct", formState.productId);
+      dispatch("getProductAddionalField", { id: formState.productId });
+    }
   }
 );
 watch(productDetail, () => {
@@ -854,6 +870,7 @@ watch(uploadsuccess, () => {
     return;
   }
 });
+provide("formState", formState)
 </script>
 
 <style>

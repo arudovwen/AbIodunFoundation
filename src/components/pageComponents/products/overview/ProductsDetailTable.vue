@@ -48,7 +48,7 @@
                   class="w-[150px] rounded-md bg-white shadow-lg border-gray-50"
                 >
                   <div class="px-1 grid gap-y-1">
-                    <MenuItem>
+                    <!-- <MenuItem>
                       <sdButton
                         @click="openDelete(record)"
                         class="btn-icon text-left flex justify-start h-auto py-[4px]"
@@ -58,10 +58,10 @@
                       >
                         Assign
                       </sdButton>
-                    </MenuItem>
+                    </MenuItem> -->
                     <MenuItem>
                       <router-link
-                        :to="`/product-management/edit-product-detail/${record.productId}`"
+                        :to="`/product-management/edit-product-detail/${Number(record.productId)}`"
                       >
                         <sdButton
                           class="btn-icon h-auto py-[4px]"
@@ -187,7 +187,7 @@ const UserListTable = defineComponent({
           maxAmount,
           minAmount,
           upfrontFees,
-          // rate,
+          productId,
           equityContribution,
           lockInPeriod,
           interestRate,
@@ -195,7 +195,8 @@ const UserListTable = defineComponent({
 
         return {
           key: id,
-          productId: id,
+          id,
+          productId,
           interestRate: <span class="capitalize">{interestRate}%</span>,
           maxAmount: (
             <span class="capitalize">

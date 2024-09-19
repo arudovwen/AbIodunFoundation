@@ -35,7 +35,6 @@
               </router-link> -->
               <sdButton
                 @click="openModal(record)"
-              
                 to="#"
                 shape="circle"
                 class="h-auto"
@@ -96,7 +95,6 @@ import { userProductTableHeader } from "@/utility/constant";
 import { formatCurrency } from "@/utility/formatCurrency";
 import Modal from "components/Modal";
 
-
 const UserListTable = defineComponent({
   name: "UserListTable",
   components: { UserTableStyleWrapper, TableWrapper, Modal },
@@ -137,12 +135,13 @@ const UserListTable = defineComponent({
           lockInPeriod,
           productName,
           createdAt,
+          upfrontFee,
         } = product;
 
         return {
           key: id,
           id: id,
-          lockInPeriod,
+          lockInPeriod: <span>{`${lockInPeriod} months`}</span>,
           productName: (
             <span class="truncate block max-w-[180px]">
               {productName || "-"}
@@ -152,9 +151,14 @@ const UserListTable = defineComponent({
             <span class="truncate block max-w-[180px]">{description}</span>
           ),
           amount: <span class="capitalize">{formatCurrency(amount)}</span>,
-          interestRate: <span class="capitalize">{interestRate}%</span>,
+          upfrontFee: (
+            <span class="capitalize">{formatCurrency(upfrontFee)}</span>
+          ),
+          interestRate: (
+            <span class="capitalize">{formatCurrency(interestRate)}</span>
+          ),
           equityContribution: (
-            <span class="capitalize">{equityContribution}%</span>
+            <span class="capitalize">{formatCurrency(equityContribution)}</span>
           ),
           dueDate: moment(dueDate).format("ll"),
           requestDate: moment(requestDate).format("ll"),
@@ -185,7 +189,7 @@ const UserListTable = defineComponent({
       if (deletesuccess.value) {
         dispatch("getUserProducts", query);
         message.success("Service removed!");
-        visible.value = false
+        visible.value = false;
       }
     });
 

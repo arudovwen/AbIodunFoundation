@@ -33,7 +33,7 @@ export default {
     state.getsuccess = false;
   },
   getSuccess(state, { data }) {
-    console.log("🚀 ~ getSuccess ~ data:", data)
+
     state.getloading = false;
     state.getsuccess = true;
     state.region = data;

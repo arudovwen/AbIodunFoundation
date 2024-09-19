@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="product && !loading" class="grid grid-cols-2 gap-10 mb-10">
+    <div v-if="product && !loading" class="grid grid-cols-2 gap-6 mb-6">
       <div>
         <span class="block text-sm font-medium text-gray-500"
           >Product name</span
@@ -61,8 +61,8 @@
       </div> -->
     </div>
     <div v-if="productReq">
-      <h4 class="col-span-2 text-lg font-bold mb-8">Requirements</h4>
-      <div class="grid grid-cols-2 gap-10 mb-10">
+      <h4 class="col-span-2 text-lg font-bold mb-6">Requirements</h4>
+      <div class="grid grid-cols-2 gap-6 mb-6">
         <div>
           <span class="block text-sm font-medium text-gray-500"
             >Business name</span
@@ -123,7 +123,9 @@
             >CAC Document</span
           >
           <button @click="handleFileDownload(productReq?.cacDocumentUrl)">
-            <span class="text-base font-medium capitalize">Download</span>
+            <span class="text-base font-medium capitalize text-blue-600"
+              >Download</span
+            >
           </button>
         </div>
         <div class="">
@@ -131,7 +133,9 @@
             >Business statement</span
           >
           <button @click="handleFileDownload(productReq?.statementUrl)">
-            <span class="text-base font-medium capitalize">Download</span>
+            <span class="text-base font-medium capitalize text-blue-600"
+              >Download</span
+            >
           </button>
         </div>
         <div class="">
@@ -139,7 +143,9 @@
             >Utility Bill</span
           >
           <button @click="handleFileDownload(productReq?.utilityBillUrl)">
-            <span class="text-base font-medium capitalize">Download</span>
+            <span class="text-base font-medium capitalize text-blue-600"
+              >Download</span
+            >
           </button>
         </div>
         <div class="">
@@ -147,8 +153,36 @@
             >Identification Document</span
           >
           <button @click="handleFileDownload(productReq?.identificationUrl)">
-            <span class="text-base font-medium capitalize">Download</span>
+            <span class="text-base font-medium capitalize text-blue-600"
+              >Download</span
+            >
           </button>
+        </div>
+      </div>
+    </div>
+    <hr class="border-gray-100 my-6" />
+    <div v-if="additional && additional.length">
+      <h4 class="col-span-2 text-lg font-bold mb-6">Additional detail</h4>
+      <div class="grid grid-cols-2 gap-6 mb-10">
+        <div v-for="(n, id) in additional" :key="id">
+          <div>
+            <span class="block text-sm font-medium text-gray-500">{{
+              n.label
+            }}</span>
+
+            <button
+              v-if="n.type == 'file'"
+              @click="handleFileDownload(productReq?.identificationUrl)"
+            >
+              <span class="text-base font-medium capitalize text-blue-600"
+                >Download</span
+              >
+            </button>
+
+            <span v-else class="text-base font-medium capitalize">{{
+              n?.value || "-"
+            }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -169,6 +203,7 @@ import moment from "moment";
 import { formatCurrency } from "@/utility/formatCurrency";
 import { downloadBase64File } from "@/utility/downloadBase64File";
 
+const additional = computed(() => state.requests.additionalreqfield);
 const query = {
   pageNumber: 1,
   pageSize: 100000,
@@ -186,6 +221,7 @@ const filedata = computed(() => state.file.data);
 onMounted(() => {
   if (route.params.id) {
     dispatch("getUserProductById", route.params.id);
+    dispatch("getAdditionalUserProduct", { id: route.params.id });
     dispatch("getUserProductRequirements", {
       ...query,
       userproductId: route.params.id,

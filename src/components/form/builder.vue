@@ -157,7 +157,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, watch, inject } from "vue";
+import { ref, defineEmits, inject } from "vue";
 import Preview from "@/components/form/preview";
 
 const formRef = ref({});
@@ -231,10 +231,10 @@ const addOption = (fieldId) => {
 const removeOption = (fieldId, optionIndex) => {
   forms.dynamicFields[fieldId].options.splice(optionIndex, 1);
 };
-watch(
-  () => [forms],
-  () => {
-    console.log("🚀 ~ watch ~ form:", forms);
-  }
-);
+// watch(
+//   () => [forms],
+//   () => {
+//     console.log("🚀 ~ watch ~ form:", forms);
+//   }
+// );
 </script>

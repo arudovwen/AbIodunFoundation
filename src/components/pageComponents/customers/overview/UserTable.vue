@@ -26,7 +26,7 @@
             <Menu as="div" class="">
               <Float placement="bottom-end" :offset="4" portal>
                 <MenuButton
-                  class="inline-flex justify-center rounded-md px-1 py-2 text-sm font-medium text-white w-auto ml-6"
+                  class=" rounded-md px-1 py-2 text-sm font-medium text-white w-auto ml-auto block"
                 >
                   <unicon name="ellipsis-v" width="16"></unicon>
                 </MenuButton>

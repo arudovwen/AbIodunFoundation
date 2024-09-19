@@ -75,6 +75,7 @@ import {
   ref,
   provide,
 } from "vue";
+import { countriesAndCurrencies } from "@/utility/constant";
 import { regionTableHeader } from "@/utility/constant";
 import { message } from "ant-design-vue";
 import AddRegion from "../AddRegion.vue";
@@ -107,7 +108,7 @@ const UserListTable = defineComponent({
     const addsuccess = computed(() => state.regions.addsuccess);
     const deleteloading = computed(() => state.regions.deleteloading);
     const deletesuccess = computed(() => state.regions.deletesuccess);
-
+    const regionsuccess = computed(() => state.regions.regionsuccess);
     const regionsData = computed(() =>
       state.regions.data.map((user) => {
         const { id, name, description, status, currency, createdAt } = user;
@@ -182,6 +183,21 @@ const UserListTable = defineComponent({
     watch(search, () => {
       debouncedSearch(search.value);
     });
+    watch(
+      () => [regionsData.value, regionsuccess.value],
+      () => {
+        if (regionsuccess.value && regionsData.value.length === 0) {
+          countriesAndCurrencies.map((i) => {
+            dispatch("addRegion", {
+              name: i.country,
+              currency: i.currency,
+              description: i.name,
+              status: true,
+            });
+          });
+        }
+      }
+    );
     provide("editvisible", visible);
     return {
       handleDelete,
@@ -197,6 +213,7 @@ const UserListTable = defineComponent({
       modaltype,
       type,
       detail,
+      countriesAndCurrencies,
     };
   },
 });

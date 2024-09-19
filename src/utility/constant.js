@@ -287,11 +287,11 @@ export const userProductTableHeader = [
     dataIndex: "interestRate",
     key: "interestRate",
   },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-  },
+  // {
+  //   title: "Description",
+  //   dataIndex: "description",
+  //   key: "description",
+  // },
   {
     title: "Actions",
     dataIndex: "action",

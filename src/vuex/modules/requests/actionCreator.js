@@ -17,6 +17,8 @@ const state = () => ({
   getsuccess: false,
   getreqloading: false,
   getreqsuccess: false,
+  getaddreqloading: false,
+  getaddreqsuccess: false,
   fetchsuccess: false,
   fetchloading: false,
   fetchreqsuccess: false,
@@ -26,6 +28,7 @@ const state = () => ({
   deletesuccess: false,
   deleteloading: false,
   error: null,
+  additionalreqfield:null
 });
 
 const actions = {
@@ -86,6 +89,20 @@ const actions = {
       commit("getReqErr", err);
     }
   },
+  async getAdditionalUserProduct({ commit }, data) {
+    try {
+      commit("getAddReqBegin");
+      const response = await DataService.get(
+        `${urls.GET_USER_ADDITIONAL_FIELDS}?${new URLSearchParams(data)}`
+      );
+      if (response.status === 200) {
+        commit("gettAddReqSuccess", response.data.data);
+      }
+    } catch (err) {
+      commit("gettAddReqErr", err);
+    }
+  },
+
   async updateUserProduct({ commit }, data) {
     try {
       commit("editBegin");

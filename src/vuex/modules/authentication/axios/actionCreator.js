@@ -6,7 +6,7 @@ import { urls } from "@/helpers/apI_urls";
 function getRedirectFrom(url) {
   try {
     // Create a URL object from the input URL
-    const parsedUrl = new URL(url);
+    const parsedUrl = new URL(encodeURI(url));
 
     // Get the query parameters as a URLSearchParams object
     const queryParams = parsedUrl.searchParams;

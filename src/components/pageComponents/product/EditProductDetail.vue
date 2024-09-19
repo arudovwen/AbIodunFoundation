@@ -152,6 +152,15 @@
                     <a-select-option value="12">12 months</a-select-option>
                   </a-select>
                 </a-form-item>
+                <div class="mt-10 col-span-2 bg-gray-50 p-6">
+                  <h3 class="text-sm font-semibold mb-6">Additional Fields</h3>
+                  <Builder
+                    @handler="
+                      {
+                      }
+                    "
+                  />
+                </div>
 
                 <div class="col-span-2 flex justify-center my-4">
                   <sdButton
@@ -175,23 +184,28 @@
 <script setup>
 import { BasicFormWrapper } from "../../styled";
 import { message } from "ant-design-vue";
-import { computed, reactive, ref, watch, onMounted } from "vue";
+import { computed, reactive, ref, watch, onMounted, provide } from "vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import { parseAmount } from "@/utility/parseCurrency";
+import Builder from "components/form/builder";
 
 const { state, dispatch } = useStore();
 const isLoading = computed(() => state.products.editloading);
 const editsuccess = computed(() => state.products.editsuccess);
 const product = computed(() => state.products.product);
 const loading = computed(() => state.products.loading);
+const dynamicField = computed(() => state.products.additionaldata);
+
 const router = useRouter();
 const route = useRoute();
 const values = ref(null);
 const handleSubmit = (value) => {
   values.value = value;
   dispatch("editProductDetail", formState);
+  
 };
+
 const productInfo = computed(() => state.products.productD);
 const formState = reactive({
   productId: route?.params?.id, // Update property to match the "Name" input field
@@ -202,6 +216,7 @@ const formState = reactive({
   interestRate: "", // Update property to match the "Interest rate" input field
   lockInPeriod: null, // Update property to match the "Due date" input field
   equityContribution: "", // Update property to match the "Description" input field
+  dynamicFields: [],
 });
 const query = reactive({
   pageNumber: 1,
@@ -213,6 +228,7 @@ onMounted(() => {
   dispatch("getProduct", route?.params?.id);
   if (route.params.id) {
     dispatch("getProductDetails", query);
+    dispatch("getProductAddionalField", { id: route.params.id });
   }
 });
 
@@ -222,17 +238,21 @@ watch(editsuccess, () => {
     router.push(`/product-management/product/${route?.params?.id}`);
   }
 });
-
+watch(dynamicField, () => {
+  formState.dynamicFields = dynamicField.value;
+});
 watch(product, () => {
+  console.log("🚀 ~ watch ~ product:", product.value)
   if (product.value.length) {
     formState.id = product.value[0].id;
     formState.minAmount = product.value[0].minAmount;
     formState.maxAmount = product.value[0].maxAmount;
     formState.rate = product.value[0].rate;
     formState.upfrontFees = product.value[0].upfrontFees;
-    formState.interestRate = product.value[0].rate;
+    formState.interestRate = product.value[0].interestRate;
     formState.lockInPeriod = product.value[0].lockInPeriod;
     formState.equityContribution = product.value[0].equityContribution;
   }
 });
+provide("forms", formState);
 </script>

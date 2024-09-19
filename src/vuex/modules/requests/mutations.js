@@ -43,6 +43,21 @@ export default {
     state.error = err;
     state.getreqsuccess = false;
   },
+  gettAddReqBegin(state) {
+    state.getaddreqloading = true;
+    state.error = null;
+    state.getreqsuccess = false;
+  },
+  gettAddReqSuccess(state, data) {
+    state.getaddreqloading = false;
+    state.getaddreqsuccess = true;
+    state.additionalreqfield = data;
+  },
+  gettAddReqErr(state, err) {
+    state.getaddreqloading = false;
+    state.error = err;
+    state.getaddreqsuccess = false;
+  },
   fetchBegin(state) {
     state.fetchloading = true;
     state.error = null;

@@ -37,7 +37,7 @@ export const urls = {
   GET_PRODUCTS_WITH_DETAILS: "/Product/GetProductsWithDetails",
   DELETE_PRODUCT: "/Product/DeleteProduct",
   DELETE_PRODUCT_DETAIL: "/Product/DeleteProductDetail",
-
+  GET_ADDIOTIONAL_FIELDS: "/Product/GetDynamicFieldsByProductDetailId",
   // Transaction
   CREATE_TRANSACTION: "/Transaction/CreateTransaction",
   GET_TRANSACTION_BY_ID: "/Transaction/GetTransactionById",
@@ -64,12 +64,14 @@ export const urls = {
   UPDATE_USER_PRODUCT_REQUIREMENT:
     "/UserProductRequirement/UpdateUserProductRequirement",
 
+
   // UserProduct
   CREATE_USER_PRODUCT: "/UserProduct/CreateUserProduct",
   GET_USER_PRODUCT_BY_ID: "/UserProduct/GetUserProductById",
   GET_ALL_USER_PRODUCT: "/UserProduct/GetAllUserProduct",
   UPDATE_USER_PRODUCT: "/UserProduct/UpdateUserProduct",
   DELETE_USER_PRODUCT: "/UserProduct/DeleteUserProduct",
+  GET_USER_ADDITIONAL_FIELDS: "/UserProduct/GetDynamicFieldsByUserProductDetailId",
   GET_ADMIN_STATS: "stats/getadminstats",
   GET_CUSTOMER_STATS: "stats/getcustomerstats",
 

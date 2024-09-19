@@ -194,7 +194,7 @@ const formState = reactive({
       name: "",
       options: [],
       type: "",
-      value: null,
+      value: "",
       required: false,
     },
   ],

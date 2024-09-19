@@ -142,9 +142,7 @@ const Profile = defineComponent({
     });
 
     const handleFinish = (values) => {
-      console.log("🚀 ~ file: Profile.vue:144 ~ handleFinish ~ values:", values)
-      // this.values = { ...values, tags: this.tags };
-   
+
       dispatch("updateUser",{...values, userId:userData.value.id})
     };
 

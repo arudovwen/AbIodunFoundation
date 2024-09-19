@@ -30,7 +30,7 @@
 
       <span
         class="flex-1 px-4 truncate text-[#999999] inline-block max-w-[300px] xl:max-w-[380px]"
-        >{{ title || `Upload ${label.replaceAll(" ","_")}` }}</span
+        >{{ title || `Upload ${label.replaceAll(" ", "_")}` }}</span
       >
     </div>
   </div>
@@ -59,7 +59,7 @@ const props = defineProps({
     default: false,
   },
   accept: {
-    default: "pdf,jpeg,jpg,png",
+    default: "pdf,jpeg,jpg,png, docx",
   },
   isCumpulsory: {
     default: false,
@@ -107,7 +107,7 @@ function handleEvent(e) {
     formData,
   });
   watch(uploadsuccess, () => {
-    console.log("🚀 ~ watch ~ fileId:", fileId);
+
     emits("update:modelValue", fileId.value.toString());
   });
 }
@@ -116,12 +116,12 @@ function triggerFileInput() {
   fileInputRef.value.click();
 }
 onMounted(() => {
-  title.value = props.modelValue;
+  title.value = `${props.label.replaceAll(" ", "_")}`;
 });
 watch(
   () => [props.modelValue],
   () => {
-    title.value = props.modelValue;
+    title.value = `${props.label.replaceAll(" ", "_")}`;
   }
 );
 </script>

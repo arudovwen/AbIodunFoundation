@@ -17,6 +17,11 @@ const state = () => ({
   deletesuccess: false,
   deleteloading: false,
   error: null,
+  prodloading: false,
+  additionalsuccess:false,
+  additionaldata:null,
+  additionalloading:false,
+  
 });
 
 const actions = {
@@ -88,13 +93,30 @@ const actions = {
     try {
       commit("fetchDetailBegin");
       const response = await DataService.get(
-        `${urls.GET_PRODUCTS_WITH_DETAILS}?${new URLSearchParams(cleanObject(data))}`
+        `${urls.GET_PRODUCTS_WITH_DETAILS}?${new URLSearchParams(
+          cleanObject(data)
+        )}`
       );
       if (response.status === 200) {
         commit("fetchDetailSuccess", response.data);
       }
     } catch (err) {
       commit("fetchDetailErr", err);
+    }
+  },
+  async getProductAddionalField({ commit }, data) {
+    try {
+      commit("fetchAddBegin");
+      const response = await DataService.get(
+        `${urls.GET_ADDIOTIONAL_FIELDS}?${new URLSearchParams(
+          cleanObject(data)
+        )}`
+      );
+      if (response.status === 200) {
+        commit("fetchAddSuccess", response.data);
+      }
+    } catch (err) {
+      commit("fetchAddErr", err);
     }
   },
   async getProduct({ commit }, id) {

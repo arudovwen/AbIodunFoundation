@@ -24,8 +24,8 @@
     breadcrumbName: "Dashboard",
   },
   {
-    path: "/services",
-    breadcrumbName: "Services",
+    path: "/product-management/requests",
+    breadcrumbName: "Requests",
   },
   {
     path: "#",

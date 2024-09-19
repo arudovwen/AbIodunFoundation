@@ -95,19 +95,22 @@ client.interceptors.response.use(
         });
 
         localStorage.clear();
-        window.location.href = `/auth/login?redirect_from=${window.location.href}`;
+        window.location.href = `/auth/login?redirect_from=${encodeURIComponent(
+          window.location.href
+        )}`;
+      } else if (response.status === 404) {
+        return originalRequest;
       } else if (response.status > 399 && response.status < 500) {
         Notification.error({
           message: "Error",
           description: response.data.message,
-         
+
           duration: 5000,
         });
-      
+
         if (
           response.data.message.includes("Your profile has not been activated")
         ) {
-        
           const email = JSON.parse(originalRequest.data).username;
           window.location.href = `/auth/validate-email/${encodeURIComponent(
             email

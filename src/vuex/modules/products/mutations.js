@@ -32,19 +32,35 @@ export default {
     state.error = err;
     state.success = false;
   },
+  fetchAddBegin(state) {
+    state.additionalloading = true;
+    state.additionalerror = null;
+    state.additionalsuccess = false;
+  },
+  fetchAddSuccess(state, { data }) {
+    state.additionalloading = false;
+    state.additionalsuccess = true;
+    state.additionaldata = data;
+   
+  },
+  fetchAddErr(state, err) {
+    state.additionalloading = false;
+    state.additionalerror = err;
+    state.additionalsuccess = false;
+  },
   getBegin(state) {
-    state.loading = true;
+    state.prodloading = true;
     state.error = null;
     state.success = false;
   },
   getSuccess(state, { data }) {
-    state.loading = false;
+    state.prodloading = false;
     state.success = true;
     state.productD = data;
    
   },
   getErr(state, err) {
-    state.loading = false;
+    state.prodloading = false;
     state.error = err;
     state.success = false;
   },

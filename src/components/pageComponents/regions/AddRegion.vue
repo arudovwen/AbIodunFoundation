@@ -50,7 +50,6 @@
 
 <script setup>
 // eslint-disable-next-line no-unused-vars
-import { countriesAndCurrencies } from "@/utility/constant";
 import { message } from "ant-design-vue";
 import { computed, inject, reactive, defineProps, watch, onMounted } from "vue";
 import { useStore } from "vuex";
@@ -80,14 +79,7 @@ const formState = reactive({
 });
 
 onMounted(() => {
-  // countriesAndCurrencies.map((i) => {
-  //   dispatch("addRegion", {
-  //     ...formState,
-  //     name: i.country,
-  //     currency: i.currency,
-  //     description: i.name,
-  //   });
-  // });
+ 
 });
 const handleSubmit = () => {
   dispatch(!props?.detail ? "addRegion" : "editRegion", formState);

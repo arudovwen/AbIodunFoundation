@@ -160,7 +160,6 @@ const SocialProfile = defineComponent({
 
     const handleFinish = (values) => {
       this.values = { ...values };
-      console.log(values, formState);
     };
 
     const handleFinishFailed = (errors) => {
