@@ -57,7 +57,22 @@
           formatCurrency(product.upfrontFee)
         }}</span>
       </div>
-
+      <div>
+        <span class="block text-sm font-medium text-gray-500"
+          >Active Email</span
+        >
+        <span class="text-base font-medium">{{
+          product?.activeEmail || "-"
+        }}</span>
+      </div>
+      <div>
+        <span class="block text-sm font-medium text-gray-500"
+          >Active phone</span
+        >
+        <span class="text-base font-medium capitalize">{{
+          product?.activePhone || "-"
+        }}</span>
+      </div>
     </div>
     <hr class="border-gray-100 my-6" />
     <div v-if="productReq">
@@ -79,6 +94,7 @@
             productReq?.businessAddress || "-"
           }}</span>
         </div>
+
         <div>
           <span class="block text-sm font-medium text-gray-500"
             >Residential address</span
