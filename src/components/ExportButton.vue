@@ -3,7 +3,8 @@
     <export-excel :data="data" worksheet="document" type="csv" :name="name">
       <sdButton
        size="sm"
-        class="border-gray-700 w-full bg-gray-700 text-white font-normal btn-sm"
+
+        class="border-primary border w-full bg-transparent !text-primary font-medium btn-sm"
         >Export Excel</sdButton
       >
     </export-excel>
