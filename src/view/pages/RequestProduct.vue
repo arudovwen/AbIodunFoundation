@@ -89,36 +89,6 @@
                       class="col-span-2 md:grid grid-cols-1 md:grid-cols-2 md:gap-x-8 mb-8"
                     >
                       <a-form-item
-                        class="col-span-2"
-                        label="Lock-in Period"
-                        name="lockInPeriod"
-                        :rules="[
-                          { required: true, message: 'Please select a value!' },
-                        ]"
-                      >
-                        <!-- <a-select
-                          size="large"
-                          v-model:value="formState.lockInPeriod"
-                        >
-                          <a-select-option value=""
-                            >Please Select</a-select-option
-                          >
-                          <a-select-option
-                            v-for="t in filteredTenure"
-                            :key="t.title"
-                            :value="t.value"
-                            >{{ t.title }}</a-select-option
-                          >
-                        </a-select> -->
-
-                        <a-checkbox
-                          readonly
-                          :checked="formState.lockInPeriod !== null"
-                        >
-                          {{ productDetail[0]?.lockInPeriod }} month(s)
-                        </a-checkbox>
-                      </a-form-item>
-                      <a-form-item
                         label="Amount"
                         name="amount"
                         :rules="[
@@ -257,6 +227,21 @@
                           v-model:value="formState.dueDate"
                           disabled
                         />
+                      </a-form-item>
+                      <a-form-item
+                     
+                        label="Lock-in Period"
+                        name="lockInPeriod"
+                        :rules="[
+                          { required: true, message: 'Please select a value!' },
+                        ]"
+                      >
+                        <a-checkbox
+                          readonly
+                          :checked="formState.lockInPeriod !== null"
+                        >
+                          {{ productDetail[0]?.lockInPeriod }} month(s)
+                        </a-checkbox>
                       </a-form-item>
                     </div>
                   </BasicFormWrapper>
@@ -419,17 +404,20 @@
                     <div
                       class="grid grid-cols-1 md:grid-cols-2 md:gap-x-8 gap-y-2"
                     >
+                
                       <a-form-item
                         v-if="formState.type.includes('loans')"
-                        name="cacDocumentUrl"
+                        name="cacList"
                         :rules="[
                           { required: true, message: 'Please upload your Cac' },
                         ]"
+                        
                       >
+                      
                         <a-upload
                           :max-count="1"
-                          v-model:file-list="cacList"
-                          name="cacDocumentUrl"
+                          v-model:file-list="formState.cacList"
+                          name="cacList"
                           :before-upload="() => false"
                           @change="(e) => handleChange(e, 'cac')"
                         >
@@ -447,7 +435,7 @@
 
                       <a-form-item
                         v-if="formState.type.includes('loans')"
-                        name="statementUrl"
+                        name="statementList"
                         :rules="[
                           {
                             required: true,
@@ -458,8 +446,8 @@
                       >
                         <a-upload
                           :max-count="1"
-                          v-model:file-list="statementList"
-                          name="statementUrl"
+                          v-model:file-list="formState.statementList"
+                          name="statementList"
                           :before-upload="() => false"
                           @change="(e) => handleChange(e, 'statement')"
                         >
@@ -475,7 +463,7 @@
                         </a-upload>
                       </a-form-item>
                       <a-form-item
-                        name="identificationUrl"
+                        name="idList"
                         :rules="[
                           {
                             required: true,
@@ -486,9 +474,9 @@
                       >
                         <a-upload
                           :max-count="1"
-                          name="identificationUrl"
+                          name="idList"
                           class="w-full"
-                          v-model:file-list="idList"
+                          v-model:file-list="formState.idList"
                           :before-upload="() => false"
                           @change="(e) => handleChange(e, 'id')"
                         >
@@ -504,7 +492,7 @@
                         </a-upload>
                       </a-form-item>
                       <a-form-item
-                        name="utilityBillUrl"
+                        name="utilityList"
                         :rules="[
                           {
                             required: true,
@@ -514,8 +502,8 @@
                       >
                         <a-upload
                           :max-count="1"
-                          v-model:file-list="utilityList"
-                          name="utilityBillUrl"
+                          v-model:file-list="formState.utilityList"
+                          name="utilityList"
                           class="w-full"
                           :before-upload="() => false"
                           @change="(e) => handleChange(e, 'utility')"
@@ -670,7 +658,6 @@ const equityFee = computed(() => {
 });
 
 const handleSubmit = (values) => {
-
   dispatch("addUserProduct", {
     ...formState,
     ...values,
@@ -678,9 +665,8 @@ const handleSubmit = (values) => {
     interestRate: interestRateAmount?.value?.toString() || 0,
     equityContribution: (formState.amount - equityAmount.value).toString() || 0,
     upfrontFee: upfrontFeesAmount?.value || 0,
-    dynamicField:formState?.dynamicField
+    dynamicField: formState?.dynamicField,
   });
-
 };
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
@@ -695,11 +681,12 @@ onMounted(() => {
   }
 });
 
-const utilityList = ref([]);
-const cacList = ref([]);
-const idList = ref([]);
-const statementList = ref([]);
+
 const formState = reactive({
+  utilityList:[],
+  cacList:[],
+  idList:[],
+  statementList:[],
   type: "",
   userId:
     userData?.value?.userRole === "admin" ? route.query.id : userData.value.id,
@@ -870,7 +857,7 @@ watch(uploadsuccess, () => {
     return;
   }
 });
-provide("formState", formState)
+provide("formState", formState);
 </script>
 
 <style>
