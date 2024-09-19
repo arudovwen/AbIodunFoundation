@@ -55,16 +55,14 @@
                     { required: true, message: 'Please select a currency!' },
                   ]"
                 >
-                  <a-select size="large" v-model:value="formState.currency">
-                    <a-select-option disabled value=""
-                      >Please Select</a-select-option
-                    >
-                    <a-select-option
-                      :value="n.currency"
-                      v-for="n in regionsData"
-                      :key="n.id"
-                      >{{ `${n.name} - ${n.currency}` }}</a-select-option
-                    >
+                  <a-select
+                    size="large"
+                    v-model:value="formState.currency"
+                    show-search
+                    :options="regionsData"
+                    :filter-option="filterdRegionsData"
+                    placeholder="Please Select"
+                  >
                   </a-select>
                 </a-form-item>
                 <a-form-item label="Description" name="productDescription">
@@ -125,9 +123,15 @@ const regionsData = computed(() =>
       key: id,
       name,
       currency,
+      value: currency,
+      label: `${name} - ${currency}`,
     };
   })
 );
+const filterdRegionsData = (input, option) => {
+  return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+};
+
 watch(addsuccess, () => {
   if (addsuccess.value) {
     message.success("Product creation successful!");

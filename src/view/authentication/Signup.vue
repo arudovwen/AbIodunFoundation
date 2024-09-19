@@ -93,18 +93,15 @@
                 { required: true, message: 'Please select your region!' },
               ]"
             >
+      
               <a-select
-                size="small"
+                size="large"
                 v-model:value="formState.regionId"
-                class="h-11"
+                show-search
+                :options="regionsData"
+                :filter-option="filterdRegionsData"
+                placeholder="Please Select region"
               >
-                <a-select-option value="">Please Select region</a-select-option>
-                <a-select-option
-                  :value="n.id"
-                  v-for="n in regionsData"
-                  :key="n.id"
-                  >{{ n.name }}</a-select-option
-                >
               </a-select>
             </a-form-item>
             <a-form-item
@@ -216,7 +213,6 @@ const SignUp = defineComponent({
       dispatch("getRegions", { pageNumber: 1, pageSize: 1000 });
     });
     const handleSubmit = (value) => {
-
       values.value = value;
       const tempData = regionsData.value.find((i) => i.id === value.regionId);
       dispatch("signup", { ...formState, region: tempData?.name });
@@ -229,11 +225,16 @@ const SignUp = defineComponent({
           ...user,
           key: id,
           name,
-
           currency,
+          value: id,
+          label: name,
         };
       })
     );
+    const filterdRegionsData = (input, option) => {
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
+
     const onChange = (e) => {
       checked.value = e.target.checked;
     };
@@ -323,6 +324,7 @@ const SignUp = defineComponent({
       errors,
       checked,
       regionsData,
+      filterdRegionsData,
     };
   },
 });
