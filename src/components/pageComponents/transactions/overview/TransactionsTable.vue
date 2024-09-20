@@ -80,12 +80,13 @@ const UserListTable = defineComponent({
           transactionDate,
           transactionStatus,
           description,
+          currency
         } = transaction;
 
         return {
           key: id,
           id: id,
-          amount: <span class="capitalize">{formatCurrency(amount)}</span>,
+          amount: <span class="capitalize">{formatCurrency(amount, currency)}</span>,
           description,
           transactionType: <span class="capitalize">{transactionType}</span>,
           transactionDate: moment(transactionDate).format("lll"),

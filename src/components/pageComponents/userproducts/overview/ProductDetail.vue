@@ -12,7 +12,7 @@
       <div>
         <span class="block text-sm font-medium text-gray-500">Amount</span>
         <span class="text-base font-medium capitalize">{{
-          formatCurrency(product.amount) || "-"
+          formatCurrency(product.amount, product?.currency) || "-"
         }}</span>
       </div>
       <div>
@@ -40,7 +40,7 @@
       <div>
         <span class="block text-sm font-medium text-gray-500">Interest</span>
         <span class="text-base font-medium capitalize">{{
-          formatCurrency(product.interestRate) || "-"
+          formatCurrency(product.interestRate, product?.currency) || "-"
         }}</span>
       </div>
       <div>
@@ -48,13 +48,13 @@
           >Equity contribution</span
         >
         <span class="text-base font-medium capitalize">{{
-          formatCurrency(product.equityContribution)
+          formatCurrency(product.equityContribution, product?.currency)
         }}</span>
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500">Upfront Fee</span>
         <span class="text-base font-medium capitalize">{{
-          formatCurrency(product.upfrontFee)
+          formatCurrency(product.upfrontFee, product?.currency)
         }}</span>
       </div>
       <div>
@@ -116,7 +116,7 @@
             >Facility amount</span
           >
           <span class="text-base font-medium capitalize">{{
-            formatCurrency(productReq?.facilityAmount) || "-"
+            formatCurrency(productReq?.facilityAmount, product?.currency) || "-"
           }}</span>
         </div>
         <div>
@@ -188,7 +188,7 @@
 
             <button
               v-if="n.type == 'file'"
-              @click="handleFileDownload(productReq?.identificationUrl)"
+              @click="handleFileDownload(n?.value)"
             >
               <span class="text-base font-medium capitalize text-blue-600"
                 >Download</span

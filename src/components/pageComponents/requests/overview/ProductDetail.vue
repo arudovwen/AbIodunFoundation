@@ -12,7 +12,7 @@
       <div>
         <span class="block text-sm font-medium text-gray-500">Amount</span>
         <span class="text-base font-medium capitalize">{{
-          formatCurrency(product.amount) || "-"
+          formatCurrency(product.amount, product?.currency) || "-"
         }}</span>
       </div>
       <div>
@@ -54,21 +54,21 @@
         >
       </div>
       <div>
-          <span class="block text-sm font-medium text-gray-500"
-            >Active Email</span
-          >
-          <span class="text-base font-medium capitalize">{{
-            product?.activeEmail || "-"
-          }}</span>
-        </div>
-        <div>
-          <span class="block text-sm font-medium text-gray-500"
-            >Active phone</span
-          >
-          <span class="text-base font-medium capitalize">{{
-            product?.activePhone || "-"
-          }}</span>
-        </div>
+        <span class="block text-sm font-medium text-gray-500"
+          >Active Email</span
+        >
+        <span class="text-base font-medium capitalize">{{
+          product?.activeEmail || "-"
+        }}</span>
+      </div>
+      <div>
+        <span class="block text-sm font-medium text-gray-500"
+          >Active phone</span
+        >
+        <span class="text-base font-medium capitalize">{{
+          product?.activePhone || "-"
+        }}</span>
+      </div>
     </div>
     <div v-if="productReq">
       <h4 class="col-span-2 text-lg font-bold mb-6">Requirements</h4>
@@ -110,7 +110,7 @@
             >Facility amount</span
           >
           <span class="text-base font-medium capitalize">{{
-            formatCurrency(productReq?.facilityAmount) || "-"
+            formatCurrency(productReq?.facilityAmount, product?.currency) || "-"
           }}</span>
         </div>
         <div>
@@ -182,7 +182,7 @@
 
             <button
               v-if="n.type == 'file'"
-              @click="handleFileDownload(productReq?.identificationUrl)"
+              @click="handleFileDownload(n?.value)"
             >
               <span class="text-base font-medium capitalize text-blue-600"
                 >Download</span

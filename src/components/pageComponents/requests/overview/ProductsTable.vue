@@ -136,6 +136,7 @@ const UserListTable = defineComponent({
           productName,
           createdAt,
           upfrontFee,
+          currency,
         } = product;
 
         return {
@@ -150,15 +151,23 @@ const UserListTable = defineComponent({
           description: (
             <span class="truncate block max-w-[180px]">{description}</span>
           ),
-          amount: <span class="capitalize">{formatCurrency(amount)}</span>,
+          amount: (
+            <span class="capitalize">{formatCurrency(amount, currency)}</span>
+          ),
           upfrontFee: (
-            <span class="capitalize">{formatCurrency(upfrontFee)}</span>
+            <span class="capitalize">
+              {formatCurrency(upfrontFee, currency)}
+            </span>
           ),
           interestRate: (
-            <span class="capitalize">{formatCurrency(interestRate)}</span>
+            <span class="capitalize">
+              {formatCurrency(interestRate, currency)}
+            </span>
           ),
           equityContribution: (
-            <span class="capitalize">{formatCurrency(equityContribution)}</span>
+            <span class="capitalize">
+              {formatCurrency(equityContribution, currency)}
+            </span>
           ),
           dueDate: moment(dueDate).format("ll"),
           requestDate: moment(requestDate).format("ll"),

@@ -229,7 +229,6 @@
                         />
                       </a-form-item>
                       <a-form-item
-                     
                         label="Lock-in Period"
                         name="lockInPeriod"
                         :rules="[
@@ -404,16 +403,13 @@
                     <div
                       class="grid grid-cols-1 md:grid-cols-2 md:gap-x-8 gap-y-2"
                     >
-                
                       <a-form-item
                         v-if="formState.type.includes('loans')"
                         name="cacList"
                         :rules="[
                           { required: true, message: 'Please upload your Cac' },
                         ]"
-                        
                       >
-                      
                         <a-upload
                           :max-count="1"
                           v-model:file-list="formState.cacList"
@@ -658,6 +654,7 @@ const equityFee = computed(() => {
 });
 
 const handleSubmit = (values) => {
+  console.log("🚀 ~ handleSubmit ~ values:", values);
   dispatch("addUserProduct", {
     ...formState,
     ...values,
@@ -666,6 +663,7 @@ const handleSubmit = (values) => {
     equityContribution: (formState.amount - equityAmount.value).toString() || 0,
     upfrontFee: upfrontFeesAmount?.value || 0,
     dynamicField: formState?.dynamicField,
+    currency: productD?.value?.currency,
   });
 };
 const onFinishFailed = (errorInfo) => {
@@ -681,12 +679,11 @@ onMounted(() => {
   }
 });
 
-
 const formState = reactive({
-  utilityList:[],
-  cacList:[],
-  idList:[],
-  statementList:[],
+  utilityList: [],
+  cacList: [],
+  idList: [],
+  statementList: [],
   type: "",
   userId:
     userData?.value?.userRole === "admin" ? route.query.id : userData.value.id,
@@ -697,6 +694,7 @@ const formState = reactive({
   businessAddress: "",
   residentialAddress: "",
   businessType: "",
+  currency: productD?.value?.currency,
   bvn: "",
   cacDocumentUrl: "",
   statementUrl: "",

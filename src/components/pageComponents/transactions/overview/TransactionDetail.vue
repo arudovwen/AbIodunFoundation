@@ -104,7 +104,7 @@
       <div>
         <span class="block text-sm font-medium text-gray-500">Amount</span>
         <span class="text-base font-medium capitalize">{{
-          formatCurrency(product.amount) || "-"
+          formatCurrency(product.amount, product.currency) || "-"
         }}</span>
       </div>
       <div>
@@ -134,13 +134,13 @@
           >Interest rate</span
         >
         <span class="text-base font-medium capitalize">{{
-          formatCurrency(product.interestRate)
+          formatCurrency(product.interestRate, product.currency)
         }}</span>
       </div>
       <div>
         <span class="block text-sm font-medium text-gray-500">Upfront Fee</span>
         <span class="text-base font-medium capitalize">{{
-          formatCurrency(product.upfrontFee)
+          formatCurrency(product.upfrontFee, product.currency)
         }}</span>
       </div>
       <div>
@@ -148,7 +148,7 @@
           >Equity contribution</span
         >
         <span class="text-base font-medium capitalize">{{
-          formatCurrency(product?.equityContribution)
+          formatCurrency(product?.equityContribution, product.currency)
         }}</span>
       </div>
       <!-- <div class="col-span-2">
@@ -199,7 +199,7 @@
         <div>
           <span class="block text-sm font-medium text-gray-500">Amount</span>
           <span class="text-base font-medium capitalize">{{
-            formatCurrency(productReq?.facilityAmount) || "-"
+            formatCurrency(productReq?.facilityAmount, product.currency) || "-"
           }}</span>
         </div>
         <div>
@@ -248,6 +248,32 @@
           <button @click="handleFileDownload(productReq?.identificationUrl)">
             <span class="text-base font-medium capitalize">Download</span>
           </button>
+        </div>
+      </div>
+    </div>
+    <hr class="border-gray-100 my-6" />
+    <div v-if="additional && additional.length">
+      <h4 class="col-span-2 text-lg font-bold mb-6">Additional Detail</h4>
+      <div class="grid grid-cols-2 gap-6 mb-10">
+        <div v-for="(n, id) in additional" :key="id">
+          <div>
+            <span class="block text-sm font-medium text-gray-500">{{
+              n.label
+            }}</span>
+
+            <button
+              v-if="n.type == 'file'"
+              @click="handleFileDownload(n?.value)"
+            >
+              <span class="text-base font-medium capitalize text-blue-600"
+                >Download</span
+              >
+            </button>
+
+            <span v-else class="text-base font-medium capitalize">{{
+              n?.value || "-"
+            }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -342,10 +368,11 @@ const reqloading = computed(() => state.requests.getloading);
 const loadingReq = computed(() => state.requests.getreqloading);
 const filesuccess = computed(() => state.file.success);
 const filedata = computed(() => state.file.data);
-
+const additional = computed(() => state.requests.additionalreqfield);
 onMounted(() => {
   if (route.params.id) {
     dispatch("getTransactionById", route.params.id);
+    dispatch("getAdditionalUserProduct", { id: route.params.id });
   }
 });
 watch(success, () => {
