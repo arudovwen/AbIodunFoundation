@@ -145,11 +145,12 @@
                     v-model:value="formState.lockInPeriod"
                   >
                     <a-select-option value="">Please Select</a-select-option>
-                    <a-select-option value="1">1 months</a-select-option>
-                    <a-select-option value="2">2 months</a-select-option>
-                    <a-select-option value="3">3 months</a-select-option>
-                    <a-select-option value="6">6 months</a-select-option>
-                    <a-select-option value="12">12 months</a-select-option>
+                    <a-select-option
+                      v-for="n in TenorOptions"
+                      :value="n.value"
+                      :key="n.value"
+                      >{{ n.label }}</a-select-option
+                    >
                   </a-select>
                 </a-form-item>
                 <div class="mt-10 col-span-2 bg-gray-50 p-6">
@@ -189,6 +190,7 @@ import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import { parseAmount } from "@/utility/parseCurrency";
 import Builder from "components/form/builder";
+import { TenorOptions } from "@/utility/constant";
 
 const { state, dispatch } = useStore();
 const isLoading = computed(() => state.products.editloading);
@@ -203,7 +205,6 @@ const values = ref(null);
 const handleSubmit = (value) => {
   values.value = value;
   dispatch("editProductDetail", formState);
-  
 };
 
 const productInfo = computed(() => state.products.productD);
@@ -242,7 +243,7 @@ watch(dynamicField, () => {
   formState.dynamicFields = dynamicField.value;
 });
 watch(product, () => {
-  console.log("🚀 ~ watch ~ product:", product.value)
+
   if (product.value.length) {
     formState.id = product.value[0].id;
     formState.minAmount = product.value[0].minAmount;

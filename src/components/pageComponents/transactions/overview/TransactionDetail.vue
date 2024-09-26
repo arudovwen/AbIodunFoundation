@@ -126,7 +126,7 @@
           >Lock-in period</span
         >
         <span class="text-base font-medium capitalize"
-          >{{ product?.lockInPeriod }} months</span
+          >{{ product?.lockInPeriod }} days</span
         >
       </div>
       <div>

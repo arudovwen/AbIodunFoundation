@@ -56,7 +56,6 @@
                         { required: true, message: 'Please input an amount!' },
                       ]"
                     >
-                    
                       <a-input-number
                         v-model:value="formState.amount"
                         placeholder="Provide an amount"
@@ -64,15 +63,15 @@
                           (value) =>
                             `${
                               productDetail[0]?.currency || 'NGN'
-                              } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                            } ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                         "
-                       :parser="
-                            (value) =>
-                              parseAmount(
-                                value,
-                                productDetail[0]?.currency || 'NGN'
-                              )
-                          "
+                        :parser="
+                          (value) =>
+                            parseAmount(
+                              value,
+                              productDetail[0]?.currency || 'NGN'
+                            )
+                        "
                       />
                     </a-form-item>
                     <a-form-item
@@ -152,14 +151,11 @@
                         <a-select-option value=""
                           >Please Select</a-select-option
                         >
-                        <a-select-option value="3 months"
-                          >3 months</a-select-option
-                        >
-                        <a-select-option value="6 months"
-                          >6 months</a-select-option
-                        >
-                        <a-select-option value="12 months"
-                          >12 months</a-select-option
+                        <a-select-option
+                          v-for="n in TenorOptions"
+                          :value="n.value"
+                          :key="n.value"
+                          >{{ n.label }}</a-select-option
                         >
                       </a-select>
                     </a-form-item>
@@ -238,36 +234,36 @@
                   />
                 </a-form-item>
                 <a-form-item
-                      label="Active Phone number"
-                      name="activePhone"
-                      :rules="[
-                        {
-                          required: true,
-                          message: 'Please provide your an phone number!',
-                        },
-                      ]"
-                    >
-                      <a-input
-                        v-model:value="formState.activePhone"
-                        placeholder=""
-                      />
-                    </a-form-item>
-                    <a-form-item
-                      label="Active E-mail"
-                      name="activeEmail"
-                      :rules="[
-                        {
-                          required: true,
-                          message: 'Please provide an active emal!',
-                        },
-                      ]"
-                    >
-                      <a-input
-                        v-model:value="formState.activeEmail"
-                        placeholder=""
-                        type="email"
-                      />
-                    </a-form-item>
+                  label="Active Phone number"
+                  name="activePhone"
+                  :rules="[
+                    {
+                      required: true,
+                      message: 'Please provide your an phone number!',
+                    },
+                  ]"
+                >
+                  <a-input
+                    v-model:value="formState.activePhone"
+                    placeholder=""
+                  />
+                </a-form-item>
+                <a-form-item
+                  label="Active E-mail"
+                  name="activeEmail"
+                  :rules="[
+                    {
+                      required: true,
+                      message: 'Please provide an active emal!',
+                    },
+                  ]"
+                >
+                  <a-input
+                    v-model:value="formState.activeEmail"
+                    placeholder=""
+                    type="email"
+                  />
+                </a-form-item>
                 <a-form-item
                   label="Residential address"
                   name="residentialAddress"
@@ -467,7 +463,6 @@ import dayjs from "dayjs";
 import { businessTypesInNigeria } from "@/utility/constant";
 import { parseAmount } from "@/utility/parseCurrency";
 
-
 const router = useRouter();
 const route = useRoute();
 const query = reactive({
@@ -537,8 +532,8 @@ const formState = reactive({
   interestRate: null,
   dueDate: null,
   description: "",
-  activeEmail:"",
-  activePhone: ""
+  activeEmail: "",
+  activePhone: "",
 });
 
 const breadcrumbs = [

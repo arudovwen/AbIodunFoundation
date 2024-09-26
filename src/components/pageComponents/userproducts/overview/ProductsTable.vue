@@ -144,7 +144,7 @@ const UserListTable = defineComponent({
           id: id,
           lockInPeriod: (
             <span class="truncate block max-w-[180px]">
-              {lockInPeriod} months
+              {lockInPeriod} days
             </span>
           ),
           productName: (

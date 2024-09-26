@@ -121,11 +121,12 @@
                 >
                   <a-select size="large" v-model:value="formState.lockInPeriod">
                     <a-select-option value="">Please Select</a-select-option>
-                    <a-select-option value="1">1 months</a-select-option>
-                    <a-select-option value="2">2 months</a-select-option>
-                    <a-select-option value="3">3 months</a-select-option>
-                    <a-select-option value="6">6 months</a-select-option>
-                    <a-select-option value="12">12 months</a-select-option>
+                    <a-select-option
+                          v-for="n in TenorOptions"
+                          :value="n.value"
+                          :key="n.value"
+                          >{{ n.label }}</a-select-option
+                        >
                   </a-select>
                 </a-form-item>
                 <div class="mt-10 col-span-2 bg-gray-50 p-6">
@@ -165,6 +166,7 @@ import { computed, reactive, ref, watch, provide, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import Builder from "components/form/builder";
+import { TenorOptions } from "@/utility/constant";
 
 const { state, dispatch } = useStore();
 const isLoading = computed(() => state.products.addloading);

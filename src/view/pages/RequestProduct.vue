@@ -239,7 +239,7 @@
                           readonly
                           :checked="formState.lockInPeriod !== null"
                         >
-                          {{ productDetail[0]?.lockInPeriod }} month(s)
+                          {{ productDetail[0]?.lockInPeriod }} days
                         </a-checkbox>
                       </a-form-item>
                     </div>
@@ -830,7 +830,7 @@ watch(
   () => {
     if (formState.requestDate) {
       const dueDate = moment(formState?.requestDate)
-        .add(formState?.lockInPeriod, "months")
+        .add(formState?.lockInPeriod, "days")
         .format("ll");
 
       formState.dueDate = dayjs(dueDate);
