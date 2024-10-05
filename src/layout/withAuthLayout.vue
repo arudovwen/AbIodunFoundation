@@ -6,7 +6,7 @@
   >
     <div class="ninjadash-authentication-wrap">
       <div class="ninjadash-authentication-brand">
-        <img :src="require(`../static/img/logo-icon.png`)" class="mx-auto w-[40px]" alt="logo" />
+        <img src="/logos/icon-bg-less.png" class="mx-auto w-[100px]" alt="logo" />
       </div>
       <router-view></router-view>
     </div>

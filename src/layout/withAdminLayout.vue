@@ -22,8 +22,8 @@
                   to="/"
                 >
                   <img
-                    :src="require(`../static/img/logo-icon.png`)"
-                    class="mx-auto !w-[24px] !h-auto"
+                    src="/logos/logo-whitebg-less.png"
+                    class="mx-auto !w-[160px] !h-auto"
                     alt="logo"
                   />
                   <!-- <img

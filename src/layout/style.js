@@ -87,7 +87,7 @@ const Div = Styled('div', props)`
         height: 100%;
         .ninjadash-header-content__left{
             min-width: 280px;
-            padding: 20px 20px 0 30px;
+            padding: 10px 20px 10px 30px;
             background-color: ${({ theme }) => theme[theme.mainContent]['brand-background']};
             @media only screen and (max-width: 767px){
                 min-width: auto;
@@ -387,7 +387,7 @@ const Div = Styled('div', props)`
         }
 
         .ant-layout-sider-children{
-            padding: 15px 0;
+            padding: 0;
 
             .ninjadash-sidebar-nav-title {
                 display: flex;
