@@ -17,38 +17,47 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <div class="flex gap-x-4 items-center">
-              <router-link :to="`/service/${record.id}`">
-                <button class="text-xs bg-gray-200 rounded-full py-1 px-2">
-                  View
-                </button>
-              </router-link>
-              <!-- <router-link :to="`/service/request-edit/${record.id}`">
-                <button
-                  class="text-xs bg-gray-600 text-white rounded-full py-1 px-2"
-                  type="default"
-                  to="#"
-                  shape="circle"
+            <Menu as="div" class="">
+              <Float placement="bottom-end" :offset="4" portal>
+                <MenuButton
+                  class="rounded-md px-1 py-2 text-sm font-medium text-white w-auto ml-auto block"
                 >
-                  Edit
-                </button>
-              </router-link> -->
-              <sdButton
-                @click="openModal(record)"
-                to="#"
-                shape="circle"
-                class="h-auto"
-              >
-                <unicon name="trash-alt" width="16"></unicon>
-              </sdButton>
-            </div>
+                  <unicon name="ellipsis-v" width="16"></unicon>
+                </MenuButton>
+                <MenuItems
+                  class="w-[150px] rounded-md bg-white shadow-lg border-gray-50"
+                >
+                  <div class="px-1 grid gap-y-1 py-1">
+                    <router-link :to="`/service/${record.id}`">
+                      <button class="text-sm py-1 px-2">View request</button>
+                    </router-link>
+                    <span>
+                      <button
+                        @click="openModal(record, 'add')"
+                        class="text-sm py-1 px-2"
+                      >
+                        Assign request
+                      </button>
+                    </span>
+                    <span>
+                      <button
+                        @click="openModal(record, 'delete')"
+                        class="text-sm py-1 px-2"
+                      >
+                        Delete request
+                      </button>
+                    </span>
+                  </div>
+                </MenuItems>
+              </Float>
+            </Menu>
           </template>
         </template>
       </a-table>
     </TableWrapper>
     <Modal :open="visible" @close="visible = false">
       <!-- <Detail /> -->
-      <div class="bg-white rounded-lg">
+      <div v-if="action === 'delete'" class="bg-white rounded-lg">
         <h3 class="text-xl font-bold mb-4">Confirm delete</h3>
         <p class="mb-10">Are you sure about this action?</p>
         <div class="flex justify-between gap-x-4">
@@ -71,6 +80,11 @@
           </sdButton>
         </div>
       </div>
+      <AssignRequest
+        v-if="action === 'add'"
+        :detail="detail"
+        @close="getData"
+      />
     </Modal>
   </UserTableStyleWrapper>
 </template>
@@ -88,16 +102,29 @@ import {
   reactive,
   inject,
   ref,
+  provide,
 } from "vue";
+import AssignRequest from "./AssignRequest.vue";
 import { userTableHeader } from "@/utility/constant";
 import { message } from "ant-design-vue";
 import { userProductTableHeader } from "@/utility/constant";
 import { formatCurrency } from "@/utility/formatCurrency";
 import Modal from "components/Modal";
+import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import { Float } from "@headlessui-float/vue";
 
 const UserListTable = defineComponent({
   name: "UserListTable",
-  components: { UserTableStyleWrapper, TableWrapper, Modal },
+  components: {
+    UserTableStyleWrapper,
+    TableWrapper,
+    Modal,
+    Menu,
+    MenuButton,
+    MenuItems,
+    Float,
+    AssignRequest,
+  },
   setup() {
     const detail = ref("");
     const visible = ref(false);
@@ -111,9 +138,13 @@ const UserListTable = defineComponent({
       mobileNo: "",
     });
     const { state, dispatch } = useStore();
+
     onMounted(() => {
       dispatch("getUserProducts", query);
     });
+    function getData() {
+      dispatch("getUserProducts", query);
+    }
     function fetchRecords(page) {
       dispatch("getUserProducts", { ...query, pageNumber: page });
     }
@@ -137,6 +168,7 @@ const UserListTable = defineComponent({
           createdAt,
           upfrontFee,
           currency,
+          relationshipManager,
         } = product;
 
         return {
@@ -159,6 +191,7 @@ const UserListTable = defineComponent({
               {formatCurrency(upfrontFee, currency)}
             </span>
           ),
+          relationshipManager: relationshipManager || "-",
           interestRate: (
             <span class="capitalize">
               {formatCurrency(interestRate, currency)}
@@ -178,8 +211,10 @@ const UserListTable = defineComponent({
         };
       })
     );
-    function openModal(data) {
+    const action = ref(null);
+    function openModal(data, act) {
       visible.value = true;
+      action.value = act;
       detail.value = data;
     }
 
@@ -205,6 +240,8 @@ const UserListTable = defineComponent({
     watch(search, () => {
       debouncedSearch(search.value);
     });
+
+    provide("visible", visible);
     return {
       userProductTableHeader,
       handleDelete,
@@ -217,6 +254,9 @@ const UserListTable = defineComponent({
       loading,
       deleteloading,
       visible,
+      action,
+      detail,
+      getData,
     };
   },
 });

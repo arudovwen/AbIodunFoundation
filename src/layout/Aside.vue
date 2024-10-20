@@ -131,42 +131,42 @@ export default defineComponent({
         url: "/dashboard",
         icon: "home",
         disable: false,
-        role: "all",
+        role: ["admin", "customer", "relationship manager"],
       },
       {
         title: "user management",
         url: "/user-management",
         icon: "users-alt",
         disable: false,
-        role: "admin",
+        role: ["admin"],
       },
       {
         title: "Customer management",
         url: "/customer-management",
         icon: "user-square",
         disable: false,
-        role: "admin",
+        role: ["admin"],
       },
       {
         title: "product management",
         url: "/product-management",
         icon: "box",
         disable: false,
-        role: "admin",
+        role: ["admin", "relationship manager"],
       },
       {
         title: "banner management",
         url: "/banner-management",
         icon: "browser",
         disable: false,
-        role: "admin",
+        role: ["admin"],
       },
       {
         title: "services",
         url: "/services",
         icon: "box",
         disable: false,
-        role: "customer",
+        role: ["customer"],
       },
 
       {
@@ -174,36 +174,36 @@ export default defineComponent({
         url: "/transactions",
         icon: "transaction",
         disable: false,
-        role: "all",
+        role: ["admin", "customer", "relationship manager"],
       },
       {
         title: "airtime & data",
         url: "/airtime-and-data",
         icon: "sim-card",
         disable: true,
-        role: "customer",
+        role: ["customer"],
       },
       {
         title: "transfers",
         url: "/transfers",
         icon: "exchange",
         disable: true,
-        role: "customer",
+        role: ["customer"],
       },
       {
         title: "regions",
         url: "/regions",
         icon: "globe",
         disable: false,
-        role: "admin",
+        role: ["admin"],
       },
       {
         title: "Ship goods",
         url: "#",
         icon: "truck",
         disable: true,
-        role: "all",
-        isLabel: true
+        role: ["admin", "customer", "relationship manager"],
+        isLabel: true,
       },
     ];
     const state = reactive({
@@ -250,11 +250,9 @@ export default defineComponent({
     );
 
     const filteredMenu = computed(() => {
-      return store.state.auth.userData.userRole.toLowerCase() === "customer"
-        ? menus.filter((i) => i.role === "customer" || i.role === "all")
-        : store.state.auth.userData.userRole.toLowerCase() === "admin"
-        ? menus.filter((i) => i.role === "admin" || i.role === "all")
-        : menus.filter((i) => i.role === "all");
+      return menus.filter((i) =>
+        i.role.includes(store.state.auth.userData.userRole.toLowerCase())
+      );
     });
 
     return {

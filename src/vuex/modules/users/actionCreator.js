@@ -31,6 +31,10 @@ const state = () => ({
   adminstatloading: false,
   adminstatsuccess: false,
   adminstaterror: null,
+
+  assignloading: false,
+  assignerror: null,
+  assignsuccess: false,
 });
 
 const actions = {
@@ -129,6 +133,17 @@ const actions = {
       }
     } catch (err) {
       commit("addErr", err);
+    }
+  },
+  async assignRequest({ commit }, data) {
+    try {
+      commit("assignBegin");
+      const response = await DataService.post(urls.ASSIGN_REQUEST, data);
+      if (response.status === 200) {
+        commit("assignSuccess");
+      }
+    } catch (err) {
+      commit("assignErr", err);
     }
   },
   async disableUser({ commit }, data) {

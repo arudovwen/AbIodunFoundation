@@ -10,6 +10,22 @@
         }}</span>
       </div>
       <div>
+        <span class="block text-sm font-medium text-gray-500"
+          >Relationship manager</span
+        >
+        <span class="text-base font-medium capitalize">{{
+          product?.relationshipManager || "-"
+        }}</span>
+      </div>
+      <div>
+        <span class="block text-sm font-medium text-gray-500"
+          >Assigned by</span
+        >
+        <span class="text-base font-medium capitalize">{{
+          product?.assignedBy || "-"
+        }}</span>
+      </div>
+      <div>
         <span class="block text-sm font-medium text-gray-500">Amount</span>
         <span class="text-base font-medium capitalize">{{
           formatCurrency(product.amount, product?.currency) || "-"

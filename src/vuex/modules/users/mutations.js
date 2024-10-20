@@ -1,4 +1,23 @@
 export default {
+  assignBegin(state) {
+    state.assignloading = true;
+    state.assignsuccess = false;
+    state.assignerror = null;
+ 
+  },
+
+  assignSuccess(state) {
+    state.assignloading = false;
+    state.assignsuccess = true;
+ 
+  },
+
+  assignErr(state, err) {
+    state.assignloading = false;
+    state.assignerror = err;
+    state.assignsuccess = false;
+  },
+
   adminStatBegin(state) {
     state.adminstatloading = true;
     state.adminstatsuccess = false;

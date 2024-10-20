@@ -257,6 +257,11 @@ export const userProductTableHeader = [
     key: "requestDate",
   },
   {
+    title: "Relationship Manager",
+    dataIndex: "relationshipManager",
+    key: "relationshipManager",
+  },
+  {
     title: "Due Date",
     dataIndex: "dueDate",
     key: "dueDate",
