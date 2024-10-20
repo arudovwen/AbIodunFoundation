@@ -60,6 +60,8 @@ const productsData = computed(() =>
       interestRate,
       lockInPeriod,
       productName,
+      assignedBy,
+      relationshipManager,
       createdAt,
     } = product;
 
@@ -72,6 +74,8 @@ const productsData = computed(() =>
       "Equity Contribution": `${equityContribution}%`,
       "Due Date": moment(dueDate).format("ll"),
       "Request Date": moment(requestDate).format("ll"),
+      "Assigned By": assignedBy || "-",
+      "Relationship Manager": relationshipManager || "-",
       created: moment(createdAt).format("ll"),
     };
   })
