@@ -3,7 +3,11 @@ import { Notification } from "ant-design-vue";
 import { getItem } from "../../utility/localStorageControl";
 
 const API_ENDPOINT = process.env.VUE_APP_API_ENDPOINT;
-
+const exemptedErrors = [
+  "region not found!",
+  "user profile not found!",
+  "dynamicfields not found!",
+];
 const authHeader = () => ({
   Authorization: `Bearer ${getItem("accessToken")}`,
 });
@@ -101,6 +105,9 @@ client.interceptors.response.use(
       } else if (response.status === 404) {
         return originalRequest;
       } else if (response.status > 399 && response.status < 500) {
+        if (exemptedErrors.includes(response.data.message.toLowerCase())) {
+          return;
+        }
         Notification.error({
           message: "Error",
           description: response.data.message,

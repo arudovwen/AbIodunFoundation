@@ -153,7 +153,10 @@
                     >
                   </a-select>
                 </a-form-item>
-                <div class="mt-10 col-span-2 bg-gray-50 p-6">
+                <div
+                  class="mt-10 col-span-2 bg-gray-50 p-6"
+                  v-if="formState.dynamicFields?.length"
+                >
                   <h3 class="text-sm font-semibold mb-6">Additional Fields</h3>
                   <Builder
                     @handler="
@@ -243,7 +246,6 @@ watch(dynamicField, () => {
   formState.dynamicFields = dynamicField.value;
 });
 watch(product, () => {
-
   if (product.value.length) {
     formState.id = product.value[0].id;
     formState.minAmount = product.value[0].minAmount;
