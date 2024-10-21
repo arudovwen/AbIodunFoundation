@@ -84,4 +84,5 @@ export const urls = {
   DELETE_REGION: "/UserRegion/Delete",
 
   ASSIGN_REQUEST: "/UserProduct/AssignRequestToRM",
+  REQUEST_DOCUMENTS: "/UserProduct/RequestDocuments"
 };

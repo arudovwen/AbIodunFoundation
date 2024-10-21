@@ -19,14 +19,16 @@
           <template v-if="column.key === 'fullName'">
             <div>
               <span class="block text-sm font-medium">{{ record?.name }}</span>
-              <span class="block text-gray-600">{{ record?.emailAddress }}</span>
+              <span class="block text-gray-600">{{
+                record?.emailAddress
+              }}</span>
             </div>
           </template>
           <template v-if="column.key === 'action'">
             <Menu as="div" class="">
               <Float placement="bottom-end" :offset="4" portal>
                 <MenuButton
-                  class=" rounded-md px-1 py-2 text-sm font-medium text-white w-auto ml-auto block"
+                  class="rounded-md px-1 py-2 text-sm font-medium text-white w-auto ml-auto block"
                 >
                   <unicon name="ellipsis-v" width="16"></unicon>
                 </MenuButton>
@@ -126,6 +128,7 @@ const UserListTable = defineComponent({
     onMounted(() => {
       dispatch("getUsers", query);
       dispatch("getRoles");
+      dispatch("getRegions", { pageNumber: 1, pageSize: 1000 });
     });
     function fetchRecords(page) {
       dispatch("getUsers", { ...query, pageNumber: page });
@@ -138,6 +141,7 @@ const UserListTable = defineComponent({
     const deletesuccess = computed(() => state.users.deletesuccess);
     const forgotLoading = computed(() => state.auth.loading);
     const forgotSuccess = computed(() => state.auth.forgotsuccess);
+    const regionsData = computed(() => state.regions.data);
     const usersData = computed(() =>
       state.users.data.map((user) => {
         const {
@@ -155,7 +159,7 @@ const UserListTable = defineComponent({
         return {
           key: userId,
           userId: userId,
-          regionId,
+          region: regionsData.value.find((i) => i.id === regionId)?.name,
           name: fullName,
           fullName: (
             <div class="user-info">

@@ -29,10 +29,13 @@
                 >
                   <div class="px-1 grid gap-y-1 py-1">
                     <router-link :to="`/service/${record.id}`">
-                      <button class="text-sm py-1 px-2">View request</button>
+                      <button type="button" class="text-sm py-1 px-2">
+                        View request
+                      </button>
                     </router-link>
                     <span>
                       <button
+                        type="button"
                         @click="openModal(record, 'add')"
                         class="text-sm py-1 px-2"
                       >
@@ -41,6 +44,16 @@
                     </span>
                     <span>
                       <button
+                        type="button"
+                        @click="openModal(record, 'request')"
+                        class="text-sm py-1 px-2"
+                      >
+                        Request documents
+                      </button>
+                    </span>
+                    <span>
+                      <button
+                        type="button"
                         @click="openModal(record, 'delete')"
                         class="text-sm py-1 px-2"
                       >
@@ -55,7 +68,13 @@
         </template>
       </a-table>
     </TableWrapper>
-    <Modal :open="visible" @close="visible = false">
+    <Modal
+      :open="visible"
+      @close="
+        visible = false;
+        getData();
+      "
+    >
       <!-- <Detail /> -->
       <div v-if="action === 'delete'" class="bg-white rounded-lg">
         <h3 class="text-xl font-bold mb-4">Confirm delete</h3>
@@ -85,6 +104,11 @@
         :detail="detail"
         @close="getData"
       />
+      <RequestDocument
+        v-if="action === 'request'"
+        :detail="detail"
+        @close="getData"
+      />
     </Modal>
   </UserTableStyleWrapper>
 </template>
@@ -105,6 +129,7 @@ import {
   provide,
 } from "vue";
 import AssignRequest from "./AssignRequest.vue";
+import RequestDocument from "./RequestDocument.vue";
 import { userTableHeader } from "@/utility/constant";
 import { message } from "ant-design-vue";
 import { userProductTableHeader } from "@/utility/constant";
@@ -124,6 +149,7 @@ const UserListTable = defineComponent({
     MenuItems,
     Float,
     AssignRequest,
+    RequestDocument,
   },
   setup() {
     const detail = ref("");
@@ -169,11 +195,13 @@ const UserListTable = defineComponent({
           upfrontFee,
           currency,
           relationshipManager,
+          userId,
         } = product;
 
         return {
           key: id,
           id: id,
+          userId,
           lockInPeriod: <span>{`${lockInPeriod} days`}</span>,
           productName: (
             <span class="truncate block max-w-[180px]">

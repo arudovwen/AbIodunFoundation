@@ -146,6 +146,17 @@ const actions = {
       commit("assignErr", err);
     }
   },
+  async requestDocuments({ commit }, data) {
+    try {
+      commit("assignBegin");
+      const response = await DataService.post(urls.REQUEST_DOCUMENTS, data);
+      if (response.status === 200) {
+        commit("assignSuccess");
+      }
+    } catch (err) {
+      commit("assignErr", err);
+    }
+  },
   async disableUser({ commit }, data) {
     try {
       commit("deleteBegin");
