@@ -160,6 +160,7 @@ const UserListTable = defineComponent({
           key: userId,
           userId: userId,
           region: regionsData.value.find((i) => i.id === regionId)?.name,
+          regionId,
           name: fullName,
           fullName: (
             <div class="user-info">
