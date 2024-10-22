@@ -225,7 +225,7 @@ const UserListTable = defineComponent({
     }
 
     function handleDelete() {
-      dispatch("deleteProductDetail", detail.value.productId);
+      dispatch("deleteProductDetail", detail.value.id);
     }
 
     watch(addsuccess, () => {
