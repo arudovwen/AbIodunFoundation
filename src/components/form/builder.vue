@@ -1,5 +1,5 @@
 <template>
-  <div class="flex  gap-x-5">
+  <div class="flex gap-x-5">
     <div class="w-full max-w-[60%]">
       <div>
         <a-form name="register" :model="forms" layout="vertical" ref="formRef">
@@ -15,7 +15,6 @@
                   <span> {{ n.label }}</span>
                 </span>
                 <button
-                  v-if="forms.dynamicFields.length > 1"
                   @click="removeField(id)"
                   class="text-red-500 text-sm"
                   type="button"

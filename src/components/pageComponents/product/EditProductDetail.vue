@@ -154,7 +154,7 @@
                   </a-select>
                 </a-form-item>
                 <div class="mt-10 col-span-2 bg-gray-50 p-6">
-                  <h3 class="text-sm font-semibold mb-6">Additional Fields</h3>
+                  <h3 class="text-sm font-semibold mb-6">Additional Requirements</h3>
                   <Builder
                     @handler="
                       {
