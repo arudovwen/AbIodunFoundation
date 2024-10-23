@@ -4,7 +4,7 @@
       <sdButton
        size="sm"
 
-        class="border-primary border w-full bg-transparent !text-primary font-medium btn-sm"
+        class="!border-primary !border w-full !bg-transparent !text-primary font-medium btn-sm"
         >Export Excel</sdButton
       >
     </export-excel>
