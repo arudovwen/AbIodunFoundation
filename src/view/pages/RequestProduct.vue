@@ -519,7 +519,7 @@
                   </div> -->
 
                   <div class="col-span-2"  v-if="formState.dynamicField?.length">
-                    <h4 class="font-medium mb-3">Requirements</h4>
+                    <h4 class="font-semibold mb-3">Requirements</h4>
                     <Preview :formState="formState.dynamicField" />
                   </div>
 

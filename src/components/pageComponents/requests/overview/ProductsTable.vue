@@ -169,7 +169,7 @@ const UserListTable = defineComponent({
       dispatch("getUserProducts", query);
       dispatch("getAllUserProducts", {
         ...query,
-        pageSize: Number.MAX_SAFE_INTEGER,
+        pageSize: 10000,
       });
     });
     function getData() {

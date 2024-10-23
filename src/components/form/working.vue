@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-lg p-6 bg-white border grid grid-cols-1 lg:grid-cols-2 gap-8"
+    class="rounded-lg p-6 bg-white border grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4"
     v-if="formState?.dynamicField?.[0]?.label"
   >
     <div
