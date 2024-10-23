@@ -5,6 +5,7 @@ import { cleanObject } from "@/utility/cleanObject";
 
 const state = () => ({
   data: [],
+  allData: [],
   reqData: [],
   total: 0,
   request: null,
@@ -28,7 +29,7 @@ const state = () => ({
   deletesuccess: false,
   deleteloading: false,
   error: null,
-  additionalreqfield:null
+  additionalreqfield: null,
 });
 
 const actions = {
@@ -45,6 +46,17 @@ const actions = {
       }
     } catch (err) {
       commit("fetchErr", err);
+    }
+  },
+
+  async getAllUserProducts({ commit }, payload) {
+    const response = await DataService.get(
+      `${urls.GET_ALL_USER_PRODUCT}?${new URLSearchParams(
+        cleanObject(payload)
+      )}`
+    );
+    if (response.status === 200) {
+      commit("fetchAllSuccess", response.data);
     }
   },
   async getUserProductRequirements(

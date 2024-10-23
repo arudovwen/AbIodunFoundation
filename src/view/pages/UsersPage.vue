@@ -54,7 +54,7 @@ import moment from "moment";
 // import AddRole from "components/pageComponents/users/AddRole";
 const { state } = useStore();
 const usersData = computed(() =>
-  state.users.data.map((user) => {
+  state.users.allData.map((user) => {
     const {
       fullName,
       emailAddress,

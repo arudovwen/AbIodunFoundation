@@ -4,6 +4,7 @@ import { urls } from "@/helpers/apI_urls";
 
 const state = () => ({
   data: [],
+  allData: [],
   total: 0,
   transaction: null,
   loading: false,
@@ -38,6 +39,18 @@ const actions = {
     } catch (err) {
       commit("fetchTrxErr", err);
     }
+  },
+  async getAllTransactions({ commit }, { pageNumber, description, pageSize, userId }) {
+   
+      const response = await DataService.get(
+        `${urls.GET_ALL_TRANSACTIONS}?pageNumber=${pageNumber}&pageSize=${pageSize}&description=${description}&userId=${userId}`
+      );
+     
+      if (response.status === 200) {
+        commit("fetchAllSuccess", response.data);
+      
+      }
+  
   },
   async getTransactionById({ commit }, id) {
     try {

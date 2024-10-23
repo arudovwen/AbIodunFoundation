@@ -4,6 +4,7 @@ import { urls } from "@/helpers/apI_urls";
 
 const state = () => ({
   data: [],
+  allData: [],
   roles: [],
   stats: null,
   total: 0,
@@ -55,6 +56,14 @@ const actions = {
       }
     } catch (err) {
       commit("fetchErr", err);
+    }
+  },
+  async getAllUsers({ commit }, payload) {
+    const response = await DataService.get(
+      `${urls.ADMIM_GET_ALL_USERS}?${new URLSearchParams(payload)}`
+    );
+    if (response.status === 200) {
+      commit("fetchAllSuccess", response.data);
     }
   },
   async getUserById({ commit }, id) {

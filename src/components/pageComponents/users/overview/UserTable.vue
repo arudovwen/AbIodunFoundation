@@ -150,6 +150,7 @@ const UserListTable = defineComponent({
     onMounted(() => {
       dispatch("getUsers", query);
       dispatch("getRoles");
+      dispatch("getAllUsers", { ...query, pageSize: 100000 });
     });
     function fetchRecords(page) {
       dispatch("getUsers", { ...query, pageNumber: page });

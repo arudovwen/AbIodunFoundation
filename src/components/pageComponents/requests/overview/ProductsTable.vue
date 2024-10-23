@@ -167,6 +167,10 @@ const UserListTable = defineComponent({
 
     onMounted(() => {
       dispatch("getUserProducts", query);
+      dispatch("getAllUserProducts", {
+        ...query,
+        pageSize: 10000,
+      });
     });
     function getData() {
       dispatch("getUserProducts", query);

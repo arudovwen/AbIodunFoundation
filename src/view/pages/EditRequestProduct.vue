@@ -176,20 +176,6 @@
                 </BasicFormWrapper>
                 <h2 class="font-bold mb-7 col-span-2">Requirements</h2>
 
-                <!-- <a-form-item
-                  label="Facility amount"
-                  name="facilityAmount"
-                  :rules="[
-                    { required: true, message: 'Please input an amount!' },
-                  ]"
-                >
-                  <CurrencyInput
-                    v-model="formState.facilityAmount"
-                    :value="formState.facilityAmount"
-                    placeholder="Provide Facility amount"
-                    :options="{ currency: 'ngn' }"
-                  />
-                </a-form-item> -->
                 <a-form-item
                   label="Use of funds"
                   name="useOfFunds"

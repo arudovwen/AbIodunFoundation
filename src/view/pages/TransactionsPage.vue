@@ -53,7 +53,7 @@ const breadcrumbs = [
   },
 ];
 const transactionsData = computed(() =>
-  state.transactions.data.map((transaction) => {
+  state.transactions.allData.map((transaction) => {
     const {
 
       amount,

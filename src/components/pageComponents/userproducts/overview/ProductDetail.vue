@@ -89,10 +89,10 @@
       </div>
     </div>
     <hr class="border-gray-100 my-6" />
-    <div v-if="productReq">
+    <div>
       <h4 class="col-span-2 text-lg font-bold mb-6">Requirements</h4>
       <div class="grid grid-cols-2 gap-6 mb-6">
-        <div>
+        <div v-if="productReq?.businessName">
           <span class="block text-sm font-medium text-gray-500"
             >Business name</span
           >
@@ -100,7 +100,7 @@
             productReq?.businessName || "-"
           }}</span>
         </div>
-        <div>
+        <div v-if="productReq?.businessAddress">
           <span class="block text-sm font-medium text-gray-500"
             >Business address</span
           >
@@ -108,8 +108,7 @@
             productReq?.businessAddress || "-"
           }}</span>
         </div>
-
-        <div>
+        <div v-if="productReq?.residentialAddress">
           <span class="block text-sm font-medium text-gray-500"
             >Residential address</span
           >
@@ -117,7 +116,7 @@
             productReq?.residentialAddress || "-"
           }}</span>
         </div>
-        <div>
+        <div v-if="productReq?.useOfFunds">
           <span class="block text-sm font-medium text-gray-500"
             >Use of Funds</span
           >
@@ -125,7 +124,7 @@
             productReq?.useOfFunds || "-"
           }}</span>
         </div>
-        <div>
+        <div v-if="productReq?.facilityAmount">
           <span class="block text-sm font-medium text-gray-500"
             >Facility amount</span
           >
@@ -133,7 +132,7 @@
             formatCurrency(productReq?.facilityAmount, product?.currency) || "-"
           }}</span>
         </div>
-        <div>
+        <div v-if="productReq?.businessType">
           <span class="block text-sm font-medium text-gray-500"
             >Business type
           </span>
@@ -141,14 +140,14 @@
             productReq?.businessType || "-"
           }}</span>
         </div>
-        <div>
+        <div v-if="productReq?.bvn">
           <span class="block text-sm font-medium text-gray-500">BVN</span>
           <span class="text-base font-medium capitalize">{{
             productReq?.bvn || "-"
           }}</span>
         </div>
 
-        <div class="">
+        <div class="" v-if="productReq?.cacDocumentUrl">
           <span class="block text-sm font-medium text-gray-500"
             >CAC Document</span
           >
@@ -158,7 +157,7 @@
             >
           </button>
         </div>
-        <div class="">
+        <div class="" v-if="productReq?.statementUrl">
           <span class="block text-sm font-medium text-gray-500"
             >Business statement</span
           >
@@ -168,7 +167,7 @@
             >
           </button>
         </div>
-        <div class="">
+        <div class="" v-if="productReq?.utilityBillUrl">
           <span class="block text-sm font-medium text-gray-500"
             >Utility Bill</span
           >
@@ -178,7 +177,7 @@
             >
           </button>
         </div>
-        <div class="">
+        <div class="" v-if="productReq?.identificationUrl">
           <span class="block text-sm font-medium text-gray-500"
             >Identification Document</span
           >
@@ -189,10 +188,6 @@
           </button>
         </div>
       </div>
-    </div>
-    <hr class="border-gray-100 my-6" />
-    <div v-if="additional && additional.length">
-      <h4 class="col-span-2 text-lg font-bold mb-6">Additional Detail</h4>
       <div class="grid grid-cols-2 gap-6 mb-10">
         <div v-for="(n, id) in additional" :key="id">
           <div>

@@ -1,4 +1,9 @@
 export default {
+  fetchAllSuccess(state, { data }) {
+    state.loading = false;
+    state.success = true;
+    state.allData = data;
+  },
   addBegin(state) {
     state.addloading = true;
     state.error = null;
