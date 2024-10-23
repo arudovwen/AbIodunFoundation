@@ -34,7 +34,7 @@
                           ','
                         )
                     "
-                     :parser="
+                    :parser="
                       (value) => parseAmount(value, product?.currency || 'NGN')
                     "
                   />
@@ -122,15 +122,15 @@
                   <a-select size="large" v-model:value="formState.lockInPeriod">
                     <a-select-option value="">Please Select</a-select-option>
                     <a-select-option
-                          v-for="n in TenorOptions"
-                          :value="n.value"
-                          :key="n.value"
-                          >{{ n.label }}</a-select-option
-                        >
+                      v-for="n in TenorOptions"
+                      :value="n.value"
+                      :key="n.value"
+                      >{{ n.label }}</a-select-option
+                    >
                   </a-select>
                 </a-form-item>
                 <div class="mt-10 col-span-2 bg-gray-50 p-6">
-                  <h3 class="text-sm font-semibold mb-6">Additional Fields</h3>
+                  <h3 class="text-sm font-semibold mb-6">Additional Requirements</h3>
                   <Builder
                     @handler="
                       {
@@ -189,17 +189,7 @@ const formState = reactive({
   interestRate: "", // Update property to match the "Interest rate" input field
   lockInPeriod: null, // Update property to match the "Due date" input field
   equityContribution: "", // Update property to match the "Description" input field
-  dynamicFields: [
-    {
-      label: "",
-      key: Date.now(),
-      name: "",
-      options: [],
-      type: "",
-      value: "",
-      required: false,
-    },
-  ],
+  dynamicFields: [],
 });
 // ₦
 watch(addsuccess, () => {
