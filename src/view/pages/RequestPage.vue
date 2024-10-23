@@ -50,7 +50,7 @@ const breadcrumbs = [
 ];
 const search = ref("");
 const productsData = computed(() =>
-  state.requests.data.map((product) => {
+  state.requests.allData.map((product) => {
     const {
       amount,
       equityContribution,

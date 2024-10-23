@@ -48,7 +48,7 @@ const breadcrumbs = [
   },
 ];
 const usersData = computed(() =>
-  state.users.data.map((user) => {
+  state.users.allData.map((user) => {
     const {
       fullName,
       emailAddress,

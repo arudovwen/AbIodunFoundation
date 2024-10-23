@@ -54,7 +54,7 @@ const breadcrumbs = [
 const { state } = useStore();
 const search = ref("");
 const productsData = computed(() =>
-  state.products.data.map((user) => {
+  state.products.allData.map((user) => {
     const {
       createdAt,
       isDeleted,
