@@ -153,10 +153,7 @@
                     >
                   </a-select>
                 </a-form-item>
-                <div
-                  class="mt-10 col-span-2 bg-gray-50 p-6"
-                  v-if="formState.dynamicFields?.length"
-                >
+                <div class="mt-10 col-span-2 bg-gray-50 p-6">
                   <h3 class="text-sm font-semibold mb-6">Additional Fields</h3>
                   <Builder
                     @handler="
@@ -232,7 +229,7 @@ onMounted(() => {
   dispatch("getProduct", route?.params?.id);
   if (route.params.id) {
     dispatch("getProductDetails", query);
-    dispatch("getProductAddionalField", { id: route.params.id });
+   
   }
 });
 
@@ -255,6 +252,8 @@ watch(product, () => {
     formState.interestRate = product.value[0].interestRate;
     formState.lockInPeriod = product.value[0].lockInPeriod;
     formState.equityContribution = product.value[0].equityContribution;
+
+    dispatch("getProductAddionalField", { id: product.value[0]?.id });
   }
 });
 provide("forms", formState);

@@ -129,6 +129,7 @@ const UserListTable = defineComponent({
       dispatch("getUsers", query);
       dispatch("getRoles");
       dispatch("getRegions", { pageNumber: 1, pageSize: 1000 });
+      dispatch("getAllUsers", { ...query, pageSize: 10000 });
     });
     function fetchRecords(page) {
       dispatch("getUsers", { ...query, pageNumber: page });

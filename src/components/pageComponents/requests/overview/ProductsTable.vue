@@ -167,6 +167,10 @@ const UserListTable = defineComponent({
 
     onMounted(() => {
       dispatch("getUserProducts", query);
+      dispatch("getAllUserProducts", {
+        ...query,
+        pageSize: Number.MAX_SAFE_INTEGER,
+      });
     });
     function getData() {
       dispatch("getUserProducts", query);

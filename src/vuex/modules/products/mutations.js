@@ -16,6 +16,12 @@ export default {
     state.error = err;
     state.success = false;
   },
+  fetchAllSuccess(state, { data }) {
+    state.loading = false;
+    state.success = true;
+    state.allData = data;
+  },
+
   fetchDetailBegin(state) {
     state.loading = true;
     state.error = null;

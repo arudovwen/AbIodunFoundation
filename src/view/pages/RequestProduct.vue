@@ -244,7 +244,7 @@
                       </a-form-item>
                     </div>
                   </BasicFormWrapper>
-                  <h2 class="font-bold mb-7 col-span-2">Requirements</h2>
+                  <!-- <h2 class="font-bold mb-7 col-span-2">Requirements</h2>
                   <div
                     class="mb-8 col-span-2 md:grid grid-cols-1 md:grid-cols-2 md:gap-x-8"
                   >
@@ -516,10 +516,10 @@
                         </a-upload>
                       </a-form-item>
                     </div>
-                  </div>
+                  </div> -->
 
-                  <div class="col-span-2"  v-if="formState.dynamicFields?.length">
-                    <h4 class="font-medium mb-3">Additional Field</h4>
+                  <div class="col-span-2"  v-if="formState.dynamicField?.length">
+                    <h4 class="font-medium mb-3">Requirements</h4>
                     <Preview :formState="formState.dynamicField" />
                   </div>
 
@@ -552,7 +552,7 @@
 <script setup>
 import { Main } from "../styled";
 import { message } from "ant-design-vue";
-import { UploadOutlined, LoadingOutlined } from "@ant-design/icons-vue";
+// import { UploadOutlined, LoadingOutlined } from "@ant-design/icons-vue";
 import moment from "moment";
 import { onMounted, computed, reactive, ref, watch, provide } from "vue";
 import { useStore } from "vuex";
@@ -560,7 +560,7 @@ import { formatCurrency } from "@/utility/formatCurrency";
 import { useRouter, useRoute } from "vue-router";
 import { BasicFormWrapper } from "../styled";
 import dayjs from "dayjs";
-import { businessTypesInNigeria } from "@/utility/constant";
+// import { businessTypesInNigeria } from "@/utility/constant";
 import { parseAmount } from "@/utility/parseCurrency";
 import Preview from "@/components/form/working";
 
@@ -730,40 +730,40 @@ const breadcrumbs = [
     breadcrumbName: "Check-Out our products",
   },
 ];
-const handleChange = (data, type) => {
-  const file = data?.file;
+// const handleChange = (data, type) => {
+//   const file = data?.file;
 
-  const allowedTypes = [
-    "image/svg+xml",
-    "image/jpeg",
-    "image/jpg",
-    "image/png",
-    "application/pdf",
-    "text/csv",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  ];
-  if (!allowedTypes.includes(file.type)) {
-    message.error(
-      `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG,PDF allowed)`
-    );
-  }
-  if (file.size > 800 * 1024) {
-    // 800KB = 800 * 1024 bytes
-    message.error(`${file.name} exceeds the maximum file size (800KB)`);
-    return false; // Prevent the upload
-  }
+//   const allowedTypes = [
+//     "image/svg+xml",
+//     "image/jpeg",
+//     "image/jpg",
+//     "image/png",
+//     "application/pdf",
+//     "text/csv",
+//     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+//   ];
+//   if (!allowedTypes.includes(file.type)) {
+//     message.error(
+//       `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG,PDF allowed)`
+//     );
+//   }
+//   if (file.size > 800 * 1024) {
+//     // 800KB = 800 * 1024 bytes
+//     message.error(`${file.name} exceeds the maximum file size (800KB)`);
+//     return false; // Prevent the upload
+//   }
 
-  const formData = new FormData();
-  formData.append("file", file);
-  uploadtype.value = type;
-  dispatch("uploadFile", {
-    userId: userData.value.id,
-    fileType: "product",
-    formData,
-  });
+//   const formData = new FormData();
+//   formData.append("file", file);
+//   uploadtype.value = type;
+//   dispatch("uploadFile", {
+//     userId: userData.value.id,
+//     fileType: "product",
+//     formData,
+//   });
 
-  return false;
-};
+//   return false;
+// };
 const disabledDate = (current) => {
   // Can not select days before today and today
   return current && current < dayjs().endOf("day");
@@ -802,7 +802,7 @@ watch(
         productId: formState.productId,
       });
       dispatch("getProduct", formState.productId);
-      dispatch("getProductAddionalField", { id: formState.productId });
+      
     }
   }
 );
@@ -814,6 +814,8 @@ watch(productDetail, () => {
     upfrontFeePercent.value = productDetail?.value[0]?.upfrontFees;
     equityPercent.value = productDetail?.value[0]?.equityContribution;
     formState.lockInPeriod = productDetail?.value[0]?.lockInPeriod;
+
+    dispatch("getProductAddionalField", { id: productDetail?.value[0]?.id });
   }
 });
 watch(addsuccess, () => {

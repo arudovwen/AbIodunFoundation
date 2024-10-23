@@ -105,7 +105,7 @@ client.interceptors.response.use(
       } else if (response.status === 404) {
         return originalRequest;
       } else if (response.status > 399 && response.status < 500) {
-        if (exemptedErrors.includes(response.data.message.toLowerCase())) {
+        if (exemptedErrors?.includes(response?.data?.message?.toLowerCase())) {
           return;
         }
         Notification.error({
@@ -116,7 +116,7 @@ client.interceptors.response.use(
         });
 
         if (
-          response.data.message.includes("Your profile has not been activated")
+          response.data?.message?.includes("Your profile has not been activated")
         ) {
           const email = JSON.parse(originalRequest.data).username;
           window.location.href = `/auth/validate-email/${encodeURIComponent(
