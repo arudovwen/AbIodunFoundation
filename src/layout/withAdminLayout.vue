@@ -110,6 +110,23 @@
           </a-col>
         </a-row>
       </div>
+
+      <div
+        :class="showTimer ? '' : 'hidden'"
+        class="bg-primary text-white px-10 py-1 flex justify-between items-center text-xs md:text-sm fixed top-0 z-[9999] w-screen gap-x-5"
+      >
+        <span>Are you still there?</span>
+        <span class="flex items-center gap-x-2 text-xs md:text-sm">
+          Logging out in
+          <Vidle
+            :duration="60 * 5"
+            :wait="5"
+            @remind="onremind"
+            @idle="onidle"
+            :reminders="[5, 30]"
+            @refresh="showTimer = false"
+        /></span>
+      </div>
       <Layout>
         <template v-if="!topMenu || innerWidth <= 991">
           <Sider
@@ -190,6 +207,7 @@
   </Div>
 </template>
 <script>
+import Vidle from "v-idle";
 import { Layout } from "ant-design-vue";
 import {
   Div,
@@ -223,13 +241,14 @@ export default defineComponent({
     AsideItems,
     TopMenu,
     PerfectScrollbar,
+    Vidle,
   },
   setup() {
     const collapsed = ref(false);
     const hide = ref(true);
     const searchHide = ref(true);
     const activeSearch = ref(false);
-
+    const showTimer = ref(false);
     // const store = useStore();
     const { dispatch, state } = useStore();
 
@@ -273,7 +292,16 @@ export default defineComponent({
         }
       });
     }
+    const onremind = () => {
+      showTimer.value = true;
+    };
 
+    const onidle = () => {
+      localStorage.clear();
+      window.location.href = `/auth/login?redirect_from=${encodeURIComponent(
+        window.location.href
+      )}`;
+    };
     const onRtlChange = () => {
       const html = document.querySelector("html");
       html.setAttribute("dir", "rtl");
@@ -326,6 +354,9 @@ export default defineComponent({
       darkMode,
       topMenu,
       onEventChange,
+      onremind,
+      onidle,
+      showTimer,
     };
   },
 });
