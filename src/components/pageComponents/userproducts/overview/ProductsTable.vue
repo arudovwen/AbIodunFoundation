@@ -136,12 +136,14 @@ const UserListTable = defineComponent({
           productName,
           createdAt,
           upfrontFee,
-          currency
+          currency,
+          relationshipManager
         } = product;
 
         return {
           key: id,
           id: id,
+          relationshipManager: relationshipManager || "-",
           lockInPeriod: (
             <span class="truncate block max-w-[180px]">
               {lockInPeriod} days

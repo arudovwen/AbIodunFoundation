@@ -4,7 +4,7 @@
     v-if="formState?.dynamicField?.[0]?.label"
   >
     <div
-      class="flex flex-col gap-6"
+      class="gap-6"
       v-for="(form, id) in formState?.dynamicField"
       :key="id"
     >

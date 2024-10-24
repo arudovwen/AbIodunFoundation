@@ -518,7 +518,7 @@
                     </div>
                   </div> -->
 
-                  <div class="col-span-2"  v-if="formState.dynamicField?.length">
+                  <div class="col-span-2" v-if="formState.dynamicField?.length">
                     <h4 class="font-semibold mb-3">Requirements</h4>
                     <Preview :formState="formState.dynamicField" />
                   </div>
@@ -625,16 +625,11 @@ const interestRateAmount = computed(() => {
     return 0;
   let calc;
   if (productDetail?.value?.productName?.toLowerCase() === "af loans") {
-    calc =
-      equityAmount.value *
-      (interestRatePercent.value / 100) *
-      formState.lockInPeriod;
+    calc = equityAmount.value * (interestRatePercent.value / 100);
   } else {
-    calc =
-      formState.amount *
-      (interestRatePercent.value / 100) *
-      formState.lockInPeriod;
+    calc = formState.amount * (interestRatePercent.value / 100);
   }
+
   return calc || 0;
 });
 const equityAmount = computed(() => {
@@ -802,7 +797,6 @@ watch(
         productId: formState.productId,
       });
       dispatch("getProduct", formState.productId);
-      
     }
   }
 );

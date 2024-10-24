@@ -30,7 +30,7 @@
 
       <span
         class="flex-1 px-4 truncate text-[#999999] inline-block max-w-[300px] xl:max-w-[380px]"
-        >{{ title || `Upload ${label.replaceAll(" ", "_")}` }}</span
+        >{{ title }}</span
       >
     </div>
   </div>
@@ -107,7 +107,6 @@ function handleEvent(e) {
     formData,
   });
   watch(uploadsuccess, () => {
-
     emits("update:modelValue", fileId.value.toString());
   });
 }
@@ -116,12 +115,13 @@ function triggerFileInput() {
   fileInputRef.value.click();
 }
 onMounted(() => {
-  title.value = `${props.label.replaceAll(" ", "_")}`;
+  // title.value = `${props.label.replaceAll(" ", "_")}`;
 });
 watch(
   () => [props.modelValue],
+
   () => {
-    title.value = `${props.label.replaceAll(" ", "_")}`;
+    // title.value = `${props.label.replaceAll(" ", "_")}`;
   }
 );
 </script>
