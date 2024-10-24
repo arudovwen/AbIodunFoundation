@@ -623,15 +623,21 @@ const upfrontFeesAmount = computed(() => {
 const interestRateAmount = computed(() => {
   if (!formState.amount || !formState.productId || !formState.lockInPeriod)
     return 0;
-  let calc;
+  let interestAmount;
   if (productDetail?.value?.productName?.toLowerCase() === "af loans") {
-    calc = equityAmount.value * (interestRatePercent.value / 100);
+    interestAmount = equityAmount.value * (interestRatePercent.value / 100);
   } else {
-    calc = formState.amount * (interestRatePercent.value / 100);
+    interestAmount = formState.amount * (interestRatePercent.value / 100);
   }
 
-  return calc || 0;
+  const dailyInterest = interestAmount / 30;
+  const interest = parseFloat(
+    dailyInterest.toFixed(2) * Number(formState.lockInPeriod)
+  ).toFixed(2);
+
+  return interest;
 });
+
 const equityAmount = computed(() => {
   if (!formState.amount || !formState.productId) return 0;
   const calc = formState.amount * (equityPercent.value / 100);
