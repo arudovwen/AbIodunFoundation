@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="flex justify-end mb-6 gap-x-4" v-if="profile !== 'customer'">
+
+    <div class="flex justify-end mb-6 gap-x-4" v-if="profile.userRole !== 'customer'">
       <sdButton
         v-if="
           handleDisplay(
