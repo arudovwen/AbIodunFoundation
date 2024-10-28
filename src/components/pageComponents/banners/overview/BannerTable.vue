@@ -12,7 +12,7 @@
         <span class="border-l border h-6" />
         <span
           class="title-counter text-yellow-600 px-3"
-          @click="query.status = 'false'"
+          @click="query.status = 'inactive'"
           >Inactive</span
         >
       </div>
@@ -42,7 +42,7 @@
       {{
         query.status === ""
           ? "All"
-          : query.status === "false"
+          : query.status === "inactive"
           ? "Inactive"
           : "Active"
       }}
@@ -64,7 +64,6 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-        
             <Menu as="div" class="">
               <Float placement="bottom-end" :offset="4" portal>
                 <MenuButton
@@ -84,13 +83,16 @@
                       Disable
                     </button>
                     <button
-                      v-if="record.stat.toLowerCase() == 'false'"
+                      v-if="record.stat.toLowerCase() == 'inactive'"
                       class="text-sm py-[6px] px-[6px] text-left"
                       @click="openModal(record, 'enable')"
                     >
                       Enable
                     </button>
-                    <button class="text-sm py-[6px] px-2 text-left" @click="openModal(record, 'edit')">
+                    <button
+                      class="text-sm py-[6px] px-2 text-left"
+                      @click="openModal(record, 'edit')"
+                    >
                       Edit
                     </button>
                     <button
@@ -127,11 +129,10 @@
         </sdButton>
         <sdButton
           :disabled="deleteloading"
-       
           size="sm"
           key="1"
           type="error"
-           class="w-full"
+          class="w-full"
           @click="handleUpdate"
           >{{ deleteloading ? "Processing..." : "Confirm" }}
         </sdButton>
@@ -210,7 +211,7 @@ const UserListTable = defineComponent({
           status: (
             <span
               className={`status-text ${
-                status?.toLowerCase() == "false"
+                status?.toLowerCase() == "inactive"
                   ? "bg-red-50 text-red-500"
                   : "bg-green-50 text-green-500"
               }`}
@@ -299,7 +300,7 @@ const UserListTable = defineComponent({
         dispatch("statusBanner", { id: detail.value.id, status: true });
       }
       if (type.value === "disable") {
-        dispatch("statusBanner", { id: detail.value.id, status: false });
+        dispatch("statusBanner", { id: detail.value.id, status: "inactive" });
       }
     }
     return {
