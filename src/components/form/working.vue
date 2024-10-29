@@ -3,11 +3,7 @@
     class="rounded-lg p-6 bg-white border grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4"
     v-if="formState?.dynamicField?.[0]?.label"
   >
-    <div
-      class="gap-6"
-      v-for="(form, id) in formState?.dynamicField"
-      :key="id"
-    >
+    <div class="gap-6" v-for="(form, id) in formState?.dynamicField" :key="id">
       <a-form-item
         :label="form?.label"
         :name="['dynamicField', id, 'value']"

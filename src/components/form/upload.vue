@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div
+    <label
+      for="upload"
       class="flex-1 rounded-lg py-1 pr-[14px] pl-2 h-11 text-sm w-full border border-[##EAECF0] placeholder:text-[#B6B7B9] bg-[#F9FAFB] focus:outline-matta-black/20 flex items-center"
     >
       <input
@@ -32,7 +33,7 @@
         class="flex-1 px-4 truncate text-[#999999] inline-block max-w-[300px] xl:max-w-[380px]"
         >{{ title }}</span
       >
-    </div>
+    </label>
   </div>
 </template>
 
