@@ -545,6 +545,9 @@
                           </a-button>
                         </a-upload>
                       </a-form-item>
+                      <div>
+                        <input type="file" name="" id="">
+                      </div>
                   <div class="col-span-2" v-if="formState.dynamicField?.length">
                     <h4 class="font-semibold mb-3">Requirements</h4>
                     <Preview :formState="formState.dynamicField" />
