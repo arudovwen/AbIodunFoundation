@@ -517,37 +517,7 @@
                       </a-form-item>
                     </div>
                   </div> -->
-                  <a-form-item
-                        name="utilityList"
-                        :rules="[
-                          {
-                            required: true,
-                            message: 'Please upload your Utility Bill!',
-                          },
-                        ]"
-                      >
-                        <a-upload
-                          :max-count="1"
-                          v-model:file-list="formState.utilityList"
-                          name="utilityList"
-                          class="w-full"
-                          :before-upload="() => false"
-                          @change="(e) => handleChange(e, 'utility')"
-                        >
-                          <a-button>
-                            <upload-outlined
-                              v-if="!loading || uploadtype !== 'utility'"
-                            ></upload-outlined>
-                            <loading-outlined
-                              v-if="loading && uploadtype === 'utility'"
-                            ></loading-outlined>
-                            Upload Utility Bill
-                          </a-button>
-                        </a-upload>
-                      </a-form-item>
-                      <div>
-                        <input type="file" name="" id="">
-                      </div>
+
                   <div class="col-span-2" v-if="formState.dynamicField?.length">
                     <h4 class="font-semibold mb-3">Requirements</h4>
                     <Preview :formState="formState.dynamicField" />
@@ -761,40 +731,40 @@ const breadcrumbs = [
     breadcrumbName: "Check-Out our products",
   },
 ];
-const handleChange = (data, type) => {
-  const file = data?.file;
+// const handleChange = (data, type) => {
+//   const file = data?.file;
 
-  const allowedTypes = [
-    "image/svg+xml",
-    "image/jpeg",
-    "image/jpg",
-    "image/png",
-    "application/pdf",
-    "text/csv",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  ];
-  if (!allowedTypes.includes(file.type)) {
-    message.error(
-      `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG,PDF allowed)`
-    );
-  }
-  if (file.size > 800 * 1024) {
-    // 800KB = 800 * 1024 bytes
-    message.error(`${file.name} exceeds the maximum file size (800KB)`);
-    return false; // Prevent the upload
-  }
+//   const allowedTypes = [
+//     "image/svg+xml",
+//     "image/jpeg",
+//     "image/jpg",
+//     "image/png",
+//     "application/pdf",
+//     "text/csv",
+//     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+//   ];
+//   if (!allowedTypes.includes(file.type)) {
+//     message.error(
+//       `${file.name} is not a valid image file (SVG, JPEG, JPG, PNG,PDF allowed)`
+//     );
+//   }
+//   if (file.size > 800 * 1024) {
+//     // 800KB = 800 * 1024 bytes
+//     message.error(`${file.name} exceeds the maximum file size (800KB)`);
+//     return false; // Prevent the upload
+//   }
 
-  const formData = new FormData();
-  formData.append("file", file);
-  uploadtype.value = type;
-  dispatch("uploadFile", {
-    userId: userData.value.id,
-    fileType: "product",
-    formData,
-  });
+//   const formData = new FormData();
+//   formData.append("file", file);
+//   uploadtype.value = type;
+//   dispatch("uploadFile", {
+//     userId: userData.value.id,
+//     fileType: "product",
+//     formData,
+//   });
 
-  return false;
-};
+//   return false;
+// };
 const disabledDate = (current) => {
   // Can not select days before today and today
   return current && current < dayjs().endOf("day");
