@@ -35,13 +35,19 @@
 import { Main } from "../styled";
 import ExportButton from "components/ExportButton";
 import Transactions from "components/pageComponents/transactions/overview/TransactionsTable";
-import { ref, provide, computed } from "vue";
+import { ref, provide, computed, onMounted, reactive } from "vue";
 import moment from "moment";
 import { useStore } from "vuex";
 import { formatCurrency } from "@/utility/formatCurrency";
 
-const { state } = useStore();
+const { state, dispatch } = useStore();
 const search = ref("");
+const query = reactive({
+  pageNumber: 1,
+  pageSize: 100000000,
+  description: "",
+  userId: "",
+});
 const breadcrumbs = [
   {
     path: "/dashboard",
@@ -55,22 +61,27 @@ const breadcrumbs = [
 const transactionsData = computed(() =>
   state.transactions.allData.map((transaction) => {
     const {
-
       amount,
       transactionType,
       transactionDate,
       transactionStatus,
       description,
+      currency,
     } = transaction;
 
     return {
-      amount: formatCurrency(amount),
-      description,
       "Transaction Type": transactionType,
       "Transaction Date": moment(transactionDate).format("lll"),
+      amount: formatCurrency(amount, currency),
+      description,
+
       status: transactionStatus,
     };
   })
 );
+
+onMounted(() => {
+  dispatch("getAllTransactions", query);
+});
 provide("search", search);
 </script>
